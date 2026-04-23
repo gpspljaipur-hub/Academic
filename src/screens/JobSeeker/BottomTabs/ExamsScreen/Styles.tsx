@@ -1,0 +1,51 @@
+import { Dimensions, StyleSheet } from 'react-native';
+import Colors from '../../../../comman/Colors';
+import FontsSize from '../../../../comman/Sizes/FontsSize';
+import MarginHW from '../../../../comman/Sizes/MarginHW';
+import fonts from '../../../../comman/fonts';
+const {width, height} = Dimensions.get('window');
+
+export const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F3F4F6',paddingHorizontal: MarginHW.PaddingW16},
+  content: { paddingBottom: MarginHW.PaddingH70 },
+  headerWrap: { alignItems: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
+  headerRow: { flex: 1 },
+  menuIcon: { color: '#2D3748', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size20 },
+  filterList: { gap: MarginHW.MarginW8,  marginBottom: MarginHW.MarginH10 },
+  filterChip: {width: width /3-20 ,alignItems: 'center',  backgroundColor: '#E5E7EB', borderRadius: 10,marginHorizontal: 5, paddingHorizontal: MarginHW.PaddingW14, paddingVertical: MarginHW.PaddingH8 },
+  filterChipActive: { backgroundColor: '#1D4ED8' },
+  filterChipText: { color: '#374151', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14},
+  filterChipTextActive: { color: Colors.white },
+  searchBox: { alignItems: 'center', backgroundColor: '#E5E7EB', borderRadius: 10, flexDirection: 'row', paddingHorizontal: MarginHW.PaddingW10 },
+  searchIcon: { height: 14, width: 14, tintColor: '#6B7280', marginRight: MarginHW.MarginW8 },
+  searchInput: { flex: 1, height: 38, color: '#111827', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size12 },
+  sectionHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: MarginHW.MarginH14, marginBottom: MarginHW.MarginH8 },
+  sectionLabel: { color: '#6B7280', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size10, letterSpacing: 0.8 },
+  sectionTitle: { color: '#111827', fontFamily: fonts.LexendBold, fontSize: FontsSize.size18 },
+  sectionAction: { color: '#1E40AF', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
+  notificationCard: { backgroundColor: Colors.white, borderRadius: 14, marginBottom: MarginHW.MarginH10, padding: MarginHW.PaddingW12 },
+  cardTop: { flexDirection: 'row', justifyContent: 'space-between' },
+  leftWrap: { flex: 1, flexDirection: 'row', gap: MarginHW.MarginW10 },
+  iconWrap: { alignItems: 'center', backgroundColor: '#EFF6FF', borderRadius: 5,paddingHorizontal: MarginHW.PaddingW10, paddingVertical: MarginHW.PaddingH5, justifyContent: 'center',  },
+  cardIcon: { height: 25, width: 25, tintColor: '#1E40AF' },
+  textWrap: { flex: 1,marginVertical: MarginHW.MarginH10 },
+  cardTitle: { color: '#111827', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16, lineHeight: 24 },
+  cardSubTitle: { color: '#6B7280', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size14, marginTop: MarginHW.MarginH2 },
+  statusBadge: { alignSelf: 'flex-start',backgroundColor: '#EFF6FF', borderRadius: 5, paddingHorizontal: MarginHW.PaddingW8, paddingVertical: MarginHW.PaddingH5 },
+  statusText: { color: '#1F2937', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12 },
+  cardFooter: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: MarginHW.MarginH8 },
+  footerText: { color: '#374151', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size12 },
+  footerAction: { color: '#1E3A8A', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12 },
+  blueCard: { backgroundColor: '#0B4AA3', borderRadius: 14, marginTop: MarginHW.MarginH4, padding: MarginHW.PaddingW14 },
+  blueTitle: { color: Colors.white, fontFamily: fonts.LexendBold, fontSize: FontsSize.size14 },
+  blueText: { color: '#DBEAFE', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size10, lineHeight: 16, marginTop: MarginHW.MarginH5 },
+  downloadBtn: { alignSelf: 'flex-start', backgroundColor: Colors.white, borderRadius: 10, marginTop: MarginHW.MarginH10, paddingHorizontal: MarginHW.PaddingW12, paddingVertical: MarginHW.PaddingH8 },
+  downloadBtnText: { color: '#0B4AA3', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size10 },
+  prepCard: { backgroundColor: Colors.white, borderRadius: 14, marginTop: MarginHW.MarginH12, padding: MarginHW.PaddingW12, marginBottom: MarginHW.MarginH20 },
+  prepImage: { borderRadius: 10, height: 200, width: '100%', marginBottom: MarginHW.MarginH10 },
+  prepTitle: { color: '#111827', fontFamily: fonts.LexendBold, fontSize: FontsSize.size24 },
+  prepText: { color: '#4B5563', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size14, lineHeight: 16, marginTop: MarginHW.MarginH4 },
+  mockBtn: { alignItems: 'center', backgroundColor: '#0B4AA3', borderRadius: 12, marginTop: MarginHW.MarginH10, paddingVertical: MarginHW.PaddingH10 },
+  mockBtnText: { color: Colors.white, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
+  resourcesText: { color: '#1E3A8A', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14, marginTop: MarginHW.MarginH10, textAlign: 'center' },
+});
