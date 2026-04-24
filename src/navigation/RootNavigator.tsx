@@ -6,7 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Colors from '../comman/Colors';
 import LoginScreen from '../screens/AuthScreen/LoginScreen/LoginScreen';
 import SignupScreen from '../screens/AuthScreen/SignupScreen/SignupScreen';
-import BottomTabs from '../screens/JobSeeker/BottomTabs/BottomTabs';
+// import BottomTabs from '../screens/JobSeeker/BottomTabs/BottomTabs';
+import BottomTabs from '../screens/recuriter/BottomTabs/BottomTabs';
 import Premium from '../screens/JobSeeker/Premium/Premium';
 import Apply from '../screens/JobSeeker/ApplyScreen/Apply';
 import ProfileSetup from '../screens/JobSeeker/BottomTabs/ProfileScreen/ProfileSetup';
@@ -18,6 +19,7 @@ export type RootStackParamList = {
   Step: undefined;
   Splash: undefined;
   BottomTabs: undefined;
+  // RecruiterBottomTabs: undefined;
   Premium: undefined;
   Apply: undefined;
   ProfileSetup: undefined;
@@ -45,6 +47,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Step" component={Step} options={{ headerShown: false }} />
       <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} />
+      {/* <Stack.Screen name="RecruiterBottomTabs" component={RecruiterBottomTabs} options={{ headerShown: false }} /> */}
       <Stack.Screen name="ProfileSetup" component={ProfileSetup} options={{ headerShown: false }} />
       <Stack.Screen name="Premium" component={Premium} options={{ headerShown: false }} />
       <Stack.Screen name="Apply" component={Apply} options={{ headerShown: false }} />
