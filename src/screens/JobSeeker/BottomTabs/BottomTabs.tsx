@@ -9,6 +9,7 @@ import Dashboard from './Dashboard/Dashboard';
 import JobsScreen from './JobsScreen/JobsScreen';
 import ExamsScreen from './ExamsScreen/ExamsScreen';
 import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
+import Profile from './Profile Screen/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +58,7 @@ const BottomTabs = () => {
       <Tab.Screen name="JobsScreen" component={JobsScreen} />
       <Tab.Screen name="ExamsScreen" component={ExamsScreen} />
       <Tab.Screen name="ApplicationScreen" component={ApplicationsScreen} />
-      <Tab.Screen name="ProfileScreen" component={EmptyScreen} />
+      <Tab.Screen name="ProfileScreen" component={Profile} />
     </Tab.Navigator>
   );
 };
