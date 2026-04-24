@@ -31,6 +31,9 @@ const Images = {
   eye:require('../assets/images/eye.png'),
   rocket:require('../assets/images/rocket.png'),
   aistar:require('../assets/images/aistar.png'),
+  pencil:require('../assets/images/pencil.png'),
+  settings:require('../assets/images/setting.png'),
+
 
 
 
