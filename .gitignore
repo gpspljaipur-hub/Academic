@@ -35,6 +35,9 @@ local.properties
 !debug.keystore
 .kotlin/
 
+android
+ios
+
 # node.js
 #
 node_modules/
