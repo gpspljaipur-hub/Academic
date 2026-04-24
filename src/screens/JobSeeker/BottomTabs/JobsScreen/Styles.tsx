@@ -33,6 +33,6 @@ export const styles = StyleSheet.create({
   metaItem: { flexDirection: 'row', alignItems: 'center', gap: MarginHW.MarginW5 },
   metaIcon: { height: 14, width: 14, tintColor: '#374151' },
   metaText: { color: '#374151', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size12 },
-  applyButton: { marginTop: MarginHW.MarginH14, backgroundColor: '#0A56B2', borderRadius: 10, alignItems: 'center', paddingVertical: MarginHW.PaddingH10 },
+  applyButton: { marginTop: MarginHW.MarginH14, backgroundColor: '#0A56B2', borderRadius: 10, alignItems: 'center', paddingVertical: MarginHW.PaddingH8 },
   applyButtonText: { color: Colors.white, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
 });

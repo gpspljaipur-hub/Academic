@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.offWhite,
+        paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {
         flexDirection: 'row',
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
         tintColor: Colors.heroNavy,
     },
     contentContainer: {
-        paddingHorizontal: MarginHW.PaddingW20,
+      
         paddingBottom: MarginHW.PaddingH50,
     },
     
@@ -49,17 +50,18 @@ const styles = StyleSheet.create({
         marginTop: MarginHW.MarginH12,
     },
     recruiterTitle: {
-        fontSize: FontsSize.size12,
-        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size10,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.bodyGray,
         letterSpacing: 1,
     },
     welcomeText: {
-        fontSize: FontsSize.size26,
+        fontSize: FontsSize.size18,
         fontFamily: fonts.LexendBold,
         color: Colors.inkDark,
         marginTop: MarginHW.MarginH5,
     },
+    welcomeSubText: {fontSize: FontsSize.size18, fontFamily: fonts.LexendBold, color: Colors.brandBlue },
     actionButtonsRow: {
         flexDirection: 'row',
         marginTop: MarginHW.MarginH8,
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: MarginHW.MarginW10,
         backgroundColor: Colors.softBlue,
-        borderRadius: 12,
-        paddingVertical: MarginHW.PaddingH14,
+        borderRadius: 10,
+        paddingVertical: MarginHW.PaddingH8,
         paddingHorizontal: MarginHW.PaddingW8,
         alignItems: 'center',
         flexDirection: 'row',
@@ -78,8 +80,8 @@ const styles = StyleSheet.create({
     primaryButton: {
         flex: 1,
         backgroundColor: Colors.primaryBlue,
-        borderRadius: 12,
-        paddingVertical: MarginHW.PaddingH14,
+        borderRadius: 10,
+        paddingVertical: MarginHW.PaddingH8,
         paddingHorizontal: MarginHW.PaddingW8,
         alignItems: 'center',
         flexDirection: 'row',
@@ -100,6 +102,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     statsCard: {
+        marginHorizontal: 1,
         backgroundColor: Colors.white,
         borderRadius: 16,
         paddingVertical: MarginHW.PaddingH12,
@@ -112,17 +115,17 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
     },
     statsIcon: {
-        width: 24,
-        height: 24,
+        width: 20,
+        height: 20,
         marginBottom: MarginHW.MarginH5,
     },
     statsLabel: {
         fontSize: FontsSize.normalize14,
-        fontFamily: fonts.Lexend_Regular,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.bodyGray,
     },
     statsValue: {
-        fontSize: FontsSize.size26,
+        fontSize: FontsSize.size18,
         fontFamily: fonts.LexendBold,
         color: Colors.black,
         marginTop: MarginHW.MarginH2,
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
         marginBottom: MarginHW.MarginH16,
     },
     sectionTitle: {
-        fontSize: FontsSize.normalize18,
+        fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,
         color: Colors.inkDark,
     },
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
         color: Colors.inkDark,
     },
     seeAllText: {
-        fontSize: FontsSize.normalize14,
+        fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Medium,
         color: Colors.brandBlue,
     },
@@ -187,8 +190,8 @@ const styles = StyleSheet.create({
         marginLeft: MarginHW.MarginW12,
     },
     jobTitle: {
-        fontSize: FontsSize.normalize16,
-        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size16,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.black,
     },
     jobStatusContainer: {
@@ -204,7 +207,7 @@ const styles = StyleSheet.create({
     },
     activeText: {
         fontSize: 10,
-        fontFamily: fonts.LexendBold,
+        fontFamily: fonts.Lexend_Medium,
         color: '#059669',
     },
     jobTime: {
@@ -277,8 +280,8 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     reportButtonText: {
-        fontSize: FontsSize.normalize14,
-        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.brandBlue,
     },
     promoBanner: {
@@ -290,12 +293,12 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     promoTitle: {
-        fontSize: 20,
+        fontSize: FontsSize.size18,
         fontFamily: fonts.LexendBold,
         color: Colors.white,
     },
     promoDesc: {
-        fontSize: 14,
+        fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.white85,
         marginTop: 8,
