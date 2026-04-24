@@ -1,14 +1,14 @@
 import { Text, View, ScrollView, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState } from 'react'
-import Images from '../../../../comman/Images'
+import Images from '../../../comman/Images'
 import { useNavigation } from '@react-navigation/native'
 import styles from './Style'
-import MarginHW from '../../../../comman/Sizes/MarginHW'
-import AppHeader from '../../../../components/Header'
+import MarginHW from '../../../comman/Sizes/MarginHW'
+import AppHeader from '../../../components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { APP_TEXT } from '../../../../comman/String'
-import Colors from '../../../../comman/Colors'
-import Button from '../../../../components/Button'
+import { APP_TEXT } from '../../../comman/String'
+import Colors from '../../../comman/Colors'
+import Button from '../../../components/Button'
 
 const Apply = () => {
     const navigation = useNavigation<any>();

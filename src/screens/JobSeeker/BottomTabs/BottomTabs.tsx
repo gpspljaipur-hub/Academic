@@ -24,7 +24,7 @@ const ICONS: Record<string, string> = {
 
 const ICONS_IMAGES: Record<string, any> = {
   // HomeScreen: Images.home,
-  Dashboard: Images.home,
+   Dashboard: Images.home,
   JobsScreen: Images.jobs,
   ExamsScreen: Images.exams,
   ApplicationScreen: Images.application,

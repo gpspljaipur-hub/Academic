@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './Styles';
-import { APP_TEXT } from '../../../../comman/String';
-import Colors from '../../../../comman/Colors';
-import Images from '../../../../comman/Images';
+import { APP_TEXT } from '../../../comman/String';
+import Colors from '../../../comman/Colors';
+import Images from '../../../comman/Images';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Button from '../../../../components/Button';
+import Button from '../../../components/Button';
 
 const SIMILAR_ROLES = [
   {
@@ -105,22 +105,29 @@ const Career = () => {
         </View>
 
         {/* AI Match Report */}
+        <View style={styles.containercard}>
         <View style={styles.aiCard}>
           <View style={styles.aiHeader}>
             <View style={styles.aiTitleRow}>
-              <Image source={Images.ai} style={{ width: 20, height: 20, tintColor: Colors.white }} resizeMode="contain" />
+              <Image source={Images.aistar} style={{ width: 20, height: 20, tintColor: Colors.white }} resizeMode="contain" />
               <Text style={styles.aiTitle}>AI MATCH REPORT</Text>
+            
             </View>
+            <View>
+                  <Text style={styles.matchPercentage}>{job?.aiMatch?.split(' ')?.[0] || '94%'}</Text>
+              </View>
+
+          </View>
             <View style={styles.skillsContainer}>
               <View style={styles.skillBadge}><Text style={styles.skillText}>PROTOTYPING</Text></View>
               <View style={styles.skillBadge}><Text style={styles.skillText}>DESIGN SYSTEMS</Text></View>
               <View style={styles.skillBadge}><Text style={styles.skillText}>USER RESEARCH</Text></View>
             </View>
-          </View>
-          <Text style={styles.matchPercentage}>{job?.aiMatch?.split(' ')?.[0] || '94%'}</Text>
-          <Text style={styles.matchDescription}>
-            Your profile is an exceptional match for this role.
-          </Text>
+
+
+        </View>
+               <Text style={styles.matchDescription}>Your profile is an exceptional match for this role.</Text>
+
         </View>
 
         {/* Responsibilities */}

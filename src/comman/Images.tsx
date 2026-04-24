@@ -30,6 +30,7 @@ const Images = {
   aiIntelligence:require('../assets/images/aiIntelligence.png'),
   eye:require('../assets/images/eye.png'),
   rocket:require('../assets/images/rocket.png'),
+  aistar:require('../assets/images/aistar.png'),
 
 
 

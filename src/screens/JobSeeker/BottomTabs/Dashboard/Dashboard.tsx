@@ -5,6 +5,7 @@ import Colors from '../../../../comman/Colors'
 import { APP_TEXT } from '../../../../comman/String'
 import Images from '../../../../comman/Images'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import HomeHeader from '../../../../components/HomeHeader'
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
 
@@ -35,7 +36,7 @@ const Dashboard = () => {
                     <Text style={styles.jobTime}>Posted {time}</Text>
                 </View>
             </View>
-            <Text style={{ color: Colors.bodyGray }}>→</Text>
+            {/* <Text style={{ color: Colors.bodyGray }}>→</Text> */}
         </TouchableOpacity>
     );
 
@@ -51,30 +52,23 @@ const Dashboard = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-            <View style={styles.header}>
-                <View style={styles.profileContainer}>
-                    <Image source={Images.userImage} style={styles.userAvatar} />
-                    <Text style={styles.appName}>{APP_TEXT.appName}</Text>
-                </View>
-                <TouchableOpacity>
-                    <Image source={Images.bellIcon} style={styles.notificationIcon} />
-                </TouchableOpacity>
-            </View>
+               <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
                 <View style={styles.welcomeSection}>
                     <Text style={styles.recruiterTitle}>{strings.recruiterTitle}</Text>
                     <Text style={styles.welcomeText}>
-                        {strings.welcomeBack} <Text style={{ color: Colors.brandBlue }}>{strings.userName}</Text>
+                        {strings.welcomeBack} <Text style={styles.welcomeSubText}>{strings.userName}</Text>
                     </Text>
                 </View>
 
                 <View style={styles.actionButtonsRow}>
+                    
                     <TouchableOpacity style={styles.secondaryButton}>
                         <Image source={Images.ProfileIcon} style={{ width: 16, height: 16, tintColor: Colors.brandBlue }} />
                         <Text style={styles.buttonTextSecondary} numberOfLines={1}>{strings.viewAllApplicants}</Text>
                     </TouchableOpacity>
+
                     <TouchableOpacity style={styles.primaryButton}>
                         <Text style={{ color: Colors.white, fontSize: 18 }}>+</Text>
                         <Text style={styles.buttonTextPrimary} numberOfLines={1}>{strings.postAJob}</Text>

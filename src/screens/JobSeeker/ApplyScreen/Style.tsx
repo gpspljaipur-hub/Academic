@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../../../../comman/Colors';
-import FontsSize from '../../../../comman/Sizes/FontsSize';
-import MarginHW from '../../../../comman/Sizes/MarginHW';
-import fonts from '../../../../comman/fonts';
+import Colors from '../../../comman/Colors';
+import FontsSize from '../../../comman/Sizes/FontsSize';
+import MarginHW from '../../../comman/Sizes/MarginHW';
+import fonts from '../../../comman/fonts';
 
 const styles = StyleSheet.create({
   container: {
