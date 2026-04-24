@@ -4,11 +4,13 @@ import HWSize from "../../../../comman/Sizes/HWSize";
 import FontsSize from "../../../../comman/Sizes/FontsSize";
 import fonts from "../../../../comman/fonts";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import MarginHW from "../../../../comman/Sizes/MarginHW";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.offWhite,
+        paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {
         flexDirection: 'row',
@@ -26,10 +28,18 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingBottom: hp(5),
     },
+    pencilIcon: {
+      width: 15, height: 15,tintColor: Colors.primaryBlue
+    },
+    PencilIcon: {
+       width: 12, height: 12,tintColor: Colors.white
+    },
+    aistarIcon: { width: 24, height: 24, tintColor: Colors.primaryBlue },
     profileSection: {
         alignItems: 'center',
         paddingTop: hp(1.5),
     },
+
     avatarContainer: {
         position: 'relative',
     },
@@ -89,7 +99,7 @@ const styles = StyleSheet.create({
     },
     strengthCard: {
         backgroundColor: Colors.primaryBlue,
-        marginHorizontal: wp(5),
+      
         marginTop: hp(2),
         borderRadius: wp(5),
         padding: wp(5),
@@ -153,18 +163,18 @@ const styles = StyleSheet.create({
     sectionTitleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: wp(5),
+      
         marginTop: hp(3),
     },
     sectionTitle: {
-        fontSize: FontsSize.size18,
-        fontFamily: fonts.LexendBold,
+       fontFamily: fonts.LexendBold, 
+       fontSize: FontsSize.size16,
         color: Colors.titleInk,
         marginLeft: wp(2),
     },
     tipsContainer: {
         flexDirection: 'row',
-        marginHorizontal: wp(5),
+      
         marginTop: hp(1.5),
         justifyContent: 'space-between',
     },
@@ -204,7 +214,7 @@ const styles = StyleSheet.create({
     },
     statsContainer: {
         flexDirection: 'row',
-        marginHorizontal: wp(5),
+     
         marginTop: hp(2),
         justifyContent: 'space-between',
     },
@@ -235,7 +245,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: wp(5),
+       
         marginTop: hp(3),
     },
     resumeTitle: {
@@ -252,7 +262,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: Colors.white,
-        marginHorizontal: wp(5),
+        marginHorizontal: 1,
         marginTop: hp(1.5),
         padding: wp(4),
         borderRadius: wp(4),
@@ -287,7 +297,7 @@ const styles = StyleSheet.create({
     },
     experienceCard: {
         backgroundColor: Colors.white,
-        marginHorizontal: wp(5),
+       
         marginTop: hp(1.5),
         padding: wp(4),
         borderRadius: wp(4),
@@ -295,7 +305,6 @@ const styles = StyleSheet.create({
     },
     experienceCard1: {
         backgroundColor: Colors.white,
-        marginHorizontal: wp(5),
         marginTop: hp(1.5),
         marginBottom: hp(6),
         padding: wp(4),
@@ -335,7 +344,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: wp(5),
+      
         marginTop: hp(1.5),
     },
     editIcon: {

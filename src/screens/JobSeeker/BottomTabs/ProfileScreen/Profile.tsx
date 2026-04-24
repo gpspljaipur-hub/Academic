@@ -5,23 +5,13 @@ import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import HomeHeader from '../../../../components/HomeHeader';
 const Profile = () => {
     const { profile } = APP_TEXT;
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity>
-                    <Image source={Images.backArrow} style={{ width: 24, height: 24, tintColor: Colors.heroNavy }} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>{profile.headerTitle}</Text>
-                <TouchableOpacity>
-                    <Text style={{ fontSize: 12 }}>⚙️</Text>
-                </TouchableOpacity>
-            </View>
+         <HomeHeader title={profile.headerTitle} IconImg={Images.userImage}  bellIcon={Images.settings} />
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
@@ -30,7 +20,7 @@ const Profile = () => {
                     <View style={styles.avatarContainer}>
                         <Image source={Images.userImage} style={styles.avatar} />
                         <TouchableOpacity style={styles.editIconContainer}>
-                            <Text style={{ color: Colors.white, fontSize: 12 }}>✏️</Text>
+                            <Image source={Images.pencil} style={styles.PencilIcon} />
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.userName}>{profile.userName}</Text>
@@ -62,7 +52,7 @@ const Profile = () => {
 
                 {/* AI Smart Tips Section */}
                 <View style={styles.sectionTitleContainer}>
-                    <Image source={Images.ai} style={{ width: 24, height: 24 }} />
+                    <Image source={Images.aistar} style={styles.aistarIcon} />
                     <Text style={styles.sectionTitle}>{profile.aiSmartTips}</Text>
                 </View>
                 <View style={styles.tipsContainer}>
@@ -122,7 +112,7 @@ const Profile = () => {
                 <View style={styles.sectionHeader}>
                     <Text style={styles.resumeTitle}>{profile.experience}</Text>
                     <TouchableOpacity>
-                        <Text style={styles.editIcon}>🖋️</Text>
+                        <Image source={Images.pencil} style={styles.pencilIcon} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.experienceCard}>
@@ -150,7 +140,7 @@ const Profile = () => {
                 <View style={styles.sectionHeader}>
                     <Text style={styles.resumeTitle}>{profile.education}</Text>
                     <TouchableOpacity>
-                        <Text style={styles.editIcon}>🖋️</Text>
+                        <Image source={Images.pencil} style={styles.pencilIcon} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.experienceCard1}>

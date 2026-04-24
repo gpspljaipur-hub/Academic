@@ -17,13 +17,13 @@ export const styles = StyleSheet.create({
   progressSection: {
   },
   progressLabel: {
-    fontSize: FontsSize.size10,
+    fontSize: FontsSize.size14,
     fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
     letterSpacing: 0.5,
   },
   applicationPipelineTitle: {
-    fontSize: FontsSize.size20,
+    fontSize: FontsSize.size16,
     fontFamily: fonts.LexendBold,
     color: Colors.titleInk,
    
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: FontsSize.size14,
-    fontFamily: fonts.Lexend_Medium,
+    fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
   },
   tabTextActive: {
@@ -105,12 +105,12 @@ export const styles = StyleSheet.create({
   /* Job Title and Company Info */
   jobTitle: {
     fontSize: FontsSize.size18,
-    fontFamily: fonts.Lexend_SemiBold,
+    fontFamily: fonts.Lexend_Medium,
     color: Colors.titleInk,
     marginBottom: MarginHW.MarginH4,
   },
   companyLocation: {
-    fontSize: FontsSize.size12,
+    fontSize: FontsSize.size10,
     fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
     marginBottom: MarginHW.MarginH12,

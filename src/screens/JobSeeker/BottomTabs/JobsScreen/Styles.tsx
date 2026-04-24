@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   filterChipActive: { backgroundColor: '#C7DAFF' },
   filterChipText: { color: '#374151', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
   filterChipTextActive: { color: '#1E3A8A', fontFamily: fonts.Lexend_Medium },
-  sectionTitle: { marginTop: MarginHW.MarginH16, color: '#111827', letterSpacing: 1.2, fontFamily: fonts.LexendBold, fontSize: FontsSize.size14 },
+  sectionTitle: { marginTop: MarginHW.MarginH16, color: '#111827', letterSpacing: 1.2, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16 },
   jobCard: { marginTop: MarginHW.MarginH12, backgroundColor: Colors.white, borderRadius: 18, padding: MarginHW.PaddingW14 },
   jobTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
   logoWrap: { height: 44, width: 44, borderRadius: 10, backgroundColor: '#F3F4F6', justifyContent: 'center', alignItems: 'center', marginRight: MarginHW.MarginW10 },
