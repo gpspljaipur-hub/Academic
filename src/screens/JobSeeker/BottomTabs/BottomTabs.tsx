@@ -9,7 +9,7 @@ import Dashboard from './Dashboard/Dashboard';
 import JobsScreen from './JobsScreen/JobsScreen';
 import ExamsScreen from './ExamsScreen/ExamsScreen';
 import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
-import Profile from './Profile Screen/Profile';
+import Profile from './ProfileScreen/Profile';
 
 const Tab = createBottomTabNavigator();
 
