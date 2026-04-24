@@ -25,7 +25,8 @@ const Images = {
   search:require('../assets/images/search.png'),
   money:require('../assets/images/money.png'),
   locations:require('../assets/images/locations.png'),
-  menu:require('../assets/images/menu.png')
+  menu:require('../assets/images/menu.png'),
+  dots:require('../assets/images/dots.png')
 
 
 

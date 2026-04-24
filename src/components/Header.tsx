@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View, type StyleProp, type TextStyle, type ViewStyle, type ImageStyle } from 'react-native';
 import MarginHW from '../comman/Sizes/MarginHW';
 import ImageSize from '../comman/Sizes/ImageSize';
 import Colors from '../comman/Colors';
@@ -11,16 +11,33 @@ import Images from '../comman/Images';
 type HeaderProps = {
   title: string;
   onBackPress?: () => void;
- 
+  rightIcon?: any;
+  onRightPress?: () => void;
+  rightIconStyle?: StyleProp<ImageStyle>;
 };
 
-const Header = ({ title, onBackPress,  }: HeaderProps) => {
+const Header = ({ title, onBackPress, rightIcon, onRightPress, rightIconStyle }: HeaderProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onBackPress}>
-        <Image source={Images.backArrow} style={styles.backArrow} />
-      </TouchableOpacity>
-      <Text style={styles.headerTitle}>{title}</Text>
+      <View style={styles.leftContainer}>
+        <TouchableOpacity activeOpacity={0.8} onPress={onBackPress} style={styles.iconButton}>
+          <Image source={Images.backArrow} style={styles.backArrow} />
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.centerContainer}>
+        <Text style={styles.headerTitle} numberOfLines={1}>{title}</Text>
+      </View>
+
+      <View style={styles.rightContainer}>
+        {rightIcon ? (
+          <TouchableOpacity activeOpacity={0.8} onPress={onRightPress} style={styles.iconButton}>
+            <Image source={rightIcon} style={[styles.rightIcon, rightIconStyle]} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.iconButton} />
+        )}
+      </View>
     </View>
   );
 };
@@ -30,11 +47,45 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    gap: MarginHW.MarginW10,
+    justifyContent: 'space-between',
+    paddingHorizontal: MarginHW.MarginW16,
+    height: MarginHW.MarginH60,
+    backgroundColor: Colors.white,
   },
-  backArrow: { width: ImageSize.ImageW20, height: ImageSize.ImageH20 ,tintColor: Colors.brandBlue},
-  backText: { color: Colors.brandBlue, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size22 },
-  headerTitle: { color: Colors.brandBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size20 },
+  leftContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  centerContainer: {
+    flex: 4,
+    alignItems: 'center',
+  },
+  rightContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  iconButton: {
+    width: MarginHW.MarginW40,
+    height: MarginHW.MarginW40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backArrow: { 
+    width: MarginHW.MarginW24, 
+    height: MarginHW.MarginW24, 
+    tintColor: Colors.brandBlue,
+    resizeMode: 'contain',
+  },
+  rightIcon: { 
+    width: ImageSize.ImageW30, 
+    height: ImageSize.ImageW30, 
+    resizeMode: 'contain',
+  },
+  headerTitle: { 
+    color: Colors.brandBlue, 
+    fontFamily: fonts.LexendBold, 
+    fontSize: FontsSize.size18,
+    textAlign: 'center',
+  },
 });

@@ -1,10 +1,11 @@
 import React from 'react';
-import { FlatList, Image, ScrollView, Text, TextInput, View } from 'react-native';
+import { FlatList, Image, ScrollView, Text, TextInput, View, TouchableOpacity, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
 import HomeHeader from '../../../../components/HomeHeader';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
+import { useNavigation } from '@react-navigation/native';
 
 const QUICK_TILES = [
   {
@@ -22,9 +23,10 @@ const QUICK_TILES = [
 ];
 
 const HomeScreen = () => {
+  const navigation = useNavigation<any>();
   return (
     <SafeAreaView style={styles.container}>
-     <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
+      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>
@@ -74,13 +76,13 @@ const HomeScreen = () => {
               <Text style={styles.sectionTitle}>{APP_TEXT.homeRecommendedTitle}</Text>
               <Text style={styles.sectionSubTitle}>{APP_TEXT.homeCuratedBy}</Text>
             </View>
-           
-            <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
-          </View>
-          {APP_TEXT.homeJobs.map(job => (
-            <View key={job.title} style={styles.jobCard}>
+
+              <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+            </View>
+            {APP_TEXT.homeJobs.map(job => (
+              <Pressable onPress={() => navigation.navigate('CareerArchitect', { job })} key={job.title} style={styles.jobCard}>
               <View style={styles.jobTopRow}>
-              
+
                 <Image source={job.image} resizeMode='contain' style={styles.jobCompanyLogo} />
                 <View style={styles.aiBadge}>
                   <Text style={styles.aiBadgeText}>⚡ {job.aiMatch}</Text>
@@ -97,10 +99,10 @@ const HomeScreen = () => {
                   </View>
                 ))}
               </View>
-              <View style={styles.quickApply}>
+              <TouchableOpacity onPress={() => navigation.navigate('Apply')} style={styles.quickApply}>
                 <Text style={styles.quickApplyText}>{APP_TEXT.homeQuickApply}</Text>
-              </View>
-            </View>
+              </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
 
@@ -147,7 +149,7 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{APP_TEXT.homeUpcomingExamTitle}</Text>
-            <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
+              <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
           </View>
           <FlatList
             horizontal

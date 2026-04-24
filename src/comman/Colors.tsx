@@ -30,6 +30,13 @@ const Colors = {
   ctaBlue: '#0A56B2',
   UnselectedTabIcon:'#93a1bb',
   selectedTabIconGray:'#0A56B2',
+  aliceBlue: '#F0F5FF',
+  softBlue: '#E1E9F8',
+  offWhite: '#FAFAFA',
+  lightGray: '#F0F0F0',
+  borderGray: '#EEEEEE',
+  errorRed: '#E53935',
+  lightRed: '#FFF1F1',
 } as const;
 
 export type AppColor = (typeof Colors)[keyof typeof Colors];
