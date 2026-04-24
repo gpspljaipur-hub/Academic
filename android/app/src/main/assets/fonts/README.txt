@@ -1,0 +1,5 @@
+Lexend fonts are intended to reduce visual stress and so improve reading performance. Initially they were designed with dyslexia and struggling readers in mind, but Bonnie Shaver-Troup, creator of the Lexend project, soon found out that these fonts are also great for everyone else.
+
+The first set of Lexend fonts by Thomas Jockin ([Deca](https://fonts.google.com/specimen/Lexend+Deca), [Exa](https://fonts.google.com/specimen/Lexend+Exa), [Giga](https://fonts.google.com/specimen/Lexend+Giga), [Mega](https://fonts.google.com/specimen/Lexend+Mega), [Peta](https://fonts.google.com/specimen/Lexend+Peta), [Tera](https://fonts.google.com/specimen/Lexend+Tera), [Zetta](https://fonts.google.com/specimen/Lexend+Zetta)) all have a 'Medium' weight, and each becomes wider and more openly spaced (also known as "tracked out"). This new version of Lexend Deca is expanded by Font Bureau with a range of 8 weights.
+
+True to Bonnie’s vision, Lexend fonts are freely available for all since 2019 in Google Fonts. To contribute, see [lexend.com](https://lexend.com)
