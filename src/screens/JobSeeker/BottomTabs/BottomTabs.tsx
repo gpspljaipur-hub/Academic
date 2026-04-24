@@ -5,7 +5,7 @@ import Colors from '../../../comman/Colors';
 import { styles } from './Styles';
 import Images from '../../../comman/Images';
 import HomeScreen from './HomeScreen/HomeScreen';
-import Dashboard from './Dashboard/Dashboard';
+// import Dashboard from './Dashboard/Dashboard';
 import JobsScreen from './JobsScreen/JobsScreen';
 import ExamsScreen from './ExamsScreen/ExamsScreen';
 import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
@@ -35,8 +35,8 @@ const { width, height } = Dimensions.get('window');
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      // initialRouteName="HomeScreen"
-      initialRouteName="Dashboard"
+      initialRouteName="HomeScreen"
+      // initialRouteName="Dashboard"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: [styles.tabBarStyle, { height: Platform.OS === 'ios' ? 70 : 90 }],
@@ -52,8 +52,8 @@ const BottomTabs = () => {
         },
         tabBarShowLabel: false,
       })}>
-      {/* <Tab.Screen name="HomeScreen" component={HomeScreen} /> */}
-      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      {/* <Tab.Screen name="Dashboard" component={Dashboard} /> */}
       <Tab.Screen name="JobsScreen" component={JobsScreen} />
       <Tab.Screen name="ExamsScreen" component={ExamsScreen} />
       <Tab.Screen name="ApplicationScreen" component={ApplicationsScreen} />
