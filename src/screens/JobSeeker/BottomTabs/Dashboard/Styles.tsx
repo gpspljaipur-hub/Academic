@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: MarginHW.PaddingW20,
         paddingBottom: MarginHW.PaddingH50,
     },
+    
     welcomeSection: {
         marginTop: MarginHW.MarginH12,
     },
