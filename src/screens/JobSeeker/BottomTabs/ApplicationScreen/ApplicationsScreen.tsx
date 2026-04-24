@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { 
-  FlatList, 
-  Image, 
-  ScrollView, 
-  Text, 
-  TouchableOpacity, 
-  View 
+import React, { useRef, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
 import HomeHeader from '../../../../components/HomeHeader';
 import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
+import { APP_TEXT } from '../../../../comman/String';
 
 interface Application {
   id: string;
@@ -34,6 +35,7 @@ interface Stage {
   name: string;
   completed: boolean;
 }
+
 
 const APPLICATIONS: Application[] = [
   {
@@ -113,8 +115,15 @@ const APPLICATIONS: Application[] = [
 
 type TabType = 'All' | 'Active' | 'Interviews' | 'Closed';
 
+const FILTERS = [
+  'All',
+  'Active',
+  'Interviews',
+  'Closed'
+];
 const ApplicationsScreen = () => {
-  const [selectedTab, setSelectedTab] = useState<TabType>('All');
+  const [selectedTab, setSelectedTab] = useState<TabType>(FILTERS[0] as TabType);
+  const filtersListRef = useRef<FlatList<any>>(null);
 
   const getTabCounts = () => ({
     All: APPLICATIONS.length,
@@ -183,43 +192,56 @@ const ApplicationsScreen = () => {
 
   const counts = getTabCounts();
 
+  const onFilterPress = (item: any, index: number) => {
+    setSelectedTab(item);
+    filtersListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+      viewPosition: 0.5,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title="Applications" IconImg={Images.menu} bellIcon={Images.userImage} />
-      
+      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.menu} bellIcon={Images.userImage} />
+
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.progressSection}>
-          <Text style={styles.progressLabel}>YOUR PROGRESS</Text>
-          <Text style={styles.applicationPipelineTitle}>Application Pipeline</Text>
+          <Text style={styles.progressLabel}>{APP_TEXT.applicationsProgressLabel}</Text>
+          <Text style={styles.applicationPipelineTitle}>{APP_TEXT.applicationsPipelineTitle}</Text>
         </View>
 
         {/* Tab Filters */}
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          style={styles.tabsContainer}
-          contentContainerStyle={styles.tabsContent}
-        >
-          {(['All', 'Active', 'Interviews', 'Closed'] as TabType[]).map(tab => (
-            <TouchableOpacity
-              key={tab}
-              onPress={() => setSelectedTab(tab)}
-              style={[
-                styles.tabButton,
-                selectedTab === tab && styles.tabButtonActive,
-              ]}
-            >
-              <Text
+        <View style={styles.tabsContainer} >
+          <FlatList
+            ref={filtersListRef}
+            horizontal
+            data={FILTERS}
+            keyExtractor={item => item}
+            showsHorizontalScrollIndicator={false}
+            onScrollToIndexFailed={() => { }}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                key={item}
+                onPress={() => onFilterPress(item, index)}
                 style={[
-                  styles.tabText,
-                  selectedTab === tab && styles.tabTextActive,
+                  styles.tabButton,
+                  selectedTab === item && styles.tabButtonActive,
                 ]}
               >
-                {tab} ({counts[tab]})
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+                <Text
+                  style={[
+                    styles.tabText,
+                    selectedTab === item && styles.tabTextActive,
+                  ]}
+                >
+                  {item} ({counts[item as TabType]})
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+       
+        </View>
 
         {/* Applications List */}
         <FlatList
@@ -232,16 +254,14 @@ const ApplicationsScreen = () => {
               {/* Header Row with Logo and Status */}
               <View style={styles.cardHeader}>
                 <View style={styles.logoWrapper}>
-                  <Image 
-                    source={item.companyLogo} 
-                    resizeMode="contain" 
-                    style={styles.companyLogo} 
+                  <Image
+                    source={item.companyLogo}
+                    resizeMode="contain"
+                    style={styles.companyLogo}
                   />
                 </View>
                 <View style={[
-                  styles.statusBadge,
-                  { backgroundColor: getStatusBadgeColor(item.status) }
-                ]}>
+                  styles.statusBadge,  { backgroundColor: getStatusBadgeColor(item.status) }]}>
                   <Text style={[
                     styles.statusBadgeText,
                     { color: getStatusBadgeTextColor(item.status) }
@@ -269,7 +289,7 @@ const ApplicationsScreen = () => {
                       stage.completed && styles.timelineDotCompleted,
                       !stage.completed && styles.timelineDotIncomplete,
                     ]} />
-                    
+
                     {/* Line */}
                     {index < item.stages.length - 1 && (
                       <View style={[
@@ -285,9 +305,7 @@ const ApplicationsScreen = () => {
               {/* Stage Labels */}
               <View style={styles.stageLabelsContainer}>
                 {item.stages.map(stage => (
-                  <Text key={stage.name} style={styles.stageLabel}>
-                    {stage.name}
-                  </Text>
+                  <Text key={stage.name} style={styles.stageLabel}> {stage.name}   </Text>
                 ))}
               </View>
 

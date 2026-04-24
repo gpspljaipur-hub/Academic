@@ -8,10 +8,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
+    paddingHorizontal: MarginHW.PaddingW16,
   },
   scrollContent: {
-    paddingHorizontal: MarginHW.MarginW20,
-    paddingBottom: MarginHW.MarginH100,
+   
   },
   jobBox: {
     flexDirection: 'row',
@@ -19,28 +19,24 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.aliceBlue,
     padding: MarginHW.MarginH16,
     borderRadius: 16,
-    marginTop: MarginHW.MarginH16,
-    marginBottom: MarginHW.MarginH24,
+    marginTop: MarginHW.MarginH5,
     borderWidth: 1,
     borderColor: Colors.softBlue,
   },
   jobIconBox: {
-    width: MarginHW.MarginW50 + MarginHW.MarginW5,
-    height: MarginHW.MarginW50 + MarginHW.MarginW5,
-    backgroundColor: Colors.primaryBlue,
+   
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: MarginHW.MarginW16,
   },
   jobIcon: {
-    width: MarginHW.MarginW24,
-    height: MarginHW.MarginW24,
-    tintColor: Colors.white,
+    width: MarginHW.MarginW40,
+    height: MarginHW.MarginW40,
     resizeMode: 'contain',
   },
   applyingForText: {
-    fontFamily: fonts.Lexend_Medium,
+    fontFamily: fonts.Lexend_Regular,
     fontSize: FontsSize.size10,
     color: Colors.mutedSlate,
     textTransform: 'uppercase',
@@ -49,25 +45,25 @@ const styles = StyleSheet.create({
   jobTitleText: {
     fontFamily: fonts.LexendBold,
     fontSize: FontsSize.size16,
-    color: Colors.inkDark,
+    color: Colors.brandBlue,
     marginTop: MarginHW.MarginH2,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: MarginHW.MarginH12,
-    marginTop: MarginHW.MarginH8,
+    marginVertical: MarginHW.MarginH16,
+  
   },
   sectionTitle: {
     fontFamily: fonts.LexendBold,
-    fontSize: FontsSize.normalize14,
+    fontSize: FontsSize.size14,
     color: Colors.inkDark,
     letterSpacing: 0.2,
   },
   editInfoText: {
     fontFamily: fonts.Lexend_Medium,
-    fontSize: FontsSize.normalize12,
+    fontSize: FontsSize.size12,
     color: Colors.primaryBlue,
   },
   infoCard: {
@@ -84,16 +80,23 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   infoLabel: {
-    fontFamily: fonts.Lexend_Medium,
+    fontFamily: fonts.LexendBold,
     fontSize: FontsSize.size10,
     color: Colors.mutedSlate,
     textTransform: 'uppercase',
     marginBottom: MarginHW.MarginH4,
   },
   infoValue: {
-    fontFamily: fonts.LexendBold,
+    fontFamily: fonts.Lexend_Medium,
     fontSize: FontsSize.size14,
     color: Colors.inkDark,
+  },
+  infoInput: {
+    fontFamily: fonts.Lexend_Medium,
+    fontSize: FontsSize.size14,
+    color: Colors.inkDark,
+    padding: 0,
+    minHeight: MarginHW.MarginH24,
   },
   resumeCard: {
     backgroundColor: Colors.white,

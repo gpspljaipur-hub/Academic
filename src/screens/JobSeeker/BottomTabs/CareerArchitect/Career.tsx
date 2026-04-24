@@ -14,6 +14,7 @@ import { APP_TEXT } from '../../../../comman/String';
 import Colors from '../../../../comman/Colors';
 import Images from '../../../../comman/Images';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Button from '../../../../components/Button';
 
 const SIMILAR_ROLES = [
   {
@@ -168,9 +169,13 @@ const Career = () => {
         <TouchableOpacity style={styles.bookmarkButton}>
           <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: Colors.inkDark }} resizeMode="contain" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.applyButton}>
+        <View style={styles.applyButton}>
+           <Button label="Apply Now" onPress={() => { }}    />
+        </View>
+        {/* <Button label="Apply Now" onPress={() => { }}    /> */}
+        {/* <TouchableOpacity style={styles.applyButton}>
           <Text style={styles.applyButtonText}>Apply Now</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

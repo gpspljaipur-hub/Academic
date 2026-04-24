@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, TouchableOpacity, ImageBackground } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './Styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -7,6 +7,8 @@ import Colors from '../../../../comman/Colors';
 import FontsSize from '../../../../comman/Sizes/FontsSize';
 import fonts from '../../../../comman/fonts';
 import { APP_TEXT } from '../../../../comman/String';
+import Images from '../../../../comman/Images';
+import Button from '../../../../components/Button';
 
 const Premium = ({ navigation }: any) => {
     const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
@@ -46,7 +48,8 @@ const Premium = ({ navigation }: any) => {
                 
                 <View style={styles.advantageCard}>
                     <View style={styles.advIconContainer}>
-                        <Text style={styles.advIconText}>🚀</Text>
+                        <Image source={Images.rocket} style={styles.advIcon} />
+                        {/* <Text style={styles.advIconText}>🚀</Text> */}
                     </View>
                     <View style={styles.advTextContainer}>
                         <Text style={styles.advTitle}>{APP_TEXT.premiumAdv1Title}</Text>
@@ -56,7 +59,8 @@ const Premium = ({ navigation }: any) => {
 
                 <View style={styles.advantageCard}>
                     <View style={styles.advIconContainer}>
-                        <Text style={styles.advIconText}>🧠</Text>
+                        <Image source={Images.aiIntelligence} style={styles.advIcon} />
+                        {/* <Text style={styles.advIconText}>🧠</Text> */}
                     </View>
                     <View style={styles.advTextContainer}>
                         <Text style={styles.advTitle}>{APP_TEXT.premiumAdv2Title}</Text>
@@ -66,7 +70,8 @@ const Premium = ({ navigation }: any) => {
 
                 <View style={styles.advantageCard}>
                     <View style={styles.advIconContainer}>
-                        <Text style={styles.advIconText}>👁️</Text>
+                        <Image source={Images.eye} style={styles.advIcon} />
+                        {/* <Text style={styles.advIconText}>👁️</Text> */}
                     </View>
                     <View style={styles.advTextContainer}>
                         <Text style={styles.advTitle}>{APP_TEXT.premiumAdv3Title}</Text>
@@ -131,10 +136,8 @@ const Premium = ({ navigation }: any) => {
 
             {/* Bottom Bar */}
             <View style={styles.bottomBar}>
-                <TouchableOpacity style={styles.upgradeButton} activeOpacity={0.8}>
-                    <Text style={styles.upgradeButtonText}>{APP_TEXT.premiumUpgradeButton}</Text>
-                    <Text style={{color: Colors.white, fontSize: FontsSize.size16, fontFamily: fonts.LexendBold}}>→</Text>
-                </TouchableOpacity>
+                <Button label={APP_TEXT.premiumUpgradeButton} onPress={() => {}}  />
+            
                 <Text style={styles.secureText}>{APP_TEXT.premiumSecureText}</Text>
             </View>
         </SafeAreaView>

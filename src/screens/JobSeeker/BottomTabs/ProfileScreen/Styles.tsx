@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: Colors.white,
+        paddingHorizontal: MarginHW.MarginW16,
+
     },
     headerProfileImage: {
         width: ImageSize.ImageW30,
@@ -18,20 +20,18 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         flexGrow: 1,
-        paddingBottom: MarginHW.MarginH20,
+        paddingBottom: MarginHW.MarginH10,
     },
     container: {
-        paddingHorizontal: MarginHW.MarginW20,
-        paddingTop: MarginHW.MarginH30,
     },
     title: {
-        fontSize: FontsSize.size28,
+        fontSize: FontsSize.size22,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
         marginBottom: MarginHW.MarginH8,
     },
     subtitle: {
-        fontSize: FontsSize.size16,
+        fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
         lineHeight: FontsSize.size22,
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
         marginBottom: MarginHW.MarginH28,
     },
     label: {
-        fontSize: FontsSize.size12,
-        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginBottom: MarginHW.MarginH10,
         letterSpacing: 0.5,
@@ -53,10 +53,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.cardGray,
         borderRadius: 12,
         paddingHorizontal: MarginHW.MarginW16,
-        height: HWSize.H_Height55,
+       
     },
     input: {
         flex: 1,
+        height: HWSize.H_Height45,
         fontSize: FontsSize.size16,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.titleInk,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.cardGray,
         borderRadius: 12,
         padding: 4,
-        height: HWSize.H_Height55,
+        height: HWSize.H_Height45,
     },
     segment: {
         flex: 1,
@@ -97,6 +98,8 @@ const styles = StyleSheet.create({
     activeSegmentText: {
         color: Colors.brandBlue,
         fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size14,
+
     },
     hintContainer: {
         flexDirection: 'row',
@@ -158,11 +161,9 @@ const styles = StyleSheet.create({
         borderRadius: 1,
     },
     footer: {
-        paddingHorizontal: MarginHW.MarginW20,
         paddingBottom: MarginHW.MarginH24,
     },
     continueButton: {
-        height: HWSize.H_Height60,
         borderRadius: 12,
         marginTop: 0,
     },

@@ -15,25 +15,23 @@ export const styles = StyleSheet.create({
     paddingBottom: MarginHW.MarginH30,
   },
   progressSection: {
-    marginVertical: MarginHW.MarginH12,
   },
   progressLabel: {
-    fontSize: FontsSize.size12,
+    fontSize: FontsSize.size10,
     fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
-    marginBottom: MarginHW.MarginH4,
     letterSpacing: 0.5,
   },
   applicationPipelineTitle: {
-    fontSize: FontsSize.size24,
+    fontSize: FontsSize.size20,
     fontFamily: fonts.LexendBold,
     color: Colors.titleInk,
-    marginBottom: MarginHW.MarginH16,
+   
   },
   
   /* Tab Filters */
   tabsContainer: {
-    marginBottom: MarginHW.MarginH20,
+    marginVertical: MarginHW.MarginH14,
   },
   tabsContent: {
     gap: wp(2),
@@ -41,7 +39,7 @@ export const styles = StyleSheet.create({
   tabButton: {
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
-    borderRadius: wp(6),
+    borderRadius: 20,
     backgroundColor: Colors.cardGray,
     marginRight: wp(2),
   },
@@ -49,12 +47,14 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.primaryBlue,
   },
   tabText: {
-    fontSize: FontsSize.size12,
-    fontFamily: fonts.Lexend_SemiBold,
+    fontSize: FontsSize.size14,
+    fontFamily: fonts.Lexend_Medium,
     color: Colors.bodyGray,
   },
   tabTextActive: {
     color: Colors.white,
+     fontSize: FontsSize.size14,
+    fontFamily: fonts.Lexend_Medium,
   },
 
   /* Applications List */
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
 
   /* Job Title and Company Info */
   jobTitle: {
-    fontSize: FontsSize.size14,
+    fontSize: FontsSize.size18,
     fontFamily: fonts.Lexend_SemiBold,
     color: Colors.titleInk,
     marginBottom: MarginHW.MarginH4,
@@ -121,7 +121,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: MarginHW.MarginH8,
-    height: hp(4),
+    height: hp(3),
+  
   },
   timelineItem: {
     flex: 1,
@@ -157,16 +158,14 @@ export const styles = StyleSheet.create({
   /* Stage Labels */
   stageLabelsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+   
     marginBottom: MarginHW.MarginH8,
   },
   stageLabel: {
-    fontSize: FontsSize.size12,
+    fontSize: FontsSize.size10,
     fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
-    textAlign: 'center',
-    flex: 1,
-  },
+    },
 
   /* Applied Date */
   appliedDate: {
