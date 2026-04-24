@@ -1,5 +1,7 @@
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 const HWSize = {
+ H_Height24: hp(3.1),
+ H_Height32: hp(4.1),
  H_Height40: hp(5.14),
  H_Height45: hp(5.75),
  H_Height50: hp(6.42),
@@ -27,6 +29,8 @@ const HWSize = {
  H_Height375: hp(48.05),
  H_Height400: hp(58.05),
 
+ W_Width24: wp(6.1),
+ W_Width32: wp(8.1),
  W_Width40: wp(10.2),
  W_Width45: wp(11.48),
  W_Width50: wp(12.75),
