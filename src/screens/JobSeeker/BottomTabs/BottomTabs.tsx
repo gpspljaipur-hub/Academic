@@ -5,6 +5,7 @@ import Colors from '../../../comman/Colors';
 import { styles } from './Styles';
 import Images from '../../../comman/Images';
 import HomeScreen from './HomeScreen/HomeScreen';
+import Dashboard from './Dashboard/Dashboard';
 import JobsScreen from './JobsScreen/JobsScreen';
 import ExamsScreen from './ExamsScreen/ExamsScreen';
 import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
@@ -12,7 +13,8 @@ import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
 const Tab = createBottomTabNavigator();
 
 const ICONS: Record<string, string> = {
-  HomeScreen: 'Home',
+  // HomeScreen: 'Home',
+  Dashboard: 'Dashboard',
   JobsScreen: 'Jobs',
   ExamsScreen: 'Exams',
   ApplicationScreen: 'Apps',
@@ -20,7 +22,8 @@ const ICONS: Record<string, string> = {
 };
 
 const ICONS_IMAGES: Record<string, any> = {
-  HomeScreen: Images.home,
+  // HomeScreen: Images.home,
+  Dashboard: Images.home,
   JobsScreen: Images.jobs,
   ExamsScreen: Images.exams,
   ApplicationScreen: Images.application,
@@ -32,7 +35,8 @@ const { width, height } = Dimensions.get('window');
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      // initialRouteName="HomeScreen"
+      initialRouteName="Dashboard"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: [styles.tabBarStyle, { height: Platform.OS === 'ios' ? 70 : 90 }],
@@ -41,14 +45,15 @@ const BottomTabs = () => {
           const iconText = ICONS[route.name] ?? '•';
           return (
             <View style={styles.iconWrap}>
-              <Image source={ICONS_IMAGES[route.name]} resizeMode='contain' style={[styles.tabIconImage,{tintColor: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon}]} />
-              <Text numberOfLines={1} style={[styles.tabIcon,{color:focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon}]}>{iconText}</Text>
+              <Image source={ICONS_IMAGES[route.name]} resizeMode='contain' style={[styles.tabIconImage, { tintColor: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon }]} />
+              <Text numberOfLines={1} style={[styles.tabIcon, { color: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon }]}>{iconText}</Text>
             </View>
           );
         },
         tabBarShowLabel: false,
       })}>
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      {/* <Tab.Screen name="HomeScreen" component={HomeScreen} /> */}
+      <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="JobsScreen" component={JobsScreen} />
       <Tab.Screen name="ExamsScreen" component={ExamsScreen} />
       <Tab.Screen name="ApplicationScreen" component={ApplicationsScreen} />
