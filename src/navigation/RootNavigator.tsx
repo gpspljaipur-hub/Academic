@@ -9,8 +9,8 @@ import SignupScreen from '../screens/AuthScreen/SignupScreen/SignupScreen';
 import BottomTabs from '../screens/JobSeeker/BottomTabs/BottomTabs';
 import Premium from '../screens/JobSeeker/BottomTabs/Premium/Premium';
 import Apply from '../screens/JobSeeker/BottomTabs/ApplyScreen/Apply';
-import ProfileSetup from '../screens/JobSeeker/BottomTabs/Profile Screen/ProfileSetup';
-import CareerArchitect from '../screens/JobSeeker/BottomTabs/Career Architect/Career';
+import ProfileSetup from '../screens/JobSeeker/BottomTabs/ProfileScreen/ProfileSetup';
+import CareerArchitect from '../screens/JobSeeker/BottomTabs/CareerArchitect/Career';
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;

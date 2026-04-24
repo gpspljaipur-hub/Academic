@@ -26,7 +26,11 @@ const Images = {
   money:require('../assets/images/money.png'),
   locations:require('../assets/images/locations.png'),
   menu:require('../assets/images/menu.png'),
-  dots:require('../assets/images/dots.png')
+  dots:require('../assets/images/dots.png'),
+  aiIntelligence:require('../assets/images/aiIntelligence.png'),
+  eye:require('../assets/images/eye.png'),
+  rocket:require('../assets/images/rocket.png'),
+
 
 
 

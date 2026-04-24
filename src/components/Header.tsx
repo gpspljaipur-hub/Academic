@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    height: MarginHW.MarginH60,
+    justifyContent: 'center',
+    height: MarginHW.MarginH50,
     backgroundColor: Colors.white,
   },
   leftContainer: {
@@ -65,10 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   iconButton: {
-    width: MarginHW.MarginW40,
-    height: MarginHW.MarginW40,
-    justifyContent: 'center',
-  },
+     },
   backArrow: { 
     width: MarginHW.MarginW22, 
     height: MarginHW.MarginW22, 
@@ -76,8 +73,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   rightIcon: { 
-    width: ImageSize.ImageW30, 
-    height: ImageSize.ImageW30, 
+    width: ImageSize.ImageW20, 
+    height: ImageSize.ImageW20, 
     resizeMode: 'contain',
   },
   headerTitle: { 
