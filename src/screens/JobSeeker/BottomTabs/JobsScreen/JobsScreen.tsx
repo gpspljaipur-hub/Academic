@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { FlatList, Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { FlatList, Image, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import HomeHeader from '../../../../components/HomeHeader';
+import { useNavigation } from '@react-navigation/native';
 
 const FILTERS = [
   APP_TEXT.jobsFilterLocation,
@@ -15,6 +16,7 @@ const FILTERS = [
 type FilterItem = (typeof FILTERS)[number];
 
 const JobsScreen = () => {
+  const navigation = useNavigation<any>();
   const [selectedFilter, setSelectedFilter] = useState(FILTERS[0]);
   const filtersListRef = useRef<FlatList<FilterItem>>(null);
 
@@ -68,7 +70,7 @@ const JobsScreen = () => {
         <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
 
         {APP_TEXT.jobsList.map(job => (
-          <View key={job.title} style={styles.jobCard}>
+          <TouchableOpacity key={job.title} style={styles.jobCard} onPress={() => {navigation.navigate('CareerArchitect')}}>
             <View style={styles.jobTopRow}>
               <View style={styles.logoWrap}>
                 <Image source={job.image} resizeMode="contain" style={styles.logoImage} />
@@ -94,10 +96,10 @@ const JobsScreen = () => {
               </View>
             </View>
 
-            <View style={styles.applyButton}>
-              <Text style={styles.applyButtonText}>{APP_TEXT.homeQuickApply}</Text>
-            </View>
-          </View>
+              <TouchableOpacity onPress={() => {navigation.navigate('Apply')}} style={styles.applyButton}>
+                <Text style={styles.applyButtonText}>{APP_TEXT.homeQuickApply}</Text>
+              </TouchableOpacity>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>

@@ -7,10 +7,10 @@ import Colors from '../comman/Colors';
 import LoginScreen from '../screens/AuthScreen/LoginScreen/LoginScreen';
 import SignupScreen from '../screens/AuthScreen/SignupScreen/SignupScreen';
 import BottomTabs from '../screens/JobSeeker/BottomTabs/BottomTabs';
-import Premium from '../screens/JobSeeker/BottomTabs/Premium/Premium';
-import Apply from '../screens/JobSeeker/BottomTabs/ApplyScreen/Apply';
+import Premium from '../screens/JobSeeker/Premium/Premium';
+import Apply from '../screens/JobSeeker/ApplyScreen/Apply';
 import ProfileSetup from '../screens/JobSeeker/BottomTabs/ProfileScreen/ProfileSetup';
-import CareerArchitect from '../screens/JobSeeker/BottomTabs/CareerArchitect/Career';
+import CareerArchitect from '../screens/JobSeeker/CareerArchitect/Career';
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;

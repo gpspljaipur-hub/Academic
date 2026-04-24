@@ -2,13 +2,13 @@ import { Text, View, ScrollView, TouchableOpacity, ImageBackground, Image } from
 import React, { useState } from 'react'
 import { styles } from './Styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import MarginHW from '../../../../comman/Sizes/MarginHW';
-import Colors from '../../../../comman/Colors';
-import FontsSize from '../../../../comman/Sizes/FontsSize';
-import fonts from '../../../../comman/fonts';
-import { APP_TEXT } from '../../../../comman/String';
-import Images from '../../../../comman/Images';
-import Button from '../../../../components/Button';
+import MarginHW from '../../../comman/Sizes/MarginHW';
+import Colors from '../../../comman/Colors';
+import FontsSize from '../../../comman/Sizes/FontsSize';
+import fonts from '../../../comman/fonts';
+import { APP_TEXT } from '../../../comman/String';
+import Images from '../../../comman/Images';
+import Button from '../../../components/Button';
 
 const Premium = ({ navigation }: any) => {
     const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');

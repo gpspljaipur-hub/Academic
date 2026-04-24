@@ -9,7 +9,7 @@ import Dashboard from './Dashboard/Dashboard';
 import JobsScreen from './JobsScreen/JobsScreen';
 import ExamsScreen from './ExamsScreen/ExamsScreen';
 import ApplicationsScreen from './ApplicationScreen/ApplicationsScreen';
-import Profile from './Profile Screen/Profile';
+import Profile from './ProfileScreen/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,7 @@ const ICONS: Record<string, string> = {
 
 const ICONS_IMAGES: Record<string, any> = {
   // HomeScreen: Images.home,
-  Dashboard: Images.home,
+   Dashboard: Images.home,
   JobsScreen: Images.jobs,
   ExamsScreen: Images.exams,
   ApplicationScreen: Images.application,

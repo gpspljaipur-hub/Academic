@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import Colors from "../../../../comman/Colors";
-import fonts from "../../../../comman/fonts";
-import HWSize from "../../../../comman/Sizes/HWSize";
-import MarginHW from "../../../../comman/Sizes/MarginHW";
-import FontsSize from "../../../../comman/Sizes/FontsSize";
+import Colors from "../../../comman/Colors";
+import fonts from "../../../comman/fonts";
+import HWSize from "../../../comman/Sizes/HWSize";
+import MarginHW from "../../../comman/Sizes/MarginHW";
+import FontsSize from "../../../comman/Sizes/FontsSize";
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         color: Colors.inkDark,
     },
     scrollContent: {
-        paddingBottom: MarginHW.PaddingH100,
     },
     jobHeader: {
         alignItems: 'center',
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     jobTitle: {
-        fontSize: FontsSize.size24,
+        fontSize: FontsSize.size22,
         fontFamily: fonts.LexendBold,
         color: Colors.inkDark,
         textAlign: 'center',
@@ -62,18 +61,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: MarginHW.PaddingW16,
         paddingVertical: MarginHW.PaddingH8,
         borderRadius: MarginHW.MarginW30,
-        marginTop: MarginHW.MarginH16,
+        marginTop: MarginHW.MarginH8,
     },
     salaryText: {
         fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_SemiBold,
         color: Colors.brandBlue,
     },
-    aiCard: {
+    containercard: {
         marginHorizontal: MarginHW.MarginW20,
-        marginTop: MarginHW.MarginH24,
-        padding: MarginHW.PaddingW20,
-        borderRadius: MarginHW.MarginW24,
+        paddingHorizontal: MarginHW.PaddingW10,
+        paddingVertical: MarginHW.PaddingH14,
+        borderRadius:15,
         backgroundColor: Colors.ctaBlue,
         shadowColor: Colors.ctaBlue,
         shadowOffset: { width: 0, height: 10 },
@@ -81,14 +80,17 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         elevation: 10,
     },
-    aiHeader: {
+
+    aiCard: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+
+    },
+    aiHeader: {
+        flex: 1,
+      
     },
     aiTitleRow: {
         flexDirection: 'row',
-        alignItems: 'center',
     },
     aiTitle: {
         color: Colors.white,
@@ -98,10 +100,8 @@ const styles = StyleSheet.create({
         marginLeft: MarginHW.MarginW8,
     },
     skillsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-end',
-        width: '60%',
+        flex: 0.5,
+      
     },
     skillBadge: {
         backgroundColor: Colors.white18,
@@ -115,10 +115,11 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontSize: FontsSize.size10,
         fontFamily: fonts.LexendBold,
+        textAlign: 'center',
     },
     matchPercentage: {
         color: Colors.white,
-        fontSize: FontsSize.size42,
+        fontSize: FontsSize.size28,
         fontFamily: fonts.Lexend_ExtraBold,
         marginTop: MarginHW.MarginH8,
     },
@@ -131,12 +132,12 @@ const styles = StyleSheet.create({
     },
     section: {
         paddingHorizontal: MarginHW.PaddingW20,
-        marginTop: MarginHW.MarginH30,
+        marginTop: MarginHW.MarginH20,
     },
     sectionHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: MarginHW.MarginH16,
+        marginBottom: MarginHW.MarginH10,
     },
     sectionIndicator: {
         width: HWSize.W_Width40 * 0.1, // Approximate indicator width
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
         marginRight: MarginHW.MarginW12,
     },
     sectionTitle: {
-        fontSize: FontsSize.size18,
+        fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
     },
     bulletPoint: {
         flexDirection: 'row',
-        marginBottom: MarginHW.MarginH12,
+        marginBottom: MarginHW.MarginH5,
         paddingLeft: MarginHW.PaddingW8,
     },
     bullet: {
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
         marginRight: MarginHW.MarginW8,
     },
     bulletText: {
-        fontSize: FontsSize.size14,
+        fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.bodyGray,
         lineHeight: FontsSize.size22,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         width: HWSize.W_Width220,
         padding: MarginHW.PaddingW16,
-        borderRadius: MarginHW.MarginW20,
+        borderRadius: 10,
         marginLeft: MarginHW.MarginW20,
         marginBottom: MarginHW.MarginH16,
         shadowColor: Colors.black,
@@ -246,12 +247,12 @@ const styles = StyleSheet.create({
         color: Colors.mutedSlate,
     },
     bottomBar: {
-     
+     marginBottom: MarginHW.MarginH20,
      flexDirection: 'row',
      alignItems: 'center',
      justifyContent: 'center',
      paddingHorizontal: MarginHW.PaddingW16,
-     backgroundColor: Colors.titleInk,
+     
     },
     bookmarkButton: {
         width: HWSize.W_Width40,
@@ -264,6 +265,7 @@ const styles = StyleSheet.create({
     },
     applyButton: {
         flex: 1,
+        bottom: 12,
     },
     applyButtonText: {
         color: Colors.white,
