@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity,  StatusBar } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, StatusBar } from 'react-native'
 import React from 'react'
 import styles from './Styles'
 import Colors from '../../../../comman/Colors'
@@ -52,8 +52,8 @@ const Dashboard = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-               <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
-
+            <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
+            <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
                 <View style={styles.welcomeSection}>
                     <Text style={styles.recruiterTitle}>{strings.recruiterTitle}</Text>
@@ -63,7 +63,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.actionButtonsRow}>
-                    
+
                     <TouchableOpacity style={styles.secondaryButton}>
                         <Image source={Images.ProfileIcon} style={{ width: 16, height: 16, tintColor: Colors.brandBlue }} />
                         <Text style={styles.buttonTextSecondary} numberOfLines={1}>{strings.viewAllApplicants}</Text>

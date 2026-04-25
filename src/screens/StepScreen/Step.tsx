@@ -7,6 +7,7 @@ import {
   NativeSyntheticEvent,
   Pressable,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -19,6 +20,7 @@ import { APP_TEXT } from '../../comman/String';
 import Button from '../../components/Button';
 import { handleNavigation } from '../../navigation/RootNavigator';
 import { useNavigation } from '@react-navigation/native';
+import Colors from '../../comman/Colors';
 
 type TitlePart = {
   text: string;
@@ -185,6 +187,7 @@ const Step = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
       <View style={styles.content}>
         <View style={styles.headerRow}>
           <Text style={styles.brandText}>AcademicArchitect</Text>
