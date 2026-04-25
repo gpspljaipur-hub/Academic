@@ -16,7 +16,6 @@ import FontsSize from '../comman/Sizes/FontsSize';
 import ImageSize from '../comman/Sizes/ImageSize';
 import Images from '../comman/Images';
 import { APP_TEXT } from '../comman/String';
-
 const Setting = ({ navigation }: any) => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState(true);
