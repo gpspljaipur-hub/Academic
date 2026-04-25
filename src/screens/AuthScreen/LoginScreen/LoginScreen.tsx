@@ -7,7 +7,8 @@ import { APP_TEXT } from '../../../comman/String';
 import { handleNavigation } from '../../../navigation/RootNavigator';
 import Button from '../../../components/Button';
 
-const LoginScreen = () => {
+const LoginScreen = ({ route }: any) => {
+  const userType = route?.params?.userType;
   const navigation = useNavigation();
   const [mobileNumber, setMobileNumber] = useState('');
 
@@ -44,7 +45,9 @@ const LoginScreen = () => {
 
         <Button
           label={APP_TEXT.loginButton}
-          onPress={() => navigation.navigate('Otp' as never)}
+          onPress={() => {
+            handleNavigation({ type: 'push', page: 'Otp', navigation, passProps: { userType: userType } });
+          }}
         />
 
         <View style={styles.dividerRow}>
@@ -64,7 +67,7 @@ const LoginScreen = () => {
 
       <View style={styles.footerHighlightContainer}>
       <Text style={styles.footerText}>{APP_TEXT.loginNewToAppName}?{' '}</Text>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => {handleNavigation({type: 'push', page: 'Signup', navigation: navigation as any})}}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => {handleNavigation({type: 'push', page: 'Signup', navigation: navigation as any })}}>
         <Text style={styles.footerHighlight}>{APP_TEXT.loginJoinTheCollective}</Text>
       </TouchableOpacity>
       </View>

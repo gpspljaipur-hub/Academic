@@ -4,11 +4,13 @@ import HWSize from "../../../../comman/Sizes/HWSize";
 import FontsSize from "../../../../comman/Sizes/FontsSize";
 import fonts from "../../../../comman/fonts";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import MarginHW from "../../../../comman/Sizes/MarginHW";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
+        paddingHorizontal:MarginHW.PaddingW16,
     },
     header: {
         flexDirection: 'row',
@@ -26,7 +28,6 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingBottom: hp(5),
-        backgroundColor: Colors.offWhite,
     },
     titleSection: {
         paddingHorizontal: wp(5),
@@ -35,13 +36,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     mainTitle: {
-        fontSize: FontsSize.size28,
+        fontSize: FontsSize.size22,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: FontsSize.size14,
+        fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
         textAlign: 'center',
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: Colors.white,
-        marginHorizontal: wp(5),
+        marginHorizontal: 1,
         marginBottom: hp(2.5),
         borderRadius: wp(4),
         padding: wp(5),

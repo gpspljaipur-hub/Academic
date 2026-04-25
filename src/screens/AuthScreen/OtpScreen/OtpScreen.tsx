@@ -6,8 +6,12 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import { APP_TEXT } from '../../../comman/String';
 import { styles } from './Styles';
+import { handleNavigation } from '../../../navigation/RootNavigator';
 
-const OtpScreen = () => {
+const OtpScreen = ({ route }: any) => {
+    const userType = route?.params?.userType;
+
+  console.log('Received UserType in OtpScreen:', userType);
   const navigation = useNavigation();
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const inputRefs = useRef<Array<TextInput | null>>([]);
@@ -27,6 +31,14 @@ const OtpScreen = () => {
     if (!value && index > 0 && !otp[index]) {
       inputRefs.current[index - 1]?.focus();
     }
+  };
+ const handleHomePress = () => {
+  if(userType === 'JobSeeker') {
+    handleNavigation({ type: 'push', page: 'BottomTabs', navigation });
+  }
+  else{
+    handleNavigation({ type: 'push', page: 'RecruiterBottomTabs', navigation });
+  }
   };
 
   return (
@@ -70,7 +82,7 @@ const OtpScreen = () => {
 
           <Button
             label={APP_TEXT.otpVerifyButton}
-            onPress={() => {}}
+            onPress={() => {handleHomePress()}}
             containerStyle={styles.verifyButton}
           />
 

@@ -2,11 +2,13 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ImageBackground,
   ImageSourcePropType,
+  Modal,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -15,6 +17,8 @@ import Images from '../../comman/Images';
 import { styles } from './Styles';
 import { APP_TEXT } from '../../comman/String';
 import Button from '../../components/Button';
+import { handleNavigation } from '../../navigation/RootNavigator';
+import { useNavigation } from '@react-navigation/native';
 
 type TitlePart = {
   text: string;
@@ -89,11 +93,18 @@ const STEP_DATA: StepItem[] = [
 const HORIZONTAL_PADDING = 22;
 
 const Step = () => {
+  const navigation = useNavigation();
   const { width: windowWidth } = useWindowDimensions();
   const slideWidth = Math.max(1, windowWidth - HORIZONTAL_PADDING * 2);
   const scrollRef = useRef<ScrollView>(null);
-
   const [activeStep, setActiveStep] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  
+  const onSelectUserType = (userType: 'Recruiter' | 'JobSeeker') => { 
+    console.log('Selected User Type:', userType);
+    setIsModalVisible(false);
+    handleNavigation({ type: 'push', page: 'Login', navigation, passProps: { userType: userType } });
+  };
   const isLastStep = activeStep === STEP_DATA.length - 1;
 
   const goToIndex = useCallback((index: number) => {
@@ -116,13 +127,16 @@ const Step = () => {
 
   const onNextPress = () => {
     if (isLastStep) {
-      return;
+      setIsModalVisible(true);
     }
     goToIndex(activeStep + 1);
   };
 
   const onSkipPress = () => {
-    goToIndex(STEP_DATA.length - 1);
+     handleNavigation({ type: 'push', page: 'Login', navigation });
+    
+    // goToIndex(STEP_DATA.length - 1);
+
   };
 
   const slides = useMemo(
@@ -210,6 +224,33 @@ const Step = () => {
           onPress={onNextPress}
         />
       </View>
+
+
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select User Type</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => onSelectUserType('Recruiter')}
+            >
+              <Text style={styles.modalButtonText}>Recruiter</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => onSelectUserType('JobSeeker')}
+            >
+              <Text style={styles.modalButtonText}>Job Seeker</Text>
+            </TouchableOpacity>
+          
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

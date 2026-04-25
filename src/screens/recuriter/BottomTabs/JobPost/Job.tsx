@@ -7,6 +7,7 @@ import Colors from '../../../../comman/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/native';
+import HomeHeader from '../../../../components/HomeHeader';
 
 const Job = () => {
     const navigation = useNavigation();
@@ -14,23 +15,14 @@ const Job = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image source={Images.backArrow}
-                        style={{ width: 20, height: 20, tintColor: Colors.heroNavy }} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>{jobPost.headerTitle}</Text>
-            </View>
+            <HomeHeader title={jobPost.headerTitle}  bellIcon={Images.settings} />
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
                 {/* Title Section */}
                 <View style={styles.titleSection}>
                     <Text style={styles.mainTitle}>{jobPost.title}</Text>
-                    <Text style={styles.subtitle}>{jobPost.subtitle}</Text>
+                    <Text  style={styles.subtitle}>{jobPost.subtitle}</Text>
                 </View>
 
                 {/* Basic Information Section */}
