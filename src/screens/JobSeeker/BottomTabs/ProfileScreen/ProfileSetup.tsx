@@ -33,8 +33,8 @@ const ProfileSetup = () => {
       <Header
         title={APP_TEXT.profileSetup.headerTitle}
         onBackPress={() => navigation.goBack()}
-        rightIcon={Images.userImage}
-        rightIconStyle={styles.headerProfileImage}
+      // rightIcon={Images.userImage}
+      // rightIconStyle={styles.headerProfileImage}
       />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
