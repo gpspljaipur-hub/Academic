@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, Image, TouchableOpacity, TextInput, StatusBar } from 'react-native';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
