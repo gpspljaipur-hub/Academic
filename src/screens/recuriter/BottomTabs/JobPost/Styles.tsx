@@ -9,7 +9,7 @@ import MarginHW from "../../../../comman/Sizes/MarginHW";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.Homebackground,
         paddingHorizontal:MarginHW.PaddingW16,
     },
     header: {
@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: FontsSize.size12,
+        fontSize: FontsSize.size10,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
         textAlign: 'center',
-        marginTop: hp(1),
-        lineHeight: hp(2.2),
+        marginTop: 2,
+        lineHeight: hp(1.8),
     },
     card: {
         backgroundColor: Colors.white,
@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
         marginBottom: hp(2.5),
     },
     cardIcon: {
-        width: wp(6),
-        height: wp(6),
+        width:20,
+        height: 20,
         marginRight: wp(3),
     },
     cardTitle: {
-        fontSize: FontsSize.size18,
+        fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
     },
@@ -86,15 +86,19 @@ const styles = StyleSheet.create({
         marginBottom: hp(1),
     },
     inputContainer: {
+        height:45,
+         fontSize: FontsSize.size18,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.mutedSlate,
         backgroundColor: Colors.cardGray,
-        borderRadius: wp(3),
+        borderRadius: 10,
         paddingHorizontal: wp(4),
-        paddingVertical: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     inputText: {
+        height:45,
         fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
@@ -156,14 +160,14 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: wp(5),
+        paddingHorizontal: 1,
         marginBottom: hp(7),
     },
     draftButton: {
         width: '45%',
         backgroundColor: Colors.primaryBlue,
         borderRadius: wp(3),
-        paddingVertical: hp(1.8),
+        paddingVertical: MarginHW.PaddingH10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
         width: '50%',
         backgroundColor: Colors.primaryBlue,
         borderRadius: wp(3),
-        paddingVertical: hp(1.8),
+        paddingVertical: MarginHW.PaddingH10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -189,7 +193,32 @@ const styles = StyleSheet.create({
         width: wp(4),
         height: wp(4),
         tintColor: Colors.mutedSlate,
-    }
+    },
+    dropdownStyle: {
+  backgroundColor: Colors.white,
+  borderRadius: 8,
+},
+dropdownPlaceholder: {
+  color: Colors.mutedSlate,
+  fontSize: FontsSize.size16,
+  fontFamily: fonts.Lexend_Medium,
+},
+dropdownSelectedText: {
+  color: Colors.black,
+  fontSize: FontsSize.size16,
+  fontFamily:fonts.Lexend_Medium,
+ 
+},
+dropdownItemContainer: {
+  paddingVertical: 12,
+  paddingHorizontal: 14,
+},
+dropdownItemText: {
+  fontSize: FontsSize.size16,
+  color: Colors.primaryBlue,
+  fontFamily: fonts.Lexend_Medium,
+ 
+},
 });
 
 export default styles;

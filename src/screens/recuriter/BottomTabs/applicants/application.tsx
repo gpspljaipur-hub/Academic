@@ -203,7 +203,7 @@ const ApplicationsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.menu} bellIcon={Images.userImage} />
+      <HomeHeader title={APP_TEXT.AppsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.menu} />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.progressSection}>

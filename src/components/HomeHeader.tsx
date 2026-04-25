@@ -22,12 +22,8 @@ const HomeHeader = ({ title, IconImg = Images.userImage,bellIcon, onNotification
   return (
     <View style={styles.topBar}>
       <View style={styles.userImageWrap}>
-        <TouchableOpacity 
-          activeOpacity={0.8} 
-          onPress={() => isLeftUserImage ? navigation.navigate('ProfileSetup') : null} 
-          hitSlop={8}
-        >
-          <Image source={IconImg} resizeMode="contain" style={title == 'Exams' || title == 'Applications' ? styles.ManuIcon : styles.userImage} />
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.getParent()?.navigate('ProfileSetup')} hitSlop={8}>
+          <Image source={IconImg} resizeMode="contain" style={ styles.userImage} />
         </TouchableOpacity>
 
         <Text style={styles.brand}>{title}</Text>
@@ -46,7 +42,7 @@ const HomeHeader = ({ title, IconImg = Images.userImage,bellIcon, onNotification
 
 export default HomeHeader;
 const styles = StyleSheet.create({
-  topBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginVertical: MarginHW.MarginH10 },
+  topBar: {height:50, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', },
   userImageWrap: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
   brand: { top: -1, color: Colors.primaryBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16 },
   bellImage: { width: 20, height: 20, tintColor: Colors.bodyGray },

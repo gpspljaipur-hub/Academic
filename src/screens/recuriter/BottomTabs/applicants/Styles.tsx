@@ -8,7 +8,7 @@ import MarginHW from '../../../../comman/Sizes/MarginHW';
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
+    container: { flex: 1,  backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
 
     scrollContent: {
 

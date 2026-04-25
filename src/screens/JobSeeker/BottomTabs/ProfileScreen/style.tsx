@@ -9,7 +9,7 @@ import MarginHW from "../../../../comman/Sizes/MarginHW";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.offWhite,
+        backgroundColor: Colors.Homebackground,
         paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {
@@ -37,25 +37,25 @@ const styles = StyleSheet.create({
     aistarIcon: { width: 24, height: 24, tintColor: Colors.primaryBlue },
     profileSection: {
         alignItems: 'center',
-        paddingTop: hp(1.5),
+      
     },
 
     avatarContainer: {
         position: 'relative',
     },
     avatar: {
-        width: wp(20),
-        height: wp(20),
+        width: wp(18),
+        height: wp(18),
         borderRadius: wp(10),
         backgroundColor: Colors.iceBlue,
     },
     editIconContainer: {
         position: 'absolute',
-        bottom: 0,
+        bottom: -5,
         right: 0,
         backgroundColor: Colors.primaryBlue,
-        width: wp(8),
-        height: wp(8),
+        width: 30,
+        height:30,
         borderRadius: wp(4),
         justifyContent: 'center',
         alignItems: 'center',

@@ -8,7 +8,7 @@ import FontsSize from '../../../../comman/Sizes/FontsSize';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.offWhite,
+        backgroundColor: Colors.Homebackground,
         paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {

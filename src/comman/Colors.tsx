@@ -1,7 +1,7 @@
 const Colors = {
   transparent: 'transparent',
   black: '#000000',
-
+  Homebackground: '#F4F5F7',
   white: '#FFFFFF',
   white18: 'rgba(255, 255, 255, 0.18)',
   white85: 'rgba(255, 255, 255, 0.85)',

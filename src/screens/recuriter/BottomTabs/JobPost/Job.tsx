@@ -1,10 +1,11 @@
 import { Text, View, ScrollView, Image, TouchableOpacity, TextInput, StatusBar } from 'react-native';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Dropdown } from 'react-native-element-dropdown';
 
 import { useNavigation } from '@react-navigation/native';
 import HomeHeader from '../../../../components/HomeHeader';
@@ -12,6 +13,14 @@ import HomeHeader from '../../../../components/HomeHeader';
 const Job = () => {
     const navigation = useNavigation();
     const { jobPost } = APP_TEXT;
+    const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad'];
+    const experiences = ['0-1 yrs', '1-3 yrs', '3-5 yrs', '5+ yrs'];
+
+    const [locationValue, setLocationValue] = useState<string | null>(null);
+    const [experienceValue, setExperienceValue] = useState<string | null>(null);
+
+    const locationOptions = useMemo(() => locations.map(l => ({ label: l, value: l })), [locations]);
+    const experienceOptions = useMemo(() => experiences.map(e => ({ label: e, value: e })), [experiences]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -22,7 +31,7 @@ const Job = () => {
                 {/* Title Section */}
                 <View style={styles.titleSection}>
                     <Text style={styles.mainTitle}>{jobPost.title}</Text>
-                    <Text  style={styles.subtitle}>{jobPost.subtitle}</Text>
+                    <Text style={styles.subtitle}>{jobPost.subtitle}</Text>
                 </View>
 
                 {/* Basic Information Section */}
@@ -66,18 +75,44 @@ const Job = () => {
 
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>{jobPost.location}</Text>
-                        <TouchableOpacity style={styles.inputContainer}>
-                            <Text style={styles.inputText}>{jobPost.locationPlaceholder}</Text>
-                            <Image source={Images.dots} style={styles.dropdownIcon} />
-                        </TouchableOpacity>
+                        <Dropdown
+                            style={[styles.inputContainer]}
+                            data={locationOptions}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={jobPost.locationPlaceholder}
+                            placeholderStyle={styles.dropdownPlaceholder}
+                            selectedTextStyle={styles.dropdownSelectedText}
+                            containerStyle={styles.dropdownStyle}
+                            value={locationValue}
+                            onChange={item => setLocationValue(item.value)}
+                            renderItem={(item) => (
+                                <View style={styles.dropdownItemContainer}>
+                                    <Text style={styles.dropdownItemText}>{item.label}</Text>
+                                </View>
+                            )}
+                        />
                     </View>
 
                     <View style={styles.inputGroup}>
                         <Text style={styles.label}>{jobPost.experienceRequired}</Text>
-                        <TouchableOpacity style={styles.inputContainer}>
-                            <Text style={styles.inputText}>{jobPost.experiencePlaceholder}</Text>
-                            <Image source={Images.dots} style={styles.dropdownIcon} />
-                        </TouchableOpacity>
+                        <Dropdown
+                            style={[styles.inputContainer]}
+                            data={experienceOptions}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={jobPost.experiencePlaceholder}
+                            placeholderStyle={styles.dropdownPlaceholder}
+                            selectedTextStyle={styles.dropdownSelectedText}
+                            containerStyle={styles.dropdownStyle}
+                            value={experienceValue}
+                            onChange={item => setExperienceValue(item.value)}
+                            renderItem={(item) => (
+                                <View style={styles.dropdownItemContainer}>
+                                    <Text style={styles.dropdownItemText}>{item.label}</Text>
+                                </View>
+                            )}
+                        />
                     </View>
                 </View>
 
@@ -115,7 +150,6 @@ const Job = () => {
                     </View>
 
                     <View style={styles.infoBox}>
-                        <Text style={{ fontSize: 16 }}>ℹ️</Text>
                         <Text style={styles.infoText}>{jobPost.salaryInfo}</Text>
                     </View>
                 </View>

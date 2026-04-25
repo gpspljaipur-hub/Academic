@@ -76,6 +76,7 @@ export const APP_TEXT = {
   jobsSearchIcon: '⌕',
   jobsSearchPlaceholder: 'Search jobs, roles, or comp',
   applicationsHeaderTitle: 'Applications',
+  AppsHeaderTitle: 'Application',
   applicationsProgressLabel: 'Your Progress',
   applicationsPipelineTitle: 'Application Pipeline',
   jobsFilterIcon: '',
