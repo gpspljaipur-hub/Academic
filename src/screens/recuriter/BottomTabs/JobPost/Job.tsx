@@ -12,6 +12,14 @@ import HomeHeader from '../../../../components/HomeHeader';
 const Job = () => {
     const navigation = useNavigation();
     const { jobPost } = APP_TEXT;
+     const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad'];
+    const experiences = ['0-1 yrs', '1-3 yrs', '3-5 yrs', '5+ yrs'];
+
+    const [locationValue, setLocationValue] = useState<string | null>(null);
+    const [experienceValue, setExperienceValue] = useState<string | null>(null);
+
+    const locationOptions = useMemo(() => locations.map(l => ({ label: l, value: l })), [locations]);
+    const experienceOptions = useMemo(() => experiences.map(e => ({ label: e, value: e })), [experiences]);
 
     return (
         <SafeAreaView style={styles.container}>

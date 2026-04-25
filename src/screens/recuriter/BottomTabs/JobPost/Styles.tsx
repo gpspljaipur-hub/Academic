@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: FontsSize.size12,
+        fontSize: FontsSize.size10,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
         textAlign: 'center',
-        marginTop: hp(1),
-        lineHeight: hp(2.2),
+        marginTop: 2,
+        lineHeight: hp(1.8),
     },
     card: {
         backgroundColor: Colors.white,
@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
         marginBottom: hp(2.5),
     },
     cardIcon: {
-        width: wp(6),
-        height: wp(6),
+        width:20,
+        height: 20,
         marginRight: wp(3),
     },
     cardTitle: {
-        fontSize: FontsSize.size18,
+        fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
     },
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         backgroundColor: Colors.cardGray,
-        borderRadius: wp(3),
+        borderRadius: 10,
         paddingHorizontal: wp(4),
-        paddingVertical: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     inputText: {
+        height:45,
         fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
