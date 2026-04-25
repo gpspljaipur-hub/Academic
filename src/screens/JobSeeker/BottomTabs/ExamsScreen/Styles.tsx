@@ -6,7 +6,8 @@ import fonts from '../../../../comman/fonts';
 const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F3F4F6',paddingHorizontal: MarginHW.PaddingW16},
+  container: { flex: 1, backgroundColor: Colors.Homebackground,paddingHorizontal: MarginHW.PaddingW16},
+  filterContainer: { marginVertical: MarginHW.MarginH14 },
   content: { paddingBottom: MarginHW.PaddingH70 },
   headerWrap: { alignItems: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
   headerRow: { flex: 1 },

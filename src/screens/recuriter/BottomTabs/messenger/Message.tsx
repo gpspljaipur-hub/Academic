@@ -117,10 +117,9 @@ const Message = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
             <HomeHeader
                 title={APP_TEXT.messenger.headerTitle}
-                IconImg={Images.menu}
+                IconImg={Images.userImage}
             />
 
             <View style={styles.searchContainer}>

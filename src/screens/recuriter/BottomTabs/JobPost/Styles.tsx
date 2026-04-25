@@ -9,7 +9,7 @@ import MarginHW from "../../../../comman/Sizes/MarginHW";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.Homebackground,
         paddingHorizontal:MarginHW.PaddingW16,
     },
     header: {
@@ -86,6 +86,10 @@ const styles = StyleSheet.create({
         marginBottom: hp(1),
     },
     inputContainer: {
+        height:45,
+         fontSize: FontsSize.size18,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.mutedSlate,
         backgroundColor: Colors.cardGray,
         borderRadius: 10,
         paddingHorizontal: wp(4),
@@ -156,14 +160,14 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: wp(5),
+        paddingHorizontal: 1,
         marginBottom: hp(7),
     },
     draftButton: {
         width: '45%',
         backgroundColor: Colors.primaryBlue,
         borderRadius: wp(3),
-        paddingVertical: hp(1.8),
+        paddingVertical: MarginHW.PaddingH10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
         width: '50%',
         backgroundColor: Colors.primaryBlue,
         borderRadius: wp(3),
-        paddingVertical: hp(1.8),
+        paddingVertical: MarginHW.PaddingH10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -189,7 +193,32 @@ const styles = StyleSheet.create({
         width: wp(4),
         height: wp(4),
         tintColor: Colors.mutedSlate,
-    }
+    },
+    dropdownStyle: {
+  backgroundColor: Colors.white,
+  borderRadius: 8,
+},
+dropdownPlaceholder: {
+  color: Colors.mutedSlate,
+  fontSize: FontsSize.size16,
+  fontFamily: fonts.Lexend_Medium,
+},
+dropdownSelectedText: {
+  color: Colors.black,
+  fontSize: FontsSize.size16,
+  fontFamily:fonts.Lexend_Medium,
+ 
+},
+dropdownItemContainer: {
+  paddingVertical: 12,
+  paddingHorizontal: 14,
+},
+dropdownItemText: {
+  fontSize: FontsSize.size16,
+  color: Colors.primaryBlue,
+  fontFamily: fonts.Lexend_Medium,
+ 
+},
 });
 
 export default styles;

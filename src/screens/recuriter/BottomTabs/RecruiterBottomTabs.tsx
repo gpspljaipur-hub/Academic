@@ -6,8 +6,8 @@ import { styles } from './Styles';
 import Images from '../../../comman/Images';
 import Dashboard from './Dashboard/Dashboard';
 import Job from './JobPost/Job';
-import Message from './messenger/Message';
-import application from './applicants/application';
+import Message from './Messenger/Message';
+import application from './Applicants/Application';
 const Tab = createBottomTabNavigator();
 
 const ICONS: Record<string, string> = {

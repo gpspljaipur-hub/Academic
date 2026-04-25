@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Colors from '../comman/Colors';
 import LoginScreen from '../screens/AuthScreen/LoginScreen/LoginScreen';
 import SignupScreen from '../screens/AuthScreen/SignupScreen/SignupScreen';
-import RecruiterBottomTabs from '../screens/recuriter/BottomTabs/RecruiterBottomTabs';
+import RecruiterBottomTabs from '../screens/Recuriter/BottomTabs/RecruiterBottomTabs';
 import BottomTabs from '../screens/JobSeeker/BottomTabs/BottomTabs';
 import Premium from '../screens/JobSeeker/Premium/Premium';
 import Apply from '../screens/JobSeeker/ApplyScreen/Apply';
