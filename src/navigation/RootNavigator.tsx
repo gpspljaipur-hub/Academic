@@ -12,18 +12,23 @@ import Premium from '../screens/JobSeeker/Premium/Premium';
 import Apply from '../screens/JobSeeker/ApplyScreen/Apply';
 import ProfileSetup from '../screens/JobSeeker/BottomTabs/ProfileScreen/ProfileSetup';
 import CareerArchitect from '../screens/JobSeeker/CareerArchitect/Career';
+import Notification from '../components/Notification';
+import Setting from '../components/Setting';
+
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Otp: undefined;
   Step: undefined;
   Splash: undefined;
+  Notification: undefined;
   BottomTabs: undefined;
   RecruiterBottomTabs: undefined;
   Premium: undefined;
   Apply: undefined;
   ProfileSetup: undefined;
   CareerArchitect: undefined;
+  Setting: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,6 +57,8 @@ const RootNavigator = () => {
       <Stack.Screen name="Premium" component={Premium} options={{ headerShown: false }} />
       <Stack.Screen name="Apply" component={Apply} options={{ headerShown: false }} />
       <Stack.Screen name="CareerArchitect" component={CareerArchitect} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
+      <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: MarginHW.MarginW16,
 
     },
-    headerProfileImage: {
-        width: ImageSize.ImageW30,
-        height: ImageSize.ImageW30,
-        borderRadius: ImageSize.ImageW30 / 2,
-    },
+    // headerProfileImage: {
+    //     width: ImageSize.ImageW30,
+    //     height: ImageSize.ImageW30,
+    //     borderRadius: ImageSize.ImageW30 / 2,
+    // },
     scrollContent: {
         flexGrow: 1,
         paddingBottom: MarginHW.MarginH10,

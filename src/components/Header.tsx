@@ -6,6 +6,7 @@ import Colors from '../comman/Colors';
 import fonts from '../comman/fonts';
 import FontsSize from '../comman/Sizes/FontsSize';
 import Images from '../comman/Images';
+import { useNavigation } from '@react-navigation/native';
 
 
 type HeaderProps = {
@@ -17,6 +18,9 @@ type HeaderProps = {
 };
 
 const Header = ({ title, onBackPress, rightIcon, onRightPress, rightIconStyle }: HeaderProps) => {
+  const navigation = useNavigation();
+  const isRightUserImage = rightIcon === Images.userImage;
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -31,7 +35,11 @@ const Header = ({ title, onBackPress, rightIcon, onRightPress, rightIconStyle }:
 
       <View style={styles.rightContainer}>
         {rightIcon ? (
-          <TouchableOpacity activeOpacity={0.8} onPress={onRightPress} style={styles.iconButton}>
+          <TouchableOpacity 
+            activeOpacity={0.8} 
+            onPress={onRightPress ? onRightPress : (isRightUserImage ? () => navigation.navigate('ProfileSetup') : undefined)} 
+            style={styles.iconButton}
+          >
             <Image source={rightIcon} style={[styles.rightIcon, rightIconStyle]} />
           </TouchableOpacity>
         ) : (

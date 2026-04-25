@@ -24,7 +24,7 @@ const Job = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <HomeHeader title={jobPost.headerTitle} bellIcon={Images.settings} />
+            <HomeHeader title={jobPost.headerTitle}  bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 

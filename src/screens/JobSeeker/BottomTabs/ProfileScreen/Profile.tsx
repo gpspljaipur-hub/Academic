@@ -6,7 +6,9 @@ import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeHeader from '../../../../components/HomeHeader';
+import { useNavigation } from '@react-navigation/native';
 const Profile = () => {
+    const navigation = useNavigation();
     const { profile } = APP_TEXT;
 
     const experienceData = [
@@ -41,25 +43,30 @@ const Profile = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-         <HomeHeader title={profile.headerTitle} IconImg={Images.userImage}  bellIcon={Images.settings} />
+          <HomeHeader 
+            title={profile.headerTitle} 
+            IconImg={Images.userImage}  
+            bellIcon={Images.settings} 
+            onNotificationPress={() => navigation.navigate('Setting')} 
+          />
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
                 {/* Profile Info Section */}
                 <View style={styles.profileSection}>
-                    <View style={styles.avatarContainer}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('ProfileSetup')} style={styles.avatarContainer}>
                         <Image source={Images.userImage} style={styles.avatar} />
-                        <TouchableOpacity style={styles.editIconContainer}>
+                        <View style={styles.editIconContainer}>
                             <Image source={Images.pencil} style={styles.PencilIcon} />
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableOpacity>
                     <Text style={styles.userName}>{profile.userName}</Text>
                     <Text style={styles.userRole}>{profile.userRole}</Text>
                     <View style={styles.userLocation}>
                         <Image source={Images.locations} style={{ width: 14, height: 14, tintColor: Colors.mutedSlate }} />
                         <Text style={styles.locationText}>{profile.userLocation}</Text>
                     </View>
-                    <TouchableOpacity style={styles.editProfileButton}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('ProfileSetup')} style={styles.editProfileButton}>
                         <Text style={styles.editProfileText}>{profile.editProfile}</Text>
                     </TouchableOpacity>
                 </View>

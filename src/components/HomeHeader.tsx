@@ -15,6 +15,10 @@ type HomeHeaderProps = {
 
 const HomeHeader = ({ title, IconImg = Images.userImage,bellIcon, onNotificationPress }: HomeHeaderProps) => {
   const navigation = useNavigation();
+  
+  const isLeftUserImage = IconImg === Images.userImage;
+  const isRightUserImage = bellIcon === Images.userImage;
+
   return (
     <View style={styles.topBar}>
       <View style={styles.userImageWrap}>
@@ -25,8 +29,12 @@ const HomeHeader = ({ title, IconImg = Images.userImage,bellIcon, onNotification
         <Text style={styles.brand}>{title}</Text>
       </View>
 
-      <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.getParent()?.navigate('Premium')} hitSlop={8}>
-        <Image source={bellIcon} resizeMode="contain" style={styles.bellImage} />
+      <TouchableOpacity 
+        activeOpacity={0.8} 
+        onPress={onNotificationPress ? onNotificationPress : () => navigation.navigate(isRightUserImage ? 'ProfileSetup' : 'Notification')} 
+        hitSlop={8}
+      >
+        <Image source={bellIcon} resizeMode="contain" style={title == 'Exams' || title == 'Applications' ? styles.userImage : styles.bellImage} />
       </TouchableOpacity>
     </View>
   );

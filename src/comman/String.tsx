@@ -88,7 +88,7 @@ export const APP_TEXT = {
   jobsLocationIcon: '📍',
   jobsSalaryIcon: '💸',
   prepTitle: 'Boost Your Preparation',
-  examFilters: ['Govt Jobs', 'Results', 'Admit Cards', ],
+  examFilters: ['Govt Jobs', 'Results', 'Admit Cards',],
   examSearchPlaceholder: 'Search for exam notifications, updates',
   examLatestAnnouncements: 'Latest Announcements',
   examRecentNotifications: 'Recent Notifications',
@@ -157,7 +157,7 @@ export const APP_TEXT = {
       icon: Images.exams,
     },
   ],
-  
+
   jobsList: [
     {
       title: 'Frontend Developer',
@@ -351,5 +351,20 @@ export const APP_TEXT = {
     headerTitle: 'Messages',
     searchPlaceholder: 'Search messages...',
     noMessages: 'No messages found',
-  }
+  },
+  settings: {
+    headerTitle: 'Settings',
+    accountSection: 'Account',
+    preferencesSection: 'Preferences',
+    supportSection: 'Support',
+    personalInfo: 'Personal Information',
+    loginSecurity: 'Login & Security',
+    Premium: 'Premium',
+    notifications: 'Notifications',
+    darkMode: 'Dark Mode',
+    helpCenter: 'Help Center',
+    feedback: 'Feedback',
+    aboutApp: 'About App',
+    logout: 'Logout',
+  },
 } as const;
