@@ -345,5 +345,10 @@ export const APP_TEXT = {
     publicNotice: 'Your listing will be public immediately',
     saveDraft: 'Save Draft',
     postJob: 'Post Job',
+  },
+  messenger: {
+    headerTitle: 'Messages',
+    searchPlaceholder: 'Search messages...',
+    noMessages: 'No messages found',
   }
 } as const;
