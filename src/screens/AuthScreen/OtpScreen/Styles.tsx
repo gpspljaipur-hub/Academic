@@ -6,7 +6,7 @@ import MarginHW from '../../../comman/Sizes/MarginHW';
 import fonts from '../../../comman/fonts';
 
 export const styles = StyleSheet.create({
-  container: { backgroundColor: Colors.screenGray, flex: 1, paddingHorizontal: MarginHW.PaddingW18, paddingTop: MarginHW.MarginH12 },
+  container: { backgroundColor: Colors.screenGray, flex: 1, paddingHorizontal: MarginHW.PaddingW16,  },
   headerRow: { alignItems: 'center', flexDirection: 'row', gap: MarginHW.MarginW14 },
   
   centerArea: { alignItems: 'center', flex: 1, marginTop: MarginHW.MarginH20 },

@@ -11,10 +11,10 @@ import application from './applicants/application';
 const Tab = createBottomTabNavigator();
 
 const ICONS: Record<string, string> = {
-  Dashboard: 'DASHBOARD',
-  Job: 'JOBS',
-  Applicants: 'APPLICANTS',
-  Messages: 'MESSAGES',
+  Dashboard: 'Dashboard',
+  Job: 'Jobs',
+  Applicants: 'Applicants',
+  Messages: 'Messages',
 };
 
 const ICONS_IMAGES: Record<string, any> = {
@@ -26,7 +26,7 @@ const ICONS_IMAGES: Record<string, any> = {
 const EmptyScreen = () => <View style={styles.screen} />;
 const { width, height } = Dimensions.get('window');
 
-const BottomTabs = () => {
+const RecruiterBottomTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Dashboard"
@@ -39,7 +39,7 @@ const BottomTabs = () => {
           return (
             <View style={styles.iconWrap}>
               <Image source={ICONS_IMAGES[route.name]} resizeMode='contain' style={[styles.tabIconImage, { tintColor: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon }]} />
-              <Text numberOfLines={1} style={[styles.tabIcon, { color: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon }]}>{iconText}</Text>
+              <Text numberOfLines={1} style={[styles.tabIcon, {color: focused ? Colors.selectedTabIconGray : Colors.UnselectedTabIcon  }]}>{iconText}</Text>
             </View>
           );
         },
@@ -53,4 +53,4 @@ const BottomTabs = () => {
   );
 };
 
-export default BottomTabs;
+export default RecruiterBottomTabs;

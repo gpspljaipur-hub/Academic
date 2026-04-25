@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: hp(1.5),
     },
+    tipIcon: {width: 20, height: 20, tintColor: Colors.brandBlue},
     tipText: {
         fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Medium,
@@ -231,13 +232,13 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
     },
     statNumber: {
-        fontSize: FontsSize.size28,
+        fontSize: FontsSize.size24,
         fontFamily: fonts.LexendBold,
         color: Colors.primaryBlue,
     },
     statLabel: {
-        fontSize: FontsSize.size10,
-        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginTop: hp(0.5),
     },
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
         marginTop: hp(3),
     },
     resumeTitle: {
-        fontSize: FontsSize.size18,
+        fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
     },
@@ -325,18 +326,18 @@ const styles = StyleSheet.create({
     },
     expRole: {
         fontSize: FontsSize.size16,
-        fontFamily: fonts.LexendBold,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.cardTitle,
     },
     expCompany: {
-        fontSize: FontsSize.size12,
+        fontSize: FontsSize.size10,
         fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginTop: hp(0.3),
     },
     expDate: {
         fontSize: FontsSize.size10,
-        fontFamily: fonts.Lexend_Regular,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginTop: hp(0.3),
     },

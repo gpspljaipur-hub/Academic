@@ -33,6 +33,8 @@ const Images = {
   aistar:require('../assets/images/aistar.png'),
   pencil:require('../assets/images/pencil.png'),
   settings:require('../assets/images/setting.png'),
+  correct:require('../assets/images/correct.png'),
+  verifieduser:require('../assets/images/verifieduser.png'),
 
 
 

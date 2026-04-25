@@ -27,7 +27,48 @@ export const styles = StyleSheet.create({
   infoCard: {elevation: 0.5, shadowColor: Colors.black,shadowOffset: {width: 0, height: 2},shadowOpacity: 0.25,shadowRadius: 3.84, backgroundColor: Colors.cardGray, borderRadius: 10, flex: 1, paddingHorizontal: MarginHW.PaddingW14, paddingVertical: MarginHW.PaddingH14 },
   infoIcon: { color: Colors.primaryBlue, fontSize: FontsSize.size20, marginBottom: MarginHW.MarginH5 },
   infoTitle: { color: Colors.cardTitle, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12, letterSpacing: 1 },
+  
   indicatorRow: { alignItems: 'center', flexDirection: 'row', gap: 8,flex: 0.1 },
   indicatorDot: { backgroundColor: Colors.dotInactive, borderRadius: 5, height: 6, width: 10 },
   indicatorDotActive: { backgroundColor: Colors.primaryBlue, borderRadius: 999, width: 30, height: 6 },
+
+modalOverlay: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContent: {
+  backgroundColor: 'white',
+  padding: 20,
+  borderRadius: 10,
+  width: '80%',
+  alignItems: 'center',
+},
+modalTitle: {
+  fontSize: FontsSize.size18,
+  fontFamily: fonts.LexendBold,
+  marginBottom: 20,
+},
+modalButton: {
+  backgroundColor: Colors.primaryBlue,
+  padding: 10,
+  borderRadius: 5,
+  marginVertical: 5,
+  width: '100%',
+  alignItems: 'center',
+},
+modalButtonText: {
+  fontSize: FontsSize.size16,
+  fontFamily: fonts.LexendBold,
+  color: 'white',
+},
+modalCloseButton: {
+  marginTop: MarginHW.MarginH10,
+},
+modalCloseText: {
+  color: '#007AFF',
+  fontSize: FontsSize.size16,
+  fontFamily: fonts.Lexend_Medium,
+},
 });

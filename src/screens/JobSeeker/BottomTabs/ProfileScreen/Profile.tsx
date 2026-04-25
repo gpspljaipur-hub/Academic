@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import React from 'react';
 import styles from './style';
 import { APP_TEXT } from '../../../../comman/String';
@@ -8,6 +8,36 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeHeader from '../../../../components/HomeHeader';
 const Profile = () => {
     const { profile } = APP_TEXT;
+
+    const experienceData = [
+        {
+            id: '1',
+            icon: Images.tech,
+            role: 'Senior Product Designer',
+            company: 'Global Tech Corp • Full-time',
+            date: 'Jan 2021 — Present • 3 yrs 2 mos',
+        },
+        {
+            id: '2',
+            icon: Images.HR,
+            role: 'UI/UX Designer',
+            company: 'Creative Hub Studio • Contract',
+            date: 'Jun 2018 — Dec 2020 • 2 yrs 7 mos',
+        },
+    ];
+
+      const renderExperienceCard = ({ item }: any) => (
+        <View style={styles.experienceCard}>
+            <View style={styles.experienceIcon}>
+                <Image source={item.icon} style={{ width: 40, height: 40,borderRadius: 5 }} />
+            </View>
+            <View style={styles.experienceContent}>
+                <Text style={styles.expRole}>{item.role}</Text>
+                <Text style={styles.expCompany}>{item.company}</Text>
+                <Text style={styles.expDate}>{item.date}</Text>
+            </View>
+        </View>
+    );
 
     return (
         <SafeAreaView style={styles.container}>
@@ -58,7 +88,8 @@ const Profile = () => {
                 <View style={styles.tipsContainer}>
                     <View style={styles.tipCard}>
                         <View style={styles.tipIconContainer}>
-                            <Text style={{ fontSize: 16 }}>📄</Text>
+                            <Image source={Images.correct} style={styles.tipIcon} />
+                                {/* <Text style={{ fontSize: 16 }}>📄</Text> */}
                         </View>
                         <View>
                             <Text style={styles.tipText}>{profile.addSummary}</Text>
@@ -67,7 +98,7 @@ const Profile = () => {
                     </View>
                     <View style={[styles.tipCard, { backgroundColor: Colors.cardGray }]}>
                         <View style={styles.tipIconContainer}>
-                            <Text style={{ fontSize: 16 }}>🛡️</Text>
+                            <Image source={Images.verifieduser} style={styles.tipIcon} />
                         </View>
                         <View>
                             <Text style={styles.tipText}>{profile.verifyEmail}</Text>
@@ -115,7 +146,13 @@ const Profile = () => {
                         <Image source={Images.pencil} style={styles.pencilIcon} />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.experienceCard}>
+                 <FlatList
+                    data={experienceData}
+                    renderItem={renderExperienceCard}
+                    keyExtractor={(item) => item.id}
+                    scrollEnabled={false}
+                />
+                {/* <View style={styles.experienceCard}>
                     <View style={styles.experienceIcon}>
                         <Image source={Images.tech} style={{ width: 24, height: 24 }} />
                     </View>
@@ -134,7 +171,7 @@ const Profile = () => {
                         <Text style={styles.expCompany}>Creative Hub Studio • Contract</Text>
                         <Text style={styles.expDate}>Jun 2018 — Dec 2020 • 2 yrs 7 mos</Text>
                     </View>
-                </View>
+                </View> */}
 
                 {/* Education Section */}
                 <View style={styles.sectionHeader}>

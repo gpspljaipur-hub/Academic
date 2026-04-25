@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: MarginHW.PaddingW20,
         elevation: 2,
+        marginHorizontal: 1,
     },
     barChartContainer: {
         flexDirection: 'row',

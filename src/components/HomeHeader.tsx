@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   topBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginVertical: MarginHW.MarginH10 },
   userImageWrap: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
   brand: { top: -1, color: Colors.primaryBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16 },
-  bellImage: { width: 16, height: 16, tintColor: Colors.bodyGray },
+  bellImage: { width: 20, height: 20, tintColor: Colors.bodyGray },
   userImage: { width: 30, height: 30, },
   ManuIcon: { width: 18, height: 18, }
 });

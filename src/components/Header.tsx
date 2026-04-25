@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: MarginHW.MarginH50,
-    backgroundColor: Colors.white,
+   
   },
   leftContainer: {
     flex: 1,
