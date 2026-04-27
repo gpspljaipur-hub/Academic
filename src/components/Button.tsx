@@ -18,13 +18,14 @@ import HWSize from '../comman/Sizes/HWSize';
 
 export type ButtonProps = {
   label: string;
+  loading?: boolean;
   onPress: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   rightArrow?: boolean;
 };
 
-const Button = ({ label, onPress, containerStyle, labelStyle,rightArrow = false }: ButtonProps) => {
+const Button = ({loading = false, label, onPress, containerStyle, labelStyle,rightArrow = false }: ButtonProps) => {
   return (
     <TouchableOpacity activeOpacity={0.8} style={[styles.container, containerStyle]} onPress={onPress}>
       <Text style={[styles.label, labelStyle] }>{label}</Text>

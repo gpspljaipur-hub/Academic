@@ -34,7 +34,7 @@ const HomeHeader = ({ title, IconImg = Images.userImage,bellIcon, onNotification
         onPress={onNotificationPress ? onNotificationPress : () => navigation.navigate(isRightUserImage ? 'ProfileSetup' : 'Notification')} 
         hitSlop={8}
       >
-        <Image source={bellIcon} resizeMode="contain" style={title == 'Exams' || title == 'Applications' ? styles.userImage : styles.bellImage} />
+        <Image source={bellIcon} resizeMode="contain" style={styles.bellImage} />
       </TouchableOpacity>
     </View>
   );
