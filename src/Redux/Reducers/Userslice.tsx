@@ -13,12 +13,14 @@ export interface UserState {
     user: User | null;
     isAuthenticated: boolean;
     hasFinishedOnboarding: boolean;
+    userType: string | null;
 }
 
 const initialState: UserState = {
     user: null,
     isAuthenticated: false,
     hasFinishedOnboarding: false,
+    userType: null,
 };
 
 export const userSlice = createSlice({
@@ -36,8 +38,11 @@ export const userSlice = createSlice({
         setOnboardingFinished: (state, action: PayloadAction<boolean>) => {
             state.hasFinishedOnboarding = action.payload;
         },
+        setUserType: (state, action: PayloadAction<string>) => {
+            state.userType = action.payload;
+        },
     },
 });
 
-export const { loginSuccess, logout, setOnboardingFinished } = userSlice.actions;
+export const { loginSuccess, logout, setOnboardingFinished, setUserType } = userSlice.actions;
 export default userSlice.reducer;

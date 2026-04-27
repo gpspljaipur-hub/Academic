@@ -10,10 +10,13 @@ import Images from '../../../comman/Images';
 import { Auth_Api } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Helper from '../../../Lib/HelperFiles/Helper';
+import validate from '../../../Lib/HelperFiles/validation/validate_wrapper';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SignupScreen = ({ route }: any) => {
-  const userType = route?.params?.userType;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { userType } = useSelector((state: any) => state.user);
   const [fullName, setFullName] = useState('');
   const [mobile, setMobile] = useState('');
   const [email, setEmail] = useState('');
@@ -23,41 +26,45 @@ const SignupScreen = ({ route }: any) => {
   const [emailError, setEmailError] = useState('');
 
 
- const HandleSignup = async () => {
-    let isValid = true;
-    if (!fullName) {
-      setNameError('Full name is required');
-      isValid = false;
-    } else {
-      setNameError('');
+  const checkValidation = () => {
+    const nameErr = validate('full_name', fullName);
+    const mobileErr = validate('mobile', mobile);
+    const emailErr = validate('email', email);
+    if (nameErr || mobileErr || emailErr) {
+      setNameError(nameErr);
+      setMobileError(mobileErr);
+      setEmailError(emailErr);
+      return false;
     }
 
-    if (!mobile || mobile.length !== 10) {
-      setMobileError('Please enter a valid 10-digit mobile number');
-      isValid = false;
-    } else {
-      setMobileError('');
-    }
+    setNameError('');
+    setMobileError('');
+    setEmailError('');
+    return true;
+  };
 
-    if (!isValid) return;
+  const HandleSignup = async () => {
+    if (!checkValidation()) {
+      return;
+    }
     setLoading(true);
     try {
-      const payload = { name: fullName,number: mobile, email: email,userType: userType };
-      
+      const payload = { name: fullName, number: mobile, email: email, userType: userType };
+
       const res = await Auth_Api(ApiUrl.REGISTER, payload)();
       console.log('REGISTER response', res);
       if (res?.data?.status === true) {
-         setLoading(false);
-         const otp = res?.data?.otp;
-         handleNavigation({ type: 'push', page: 'OtpScreen', navigation: navigation as any, passProps: { mobile,otp, userType },});
-      } 
-      else {      
+        setLoading(false);
+        const otp = res?.data?.otp;
+        handleNavigation({ type: 'push', page: 'OtpScreen', navigation: navigation as any, passProps: { mobile, otp }, });
+      }
+      else {
         Helper.showToast(res?.data?.message || 'Registration failed');
         setLoading(false);
         return;
       }
-      
-    
+
+
     } catch (error) {
       setLoading(false);
       console.warn('REGISTER error', error);
@@ -102,7 +109,7 @@ const SignupScreen = ({ route }: any) => {
         </View>
         {mobileError ? <Text style={styles.errorText}>{mobileError}</Text> : null}
 
-         <Text style={styles.label}>{APP_TEXT.emailLabel}</Text>
+        <Text style={styles.label}>{APP_TEXT.emailLabel}</Text>
         <View style={styles.inputWrap}>
           <TextInput
             value={email}
@@ -122,7 +129,7 @@ const SignupScreen = ({ route }: any) => {
           loading={loading}
           rightArrow={true}
           label={APP_TEXT.signupButton}
-          onPress={() => {HandleSignup()}}
+          onPress={() => { HandleSignup() }}
           containerStyle={styles.joinButton}
           labelStyle={styles.joinButtonText}
         />
@@ -134,12 +141,12 @@ const SignupScreen = ({ route }: any) => {
         </TouchableOpacity>
 
         <View style={styles.footerHighlightContainer}>
-            <Text style={styles.footerText}>{APP_TEXT.signupAlreadyAccount}{' '}</Text>
-          <TouchableOpacity  activeOpacity={0.8} onPress={() => {handleNavigation({type: 'push', page: 'Login', navigation: navigation as any})}}>   
-           <Text style={styles.footerHighlight}>{APP_TEXT.signupLoginAction}</Text>
-         </TouchableOpacity>
-       </View>
-     </View>
+          <Text style={styles.footerText}>{APP_TEXT.signupAlreadyAccount}{' '}</Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => { handleNavigation({ type: 'push', page: 'Login', navigation: navigation as any }) }}>
+            <Text style={styles.footerHighlight}>{APP_TEXT.signupLoginAction}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   countryCodeBox: { alignItems: 'center', backgroundColor: Colors.screenGray, borderRadius: 14, height: HWSize.H_Height45, justifyContent: 'center', width: '32%' },
   countryCodeText: { color: Colors.titleInk, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16 },
   mobileInputBox: { backgroundColor: Colors.screenGray, borderRadius: 14, flex: 1, height: HWSize.H_Height45, justifyContent: 'center', paddingHorizontal: MarginHW.PaddingW18 },
-  mobileInputText: { color: '#A5ACB7', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16 },
+  mobileInputText: { color: Colors.black, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16 },
   errorText: { color: 'red', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12, marginTop: MarginHW.MarginH5 || 4, marginLeft: MarginHW.MarginW10 || 4 },
   dividerRow: { alignItems: 'center', flexDirection: 'row', gap: 10, marginTop: MarginHW.MarginH20 },
   dividerLine: { backgroundColor: '#E0E3E8', flex: 1, height: 1 },

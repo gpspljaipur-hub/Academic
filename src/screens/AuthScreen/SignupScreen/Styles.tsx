@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   subtitle: { color: Colors.textCharcoal, fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size16, lineHeight: 32, marginTop: MarginHW.MarginH12 },
   label: { color: Colors.textCharcoal, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16, marginTop: MarginHW.MarginH8 },
   inputWrap: { alignItems: 'center', backgroundColor: Colors.screenGray, borderRadius: 14, flexDirection: 'row', height: HWSize.H_Height45, justifyContent: 'space-between', marginTop: MarginHW.MarginH8, paddingHorizontal: MarginHW.PaddingW18 },
-  inputText: { color: '#1B1F2A', flex: 1, fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size14 },
+  inputText: { color: '#1B1F2A', flex: 1, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
   iconText: { color: '#7B8390', fontSize: FontsSize.size20 },
   joinButton: { marginTop: MarginHW.MarginH24 },
   joinButtonText: { fontFamily: fonts.LexendBold, fontSize: FontsSize.size16, letterSpacing: 1.2 },
@@ -23,5 +23,5 @@ export const styles = StyleSheet.create({
   footerText: { color: Colors.textCharcoal, fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size16, textAlign: 'center' },
   footerHighlight: { color: Colors.brandBlue, fontFamily: fonts.LexendBold },
   footerHighlightContainer: { alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: MarginHW.MarginH24 },
-  errorText: { color: 'red', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12, marginTop: MarginHW.MarginH5 || 4, marginLeft: MarginHW.MarginW10 || 4 },
+  errorText: { color: 'red', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14, marginTop: MarginHW.MarginH5 || 4, marginLeft: MarginHW.MarginW10 || 4 },
 });

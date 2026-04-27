@@ -10,11 +10,14 @@ import { handleNavigation } from '../../../navigation/RootNavigator';
 import { Auth_Api } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Helper from '../../../Lib/HelperFiles/Helper';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../../../Redux/Reducers/Userslice';
 
 const OtpScreen = ({ route }: any) => {
-    const { userType, mobile, otp: otpParam } = route?.params || {};
-
+  const { mobile, otp: otpParam } = route?.params || {};
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { userType } = useSelector((state: any) => state.user);
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const [verifying, setVerifying] = useState<boolean>(false);
@@ -77,21 +80,21 @@ const OtpScreen = ({ route }: any) => {
       if (res?.data?.status === true) {
         Helper.showToast(res?.data?.message || 'OTP sent');
         const otp = res?.data?.otp;
-         setOtp(Array(6).fill(''));
-         if (otp && typeof otp === 'string') {
-           const digits = otp.split('').slice(0, 6);
-           const nextOtp = Array(6).fill('');
-           digits.forEach((d, i) => (nextOtp[i] = d));
-           setOtp(nextOtp);
-           const lastIndex = digits.length - 1;
-           if (lastIndex >= 0) {
-             const idx = Math.min(lastIndex, 5);
-             // slight delay to ensure refs are set
-             setTimeout(() => {
-               inputRefs.current[idx]?.focus();
-             }, 100);
-           }
-         }
+        setOtp(Array(6).fill(''));
+        if (otp && typeof otp === 'string') {
+          const digits = otp.split('').slice(0, 6);
+          const nextOtp = Array(6).fill('');
+          digits.forEach((d, i) => (nextOtp[i] = d));
+          setOtp(nextOtp);
+          const lastIndex = digits.length - 1;
+          if (lastIndex >= 0) {
+            const idx = Math.min(lastIndex, 5);
+            // slight delay to ensure refs are set
+            setTimeout(() => {
+              inputRefs.current[idx]?.focus();
+            }, 100);
+          }
+        }
         setResendSeconds(RESEND_SECONDS);
       } else {
         Helper.showToast(res?.data?.message || 'Failed to resend OTP');
@@ -121,40 +124,45 @@ const OtpScreen = ({ route }: any) => {
       inputRefs.current[index - 1]?.focus();
     }
   };
- const handleVerify = async () => {
-  const code = otp.join('');
-  console.log('Verifying OTP', { mobile, code });
-  if (!mobile) {
-    Helper.showToast('Mobile number missing');
-    return;
-  }
-  if (!/^\d{6}$/.test(code)) {
-    setOtpError('Please enter complete OTP');
-    return;
-  }
-  setOtpError('');
-  setVerifying(true);
-  try {
-    const payload = { number: mobile, otp: code,userType: userType };
-    const res = await Auth_Api(ApiUrl.VERIFY_OTP, payload)();
-    console.log('VERIFY_OTP response', res);
-    if (res?.data?.status === true) {
-      Helper.showToast(res?.data?.message || 'Verified');
-      if (userType === 'JobSeeker') {
-        handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
-      } else {
-        handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
-      }
-    } else {
-      Helper.showToast(res?.data?.message || 'Verification failed');
+
+  const handleVerify = async () => {
+    const code = otp.join('');
+    console.log('Verifying OTP', { mobile, code });
+    if (!mobile) {
+      Helper.showToast('Mobile number missing');
+      return;
     }
-  } catch (e) {
-    console.warn('VERIFY_OTP error', e);
-    Helper.showToast('Network error');
-  } finally {
-    setVerifying(false);
-  }
- };
+    if (!/^\d{6}$/.test(code)) {
+      setOtpError('Please enter complete OTP');
+      return;
+    }
+    setOtpError('');
+    setVerifying(true);
+    try {
+      const payload = { number: mobile, otp: code, userType: userType };
+      const res = await Auth_Api(ApiUrl.VERIFY_OTP, payload)();
+      if (res?.data?.status === true) {
+        console.log('VERIFY_OTP response', res);
+
+        const userData = { ...res.data.user, token: res.data.token };
+        dispatch(loginSuccess(userData));
+
+        Helper.showToast(res?.data?.message || 'Verified');
+        if (res?.data?.user?.userType === 'JobSeeker') {
+          handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+        } else {
+          handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+        }
+      } else {
+        Helper.showToast(res?.data?.message || 'Verification failed');
+      }
+    } catch (e) {
+      console.warn('VERIFY_OTP error', e);
+      Helper.showToast('Network error');
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>

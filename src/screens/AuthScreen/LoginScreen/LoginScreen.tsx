@@ -9,28 +9,42 @@ import Button from '../../../components/Button';
 import Helper from '../../../Lib/HelperFiles/Helper';
 import { Auth_Api } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
+import validate from '../../../Lib/HelperFiles/validation/validate_wrapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../../../Redux/Reducers/Userslice';
 
 const LoginScreen = ({ route }: any) => {
-  const userType = route?.params?.userType;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { userType } = useSelector((state: any) => state.user);
   const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
   const [mobileError, setMobileError] = useState('');
 
-  const LoginHandler = async () => {
-    if (!mobileNumber || mobileNumber.length !== 10) {
-      setMobileError('Please enter a valid 10-digit mobile number');
-      return;
+  const checkValidation = () => {
+    const mobileErr = validate('mobile', mobileNumber);
+    if (mobileErr) {
+      setMobileError(mobileErr);
+      return false;
     }
     setMobileError('');
+    return true;
+  };
+
+  const LoginHandler = async () => {
+    if (!checkValidation()) {
+      return;
+    }
 
     try {
       const payload = { number: mobileNumber, userType: userType };
-
       const res = await Auth_Api(ApiUrl.LOGIN, payload)();
       console.log('LOGIN response', res);
       if (res?.data?.status === true) {
         setLoading(false);
+        const userData = { ...res.data.user, token: res.data.token };
+        console.log('userData', userData);
+        dispatch(loginSuccess(userData));
         if (userType === 'JobSeeker') {
           handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
         } else {
@@ -111,7 +125,7 @@ const LoginScreen = ({ route }: any) => {
 
       <View style={styles.footerHighlightContainer}>
         <Text style={styles.footerText}>{APP_TEXT.loginNewToAppName}?{' '}</Text>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => { handleNavigation({ type: 'push', page: 'Signup', navigation: navigation, passProps: { userType: userType } }) }}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => { handleNavigation({ type: 'push', page: 'Signup', navigation: navigation, }) }}>
           <Text style={styles.footerHighlight}>{APP_TEXT.loginJoinTheCollective}</Text>
         </TouchableOpacity>
       </View>
