@@ -93,7 +93,7 @@ const LoginScreen = ({ route }: any) => {
               }}
               style={styles.mobileInputText}
               keyboardType="number-pad"
-              placeholder="98765 43210"
+              placeholder="Enter Mobile Number"
               placeholderTextColor="#A5ACB7"
               maxLength={10}
             />
