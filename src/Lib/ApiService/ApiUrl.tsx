@@ -10,6 +10,7 @@ const ApiUrl = {
   similarJobs: 'recruiterJob/similarJobs',
   ApplyJob: 'jobApplication/apply',
   appliedByUser: 'jobApplication/CheckApplyJobsStatus',
+  createJob: 'recruiterJob/create',
 
 };
 
