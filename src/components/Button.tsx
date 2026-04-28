@@ -1,9 +1,11 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
+
   type StyleProp,
   type TextStyle,
   type ViewStyle,
@@ -28,9 +30,15 @@ export type ButtonProps = {
 
 const Button = ({ disabled = false, loading = false, label, onPress, containerStyle, labelStyle, rightArrow = false }: ButtonProps) => {
   return (
-    <TouchableOpacity disabled={disabled} activeOpacity={0.8} style={[styles.container, containerStyle, { backgroundColor: disabled ? Colors.mutedSlate : Colors.ctaBlue, }]} onPress={disabled ? () => { } : onPress}>
-      <Text style={[styles.label, labelStyle]}>{label}</Text>
-      {rightArrow && <Image source={Images.backArrow} style={styles.rightArrowIcon} />}
+    <TouchableOpacity disabled={disabled || loading} activeOpacity={0.8} style={[styles.container, containerStyle, { backgroundColor: (disabled || loading) ? Colors.mutedSlate : Colors.ctaBlue, }]} onPress={(disabled || loading) ? () => { } : onPress}>
+      {loading ? (
+        <ActivityIndicator color={Colors.white} />
+      ) : (
+        <>
+          <Text style={[styles.label, labelStyle]}>{label}</Text>
+          {rightArrow && <Image source={Images.backArrow} style={styles.rightArrowIcon} />}
+        </>
+      )}
     </TouchableOpacity>
   );
 };

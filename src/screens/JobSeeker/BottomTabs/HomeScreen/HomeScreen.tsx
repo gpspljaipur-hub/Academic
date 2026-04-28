@@ -104,7 +104,9 @@ const HomeScreen = () => {
               <Text style={styles.sectionSubTitle}>{APP_TEXT.homeCuratedBy}</Text>
             </View>
 
-            <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('RecommendedJobs')}>
+              <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+            </TouchableOpacity>
           </View>
 
           {loading ? (

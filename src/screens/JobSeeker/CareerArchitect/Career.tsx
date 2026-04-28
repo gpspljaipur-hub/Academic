@@ -50,7 +50,7 @@ const Career = () => {
   const { job } = route.params || {};
   const user = useSelector((state: any) => state.user.user);
   const [similarJobs, setSimilarJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [jobDetails, setJobDetails] = useState(job);
   const [seeAll, setSeeAll] = useState(false);
   const [applyClicked, setApplyClicked] = useState(false);
@@ -85,7 +85,6 @@ const Career = () => {
   const fetchSimilarJobs = async () => {
     if (!jobDetails?._id) return;
     try {
-      setLoading(true);
       const res: any = await Post_ApiWithToken(ApiUrl.similarJobs, { id: jobDetails._id })();
       if (res?.data?.status) {
         setSimilarJobs(res.data.data || []);
@@ -93,7 +92,6 @@ const Career = () => {
     } catch (error) {
       console.log('error', error);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -110,14 +108,18 @@ const Career = () => {
         job_id: jobDetails._id,
         user_id: userId
       })();
-
+      console.log('Apply error', res);
+      setLoading(true)
       if (res?.data?.data?.status) {
         Helper.showToast('Application submitted successfully!');
         checkIfApplied();
+        setLoading(false);
       } else {
+        setLoading(false);
         Helper.showToast('Already applied for this job.');
       }
     } catch (error) {
+      setLoading(false);
       console.log('Apply error', error);
       Helper.showToast('Something went wrong. Please try again later.');
     }
@@ -253,18 +255,16 @@ const Career = () => {
             <Text style={styles.viewAllText}>View All</Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
-        ) : (
-          <FlatList
-            data={similarJobs}
-            renderItem={renderSimilarRole}
-            keyExtractor={item => item._id || item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingRight: 20, paddingBottom: 10 }}
-          />
-        )}
+
+        <FlatList
+          data={similarJobs}
+          renderItem={renderSimilarRole}
+          keyExtractor={item => item._id || item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingRight: 20, paddingBottom: 10 }}
+        />
+
       </ScrollView>
 
       {/* Bottom Bar */}
@@ -274,6 +274,7 @@ const Career = () => {
         </TouchableOpacity>
         <View style={styles.applyButton}>
           <Button
+            loading={loading}
             disabled={applyClicked}
             label={applyClicked ? "Applied" : "Apply Now"}
             onPress={handleApply}
