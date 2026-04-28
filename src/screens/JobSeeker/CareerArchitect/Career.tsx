@@ -8,6 +8,7 @@ import {
   FlatList,
   StatusBar,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './Styles';
@@ -15,10 +16,12 @@ import { APP_TEXT } from '../../../comman/String';
 import Colors from '../../../comman/Colors';
 import Images from '../../../comman/Images';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import { Post_ApiWithToken } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
+import Helper from '../../../Lib/HelperFiles/Helper';
 
 const SIMILAR_ROLES = [
   {
@@ -45,6 +48,7 @@ const Career = () => {
   const navigation = useNavigation();
   const route = useRoute<any>();
   const { job } = route.params || {};
+  const user = useSelector((state: any) => state.user.user);
   const [similarJobs, setSimilarJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [jobDetails, setJobDetails] = useState(job);
@@ -54,20 +58,68 @@ const Career = () => {
 
   useEffect(() => {
     fetchSimilarJobs();
+    checkIfApplied();
   }, [jobDetails?._id]);
+
+
+  const checkIfApplied = async () => {
+    const userId = user?._id || user?.id;
+    if (!jobDetails?._id || !userId) return;
+    try {
+      // Pass both job_id and user_id to check application status
+      const res: any = await Post_ApiWithToken(ApiUrl.appliedByUser, {
+        job_id: jobDetails._id,
+        user_id: userId
+      })();
+      if (res?.data?.data?.length > 0) {
+        setApplyClicked(true);
+      } else {
+        setApplyClicked(false);
+      }
+
+    } catch (error) {
+      console.log('checkIfApplied error', error);
+    }
+  };
 
   const fetchSimilarJobs = async () => {
     if (!jobDetails?._id) return;
     try {
       setLoading(true);
       const res: any = await Post_ApiWithToken(ApiUrl.similarJobs, { id: jobDetails._id })();
-      if (res?.data?.data?.status) {
-        setSimilarJobs(res.data.data.data || []);
+      if (res?.data?.status) {
+        setSimilarJobs(res.data.data || []);
       }
     } catch (error) {
       console.log('error', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleApply = async () => {
+    const userId = user?._id || user?.id;
+    console.log("user Id", userId);
+    if (!jobDetails?._id || !userId) {
+      Helper.showToast('Unable to process application. Please login again.');
+      return;
+    }
+
+    try {
+      const res: any = await Post_ApiWithToken(ApiUrl.ApplyJob, {
+        job_id: jobDetails._id,
+        user_id: userId
+      })();
+
+      if (res?.data?.data?.status) {
+        Helper.showToast('Application submitted successfully!');
+        checkIfApplied();
+      } else {
+        Helper.showToast('Already applied for this job.');
+      }
+    } catch (error) {
+      console.log('Apply error', error);
+      Helper.showToast('Something went wrong. Please try again later.');
     }
   };
 
@@ -217,16 +269,17 @@ const Career = () => {
 
       {/* Bottom Bar */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.bookmarkButton}>
-          <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: Colors.inkDark }} resizeMode="contain" />
+        <TouchableOpacity style={styles.bookmarkButton} onPress={() => setBookmarkClicked(!bookmarkClicked)}>
+          <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: bookmarkClicked ? Colors.brandBlue : Colors.inkDark }} resizeMode="contain" />
         </TouchableOpacity>
         <View style={styles.applyButton}>
-          <Button label="Apply Now" onPress={() => { }} />
+          <Button
+            disabled={applyClicked}
+            label={applyClicked ? "Applied" : "Apply Now"}
+            onPress={handleApply}
+
+          />
         </View>
-        {/* <Button label="Apply Now" onPress={() => { }}    /> */}
-        {/* <TouchableOpacity style={styles.applyButton}>
-          <Text style={styles.applyButtonText}>Apply Now</Text>
-        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

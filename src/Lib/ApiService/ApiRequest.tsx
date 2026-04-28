@@ -85,7 +85,9 @@ export async function Get_Send_Api(Url: string, SendData: any) {
 export async function ApiRequestRow(Url: string, SendData: any) {
   const token = await getToken();
   try {
-    return await axios.post(fullUrl(Url), SendData, { headers: headersFormBearer(token) });
+    const response = await axios.post(fullUrl(Url), SendData, { headers: headersJsonBearer(token) });
+    console.log('ApiRequestRow response', response.data);
+    return response.data;
   } catch (error) {
     if (error) return error ? { error: true } : null;
     if (error) return error ? { error: true } : null;
