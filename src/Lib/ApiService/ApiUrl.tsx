@@ -7,6 +7,9 @@ const ApiUrl = {
   PostJobById: 'recruiterJob/jobById',
   UpdateJob: 'recruiterJob/updateJob',
   DeleteJob: 'recruiterJob/deleteJob',
+  similarJobs: 'recruiterJob/similarJobs',
+  ApplyJob: 'jobApplication/apply',
+  appliedByUser: 'jobApplication/CheckApplyJobsStatus',
   createJob: 'recruiterJob/create',
 
 };

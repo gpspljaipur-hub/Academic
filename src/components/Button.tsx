@@ -23,12 +23,13 @@ export type ButtonProps = {
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   rightArrow?: boolean;
+  disabled?: boolean;
 };
 
-const Button = ({loading = false, label, onPress, containerStyle, labelStyle,rightArrow = false }: ButtonProps) => {
+const Button = ({ disabled = false, loading = false, label, onPress, containerStyle, labelStyle, rightArrow = false }: ButtonProps) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.container, containerStyle]} onPress={onPress}>
-      <Text style={[styles.label, labelStyle] }>{label}</Text>
+    <TouchableOpacity disabled={disabled} activeOpacity={0.8} style={[styles.container, containerStyle, { backgroundColor: disabled ? Colors.mutedSlate : Colors.ctaBlue, }]} onPress={disabled ? () => { } : onPress}>
+      <Text style={[styles.label, labelStyle]}>{label}</Text>
       {rightArrow && <Image source={Images.backArrow} style={styles.rightArrowIcon} />}
     </TouchableOpacity>
   );
@@ -37,7 +38,7 @@ const Button = ({loading = false, label, onPress, containerStyle, labelStyle,rig
 export default Button;
 
 const styles = StyleSheet.create({
-  container: {flexDirection: 'row', justifyContent: 'center', gap: MarginHW.MarginW8, backgroundColor: Colors.ctaBlue, borderRadius: 10, height: HWSize.H_Height40, alignItems: 'center', marginTop: MarginHW.MarginH20, },
-  label: { color: Colors.white,fontFamily: fonts.LexendBold, fontSize: FontsSize.size16,  letterSpacing: 1.4,},
-  rightArrowIcon: { width: ImageSize.ImageW16 ,height: ImageSize.ImageH16,left: MarginHW.MarginW8, tintColor: Colors.white,transform: [{ rotate: '180deg' }] },
+  container: { flexDirection: 'row', justifyContent: 'center', gap: MarginHW.MarginW8, borderRadius: 10, height: HWSize.H_Height40, alignItems: 'center', marginTop: MarginHW.MarginH20, },
+  label: { color: Colors.white, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16, letterSpacing: 1.4, },
+  rightArrowIcon: { width: ImageSize.ImageW16, height: ImageSize.ImageH16, left: MarginHW.MarginW8, tintColor: Colors.white, transform: [{ rotate: '180deg' }] },
 });

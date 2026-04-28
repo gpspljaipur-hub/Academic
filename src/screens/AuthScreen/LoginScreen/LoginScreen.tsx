@@ -12,6 +12,8 @@ import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import validate from '../../../Lib/HelperFiles/validation/validate_wrapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../../Redux/Reducers/Userslice';
+import Config from '../../../Lib/ApiService/Config';
+import AsyncStorageHelper from '../../../Lib/HelperFiles/AsyncStorageHelper';
 
 const LoginScreen = ({ route }: any) => {
   const navigation = useNavigation();
@@ -45,6 +47,8 @@ const LoginScreen = ({ route }: any) => {
         const userData = { ...res.data.user, token: res.data.token };
         console.log('userData', userData);
         dispatch(loginSuccess(userData));
+        await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
+        await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
         if (userType === 'JobSeeker') {
           handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
         } else {

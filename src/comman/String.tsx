@@ -129,7 +129,7 @@ export const APP_TEXT = {
   premiumTestimonialAuthor: '— Sarah J., Senior Product Designer',
   premiumUpgradeButton: 'Upgrade Now',
   premiumSecureText: 'Cancel anytime. Secure payment via Stripe.',
-
+  aiMatch: ' AI MATCH',
   examNotifications: [
     {
       id: 'ssc-tier-1',

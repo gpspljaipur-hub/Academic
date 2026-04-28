@@ -1,11 +1,15 @@
-import React from 'react';
-import { FlatList, Image, ScrollView, Text, TextInput, View, TouchableOpacity, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, ScrollView, Text, TextInput, View, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
 import HomeHeader from '../../../../components/HomeHeader';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import { useNavigation } from '@react-navigation/native';
+import { Get_Api } from '../../../../Lib/ApiService/ApiRequest';
+import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
+import Colors from '../../../../comman/Colors';
+import Config from '../../../../Lib/ApiService/Config';
 
 const QUICK_TILES = [
   {
@@ -24,9 +28,32 @@ const QUICK_TILES = [
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
+      console.log('Jobs Response:', response);
+      if (response?.data.status) {
+        let jobsData = response?.data?.data;
+        setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
+      }
+    } catch (error) {
+      console.log('Error fetching jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
+      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>
@@ -77,33 +104,49 @@ const HomeScreen = () => {
               <Text style={styles.sectionSubTitle}>{APP_TEXT.homeCuratedBy}</Text>
             </View>
 
-              <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
-            </View>
-            {APP_TEXT.homeJobs.map(job => (
-              <Pressable onPress={() => navigation.navigate('CareerArchitect', { job })} key={job.title} style={styles.jobCard}>
-              <View style={styles.jobTopRow}>
+            <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+          </View>
 
-                <Image source={job.image} resizeMode='contain' style={styles.jobCompanyLogo} />
-                <View style={styles.aiBadge}>
-                  <Text style={styles.aiBadgeText}>⚡ {job.aiMatch}</Text>
-                </View>
-              </View>
-              <Text style={styles.jobTitle}>{job.title}</Text>
-              <Text style={styles.jobMeta}>
-                {job.company} • {job.location}
-              </Text>
-              <View style={styles.jobTagsRow}>
-                {job.tags.map(tag => (
-                  <View key={`${job.title}-${tag}`} style={styles.jobTag}>
-                    <Text style={styles.jobTagText}>{tag}</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+          ) : jobs.length > 0 ? (
+            jobs.slice(0, 5).map((job: any, index: number) => {
+              const title = job.title || job.jobTitle || 'Untitled Job';
+              const company = job.company || 'Unknown Company';
+              const location = job.location || 'Remote';
+              const tags = job.jobType || ['Full Time'];
+              const aiMatch = job.aiMatch || '90%';
+              const salary = job.salary || 'Competitive';
+              const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+              console.log("image", image);
+              return (
+                <Pressable onPress={() => navigation.navigate('CareerArchitect', { job })} key={index.toString()} style={styles.jobCard}>
+                  <View style={styles.jobTopRow}>
+                    <Image source={image ? { uri: image } : Images.amazonpay} resizeMode='cover' style={styles.jobCompanyLogo} />
+                    <View style={styles.aiBadge}>
+                      <Text style={styles.aiBadgeText}>⚡ {aiMatch} {APP_TEXT.aiMatch} </Text>
+                    </View>
                   </View>
-                ))}
-              </View>
-              <TouchableOpacity onPress={() => navigation.navigate('Apply')} style={styles.quickApply}>
-                <Text style={styles.quickApplyText}>{APP_TEXT.homeQuickApply}</Text>
-              </TouchableOpacity>
-            </Pressable>
-          ))}
+                  <Text style={styles.jobTitle}>{title}</Text>
+                  <Text style={styles.jobMeta}> {company} • {location} </Text>
+
+                  <View style={styles.jobTagsRow}>
+                    <View style={styles.jobTag}>
+                      <Text style={styles.jobTagText}>{tags}</Text>
+                    </View>
+
+                    <View style={styles.jobTag}>
+                      <Text style={styles.jobTagText}>{salary}</Text>
+                    </View>
+                  </View>
+
+                  <TouchableOpacity onPress={() => navigation.navigate('Apply')} style={styles.quickApply}>
+                    <Text style={styles.quickApplyText}>{APP_TEXT.homeQuickApply}</Text>
+                  </TouchableOpacity>
+                </Pressable>
+              );
+            })
+          ) : null}
         </View>
 
         <View style={styles.section}>
@@ -149,7 +192,7 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{APP_TEXT.homeUpcomingExamTitle}</Text>
-              <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
+            <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
           </View>
           <FlatList
             horizontal
