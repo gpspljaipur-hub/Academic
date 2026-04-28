@@ -1,6 +1,6 @@
 import Images from "./Images";
 
-export   const APP_TEXT = {
+export const APP_TEXT = {
   appName: 'AcademicArchitect',
   loginTitle: 'Welcome Back',
   loginSubtitle: 'Continue your journey toward professional excellence with your AI-powered career assistant.',
@@ -129,7 +129,7 @@ export   const APP_TEXT = {
   premiumTestimonialAuthor: '— Sarah J., Senior Product Designer',
   premiumUpgradeButton: 'Upgrade Now',
   premiumSecureText: 'Cancel anytime. Secure payment via Stripe.',
-
+  aiMatch: ' AI MATCH',
   examNotifications: [
     {
       id: 'ssc-tier-1',

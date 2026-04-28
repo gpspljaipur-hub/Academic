@@ -13,7 +13,7 @@ const headersFormBearer = (token: string) => ({
   Authorization: `Bearer ${token}`,
 });
 const headersWithoutBearer = () => ({
- 'Content-Type': 'application/x-www-form-urlencoded',
+  'Content-Type': 'application/x-www-form-urlencoded',
 });
 
 const headersJsonBearer = (token: string) => ({
@@ -34,12 +34,15 @@ export const Auth_Api = (Url: string, SendData: any) => async () => {
 };
 
 export const Get_Api = (Url: string, SendData: any) => async () => {
-  const data = await Get_Send_Api(Url, SendData);
-  return { data: data?.data?.data };
+  const response = await Get_Send_Api(Url, SendData);
+  return { data: response };
 };
 
 export const Post_ApiWithToken = (Url: string, SendData: any) => async () => {
+  console.log('Post_ApiWithToken url', fullUrl(Url));
+  console.log('Post_ApiWithToken payload', SendData);
   const data = await ApiRequestRow(Url, SendData);
+  console.log('ApiRequestRow response', data);
   return { data };
 };
 
@@ -56,27 +59,24 @@ export const Update_Image = (Url: string, SendData: any) => async () => {
 export async function Auth_ApiRequest(Url: string, SendData: any) {
   const isConnected = await NetworkUtils.isNetworkAvailable();
   if (!isConnected) return { error: true, offline: true };
- console.log('isConnected', isConnected); 
+  console.log('isConnected', isConnected);
   try {
     console.log('Auth_ApiRequest payload', { url: fullUrl(Url), data: SendData });
     console.log('Auth_ApiRequest headers', headersWithoutBearer());
     const response = await axios.post(fullUrl(Url), SendData, {
-      headers:headersWithoutBearer(),
+      headers: headersWithoutBearer(),
     });
     return response.data;
   } catch (error) {
-    return error?{ error: true }: null;
+    return error ? { error: true } : null;
   }
 }
 
 export async function Get_Send_Api(Url: string, SendData: any) {
-  const token = await getToken();
-  const requestOptions = {
-    headers: { ...headersFormBearer(token) },
-  };
-  const body = SendData != null ? SendData : {};
   try {
-    return await axios.post(fullUrl(Url), body, requestOptions);
+    const response = await axios.get(fullUrl(Url));
+    console.log('Get_Send_Api response', response);
+    return response.data;
   } catch (error) {
     return axiosCatchLegacy(error);
   }
@@ -87,8 +87,8 @@ export async function ApiRequestRow(Url: string, SendData: any) {
   try {
     return await axios.post(fullUrl(Url), SendData, { headers: headersFormBearer(token) });
   } catch (error) {
-    if (error) return error? { error: true } : null;
-    if (error) return error? { error: true } : null;
+    if (error) return error ? { error: true } : null;
+    if (error) return error ? { error: true } : null;
     return error ?? null;
   }
 }
