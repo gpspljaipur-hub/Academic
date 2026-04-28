@@ -1,13 +1,45 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity,  StatusBar } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import styles from './Styles'
 import Colors from '../../../../comman/Colors'
+import { Get_Api } from '../../../../Lib/ApiService/ApiRequest'
+import ApiUrl from '../../../../Lib/ApiService/ApiUrl'
 import { APP_TEXT } from '../../../../comman/String'
 import Images from '../../../../comman/Images'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeHeader from '../../../../components/HomeHeader'
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
+    const [jobs, setJobs] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchJobs();
+    }, []);
+
+    const fetchJobs = async () => {
+        try {
+            setLoading(true);
+            const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
+            console.log('Jobs Response:', response);
+            if (response?.data) {
+                setJobs(Array.isArray(response.data) ? response.data : (response.data.jobs || []));
+            }
+        } catch (error) {
+            console.log('Error fetching jobs:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const chartData = [
+        { day: 'MON', height: 60, color: Colors.periwinkle },
+        { day: 'TUE', height: 90, color: Colors.periwinkle },
+        { day: 'WED', height: 70, color: Colors.periwinkle },
+        { day: 'THU', height: 130, color: Colors.brandBlue },
+        { day: 'FRI', height: 100, color: Colors.periwinkle },
+        { day: 'SAT', height: 80, color: Colors.periwinkle },
+        { day: 'SUN', height: 110, color: Colors.periwinkle },
+    ];
 
     const StatCard = ({ title, value, trend, icon, color }: any) => (
         <View style={styles.statsCard}>
@@ -40,19 +72,11 @@ const Dashboard = () => {
         </TouchableOpacity>
     );
 
-    const chartData = [
-        { day: 'MON', height: 60, color: Colors.periwinkle },
-        { day: 'TUE', height: 90, color: Colors.periwinkle },
-        { day: 'WED', height: 70, color: Colors.periwinkle },
-        { day: 'THU', height: 130, color: Colors.brandBlue },
-        { day: 'FRI', height: 100, color: Colors.periwinkle },
-        { day: 'SAT', height: 80, color: Colors.periwinkle },
-        { day: 'SUN', height: 110, color: Colors.periwinkle },
-    ];
+
 
     return (
         <SafeAreaView style={styles.container}>
-               <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
+            <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
                 <View style={styles.welcomeSection}>
@@ -63,7 +87,7 @@ const Dashboard = () => {
                 </View>
 
                 <View style={styles.actionButtonsRow}>
-                    
+
                     <TouchableOpacity style={styles.secondaryButton}>
                         <Image source={Images.ProfileIcon} style={{ width: 16, height: 16, tintColor: Colors.brandBlue }} />
                         <Text style={styles.buttonTextSecondary} numberOfLines={1}>{strings.viewAllApplicants}</Text>
@@ -102,9 +126,26 @@ const Dashboard = () => {
                     </TouchableOpacity>
                 </View>
 
-                <JobItem title="Senior Software Engineer" status="ACTIVE" time="3 days ago" shortCode="SE" />
-                <JobItem title="Senior Product Designer" status="ACTIVE" time="1 week ago" shortCode="UX" />
-                <JobItem title="Product Manager" status="CLOSED" time="2 days ago" shortCode="PM" />
+                {loading ? (
+                    <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+                ) : jobs.length > 0 ? (
+                    jobs.map((job: any, index: number) => {
+                        const title = job.title || job.jobTitle || 'Untitled Job';
+                        const status = job.status || 'ACTIVE';
+                        const time = job.createdAt ? new Date(job.createdAt).toLocaleDateString() : 'Recently';
+                        const shortCode = job.shortCode || title.substring(0, 2).toUpperCase();
+
+                        return (
+                            <JobItem
+                                key={index.toString()}
+                                title={title}
+                                status={status}
+                                time={time}
+                                shortCode={shortCode}
+                            />
+                        );
+                    })
+                ) : null}
 
                 <View style={styles.sectionHeader1}>
                     <Text style={styles.sectionTitle}>{strings.applicationTrends}</Text>
