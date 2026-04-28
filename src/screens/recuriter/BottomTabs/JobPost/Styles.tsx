@@ -218,7 +218,50 @@ dropdownItemText: {
   color: Colors.primaryBlue,
   fontFamily: fonts.Lexend_Medium,
  
-},
+    },
+    logoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: hp(1),
+    },
+    logoPreview: {
+        width: wp(18),
+        height: wp(18),
+        borderRadius: wp(3),
+        backgroundColor: Colors.cardGray,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: wp(4),
+        borderWidth: 1,
+        borderColor: Colors.borderGray,
+        overflow: 'hidden',
+    },
+    logoImage: {
+        width: '100%',
+        height: '100%',
+    },
+    uploadButtons: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    uploadBtn: {
+        backgroundColor: Colors.aliceBlue,
+        paddingVertical: hp(1.2),
+        paddingHorizontal: wp(2),
+        borderRadius: wp(2),
+        borderWidth: 1,
+        borderColor: Colors.primaryBlue,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.48,
+    },
+    uploadBtnText: {
+        fontSize: FontsSize.size12,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.primaryBlue,
+        textAlign: 'center',
+    },
 });
 
 export default styles;
