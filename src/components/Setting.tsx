@@ -16,7 +16,13 @@ import FontsSize from '../comman/Sizes/FontsSize';
 import ImageSize from '../comman/Sizes/ImageSize';
 import Images from '../comman/Images';
 import { APP_TEXT } from '../comman/String';
-const Setting = ({ navigation }: any) => {
+import { handleNavigation } from '../navigation/RootNavigator';
+import { useNavigation } from '@react-navigation/native';
+import { logout } from '../Redux/Reducers/Userslice';
+import { useDispatch } from 'react-redux';
+const Setting = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState(true);
 
@@ -103,7 +109,10 @@ const Setting = ({ navigation }: any) => {
           <SettingItem icon={Images.rocket} title={APP_TEXT.settings.aboutApp} />
         </View>
 
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => {
+          dispatch(logout());
+          handleNavigation({ type: 'setRoot', page: 'Login', navigation: navigation as any, });
+        }} style={styles.logoutButton}>
           <Text style={styles.logoutText}>{APP_TEXT.settings.logout}</Text>
         </TouchableOpacity>
       </ScrollView>

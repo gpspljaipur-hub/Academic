@@ -5,17 +5,33 @@ import { APP_TEXT } from '../../comman/String';
 import { styles } from './Styles';
 import { useNavigation } from '@react-navigation/native';
 import { handleNavigation } from '../../navigation/RootNavigator';
+import { useSelector } from 'react-redux';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
+  const { user, isAuthenticated } = useSelector((state: any) => state.user);
+
+  console.log('user', user);
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('userType', user?.userType);
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      handleNavigation({ type: 'push', page: 'Step',navigation});
+      if (isAuthenticated) {
+        if (user?.userType === 'JobSeeker') {
+          handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+        } else {
+          handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+        }
+      } else {
+
+        handleNavigation({ type: 'setRoot', page: 'Step', navigation });
+      }
     }, 2000);
-    return () => clearTimeout(timer);  
+    return () => clearTimeout(timer);
   }, []);
 
- 
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +46,7 @@ const SplashScreen = () => {
         <Text style={styles.subtitle}>{APP_TEXT.splashSubtitle}</Text>
       </View>
 
-      
+
     </SafeAreaView>
   );
 };

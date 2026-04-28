@@ -23,4 +23,5 @@ export const styles = StyleSheet.create({
   timerValue: { color: '#6C8FB7', fontFamily: fonts.LexendBold },
   changeText: { color: Colors.brandBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16, marginTop: MarginHW.MarginH10, textAlign: 'center' },
   footerText: { color: '#4E5868', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14, letterSpacing: 2, marginBottom: MarginHW.MarginH14, marginTop: MarginHW.MarginH30, textAlign: 'center' },
+  errorText: { color: 'red', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12, marginTop: MarginHW.MarginH5 || 4, textAlign: 'center' },
 });

@@ -1,6 +1,6 @@
 import Images from "./Images";
 
-export const APP_TEXT = {
+export   const APP_TEXT = {
   appName: 'AcademicArchitect',
   loginTitle: 'Welcome Back',
   loginSubtitle: 'Continue your journey toward professional excellence with your AI-powered career assistant.',
@@ -37,8 +37,10 @@ export const APP_TEXT = {
   signupSubtitle: 'Start your professional journey with AI-powered matches.',
   signupFullNameLabel: 'Full Name',
   signupMobileLabel: 'Mobile Number',
+  emailLabel: 'Email Address',
   signupFullNamePlaceholder: 'Enter Your Name',
   signupMobilePlaceholder: 'Enter Your Mobile Number',
+  emailPlaceholder: 'Enter Your Email Address',
   signupButton: 'Join Now',
   signupOrText: 'OR',
   signupGoogleButton: 'Sign up with Google',

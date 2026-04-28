@@ -18,7 +18,7 @@ import Setting from '../components/Setting';
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
-  Otp: undefined;
+  OtpScreen: undefined;
   Step: undefined;
   Splash: undefined;
   Notification: undefined;
@@ -48,7 +48,7 @@ const RootNavigator = () => {
       }}>
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Otp" component={OtpScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="OtpScreen" component={OtpScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Step" component={Step} options={{ headerShown: false }} />
       <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} />

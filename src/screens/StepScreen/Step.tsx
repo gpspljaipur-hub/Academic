@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUserType } from '../../Redux/Reducers/Userslice';
 import {
   ImageBackground,
   ImageSourcePropType,
@@ -96,18 +98,21 @@ const HORIZONTAL_PADDING = 22;
 
 const Step = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const { width: windowWidth } = useWindowDimensions();
   const slideWidth = Math.max(1, windowWidth - HORIZONTAL_PADDING * 2);
   const scrollRef = useRef<ScrollView>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  
-  const onSelectUserType = (userType: 'Recruiter' | 'JobSeeker') => { 
-    console.log('Selected User Type:', userType);
-    setIsModalVisible(false);
-    handleNavigation({ type: 'push', page: 'Login', navigation, passProps: { userType: userType } });
-  };
   const isLastStep = activeStep === STEP_DATA.length - 1;
+
+
+  const onSelectUserType = (userType: 'Recruiter' | 'JobSeeker') => {
+    dispatch(setUserType(userType));
+    setIsModalVisible(false);
+    handleNavigation({ type: 'push', page: 'Login', navigation });
+  };
 
   const goToIndex = useCallback((index: number) => {
     const clamped = Math.max(0, Math.min(STEP_DATA.length - 1, index));
@@ -135,8 +140,8 @@ const Step = () => {
   };
 
   const onSkipPress = () => {
-     handleNavigation({ type: 'push', page: 'Login', navigation });
-    
+    handleNavigation({ type: 'push', page: 'Login', navigation });
+
     // goToIndex(STEP_DATA.length - 1);
 
   };
@@ -144,7 +149,7 @@ const Step = () => {
   const slides = useMemo(
     () =>
       STEP_DATA.map((item, stepIndex) => (
-        <View key={item.phase} style={[styles.slide, { width: slideWidth,}]}>
+        <View key={item.phase} style={[styles.slide, { width: slideWidth, }]}>
           <ImageBackground
             source={item.heroImage}
             imageStyle={styles.heroImage}
@@ -170,7 +175,7 @@ const Step = () => {
             ))}
           </Text>
 
-          <Text  style={styles.descriptionText}>{item.description}</Text>
+          <Text style={styles.descriptionText}>{item.description}</Text>
 
           <View style={styles.cardsRow}>
             {item.cards.map(card => (
@@ -209,7 +214,7 @@ const Step = () => {
           {slides}
         </ScrollView>
 
-    
+
         <View style={styles.indicatorRow}>
           {STEP_DATA.map((_, index) => (
             <View
@@ -250,7 +255,7 @@ const Step = () => {
             >
               <Text style={styles.modalButtonText}>Job Seeker</Text>
             </TouchableOpacity>
-          
+
           </View>
         </View>
       </Modal>
