@@ -22,6 +22,7 @@ import { Post_ApiWithToken } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
 import Helper from '../../../Lib/HelperFiles/Helper';
+import { handleNavigation } from '../../../navigation/RootNavigator';
 
 const SIMILAR_ROLES = [
   {
@@ -47,11 +48,10 @@ const SIMILAR_ROLES = [
 const Career = () => {
   const navigation = useNavigation();
   const route = useRoute<any>();
-  const { job } = route.params || {};
   const user = useSelector((state: any) => state.user.user);
   const [similarJobs, setSimilarJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [jobDetails, setJobDetails] = useState(job);
+  const [jobDetails, setJobDetails] = useState(route?.params?.jobs);
   const [seeAll, setSeeAll] = useState(false);
   const [applyClicked, setApplyClicked] = useState(false);
   const [bookmarkClicked, setBookmarkClicked] = useState(false);
@@ -70,6 +70,7 @@ const Career = () => {
       const res: any = await Post_ApiWithToken(ApiUrl.appliedByUser, {
         job_id: jobDetails._id,
         user_id: userId
+
       })();
       if (res?.data?.data?.length > 0) {
         setApplyClicked(true);
@@ -96,33 +97,7 @@ const Career = () => {
   };
 
   const handleApply = async () => {
-    const userId = user?._id || user?.id;
-    console.log("user Id", userId);
-    if (!jobDetails?._id || !userId) {
-      Helper.showToast('Unable to process application. Please login again.');
-      return;
-    }
-
-    try {
-      const res: any = await Post_ApiWithToken(ApiUrl.ApplyJob, {
-        job_id: jobDetails._id,
-        user_id: userId
-      })();
-      console.log('Apply error', res);
-      setLoading(true)
-      if (res?.data?.data?.status) {
-        Helper.showToast('Application submitted successfully!');
-        checkIfApplied();
-        setLoading(false);
-      } else {
-        setLoading(false);
-        Helper.showToast('Already applied for this job.');
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log('Apply error', error);
-      Helper.showToast('Something went wrong. Please try again later.');
-    }
+    handleNavigation({ type: 'push', page: 'Apply', passProps: { jobs: jobDetails }, navigation });
   };
 
 
@@ -183,7 +158,7 @@ const Career = () => {
           <View style={styles.companyLogo}>
             <Image
               source={jobDetails?.companyLogo ? { uri: Config.imageurl + jobDetails.companyLogo } : Images.indesign}
-              style={{ width: '70%', height: '70%' }}
+              style={{ width: 100, height: 100, }}
               resizeMode="contain"
             />
           </View>

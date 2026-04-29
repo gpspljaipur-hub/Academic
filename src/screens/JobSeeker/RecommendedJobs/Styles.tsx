@@ -37,5 +37,6 @@ export const styles = StyleSheet.create({
     applyButton: { marginTop: MarginHW.MarginH14, backgroundColor: '#0A56B2', borderRadius: 10, alignItems: 'center', paddingVertical: MarginHW.PaddingH8 },
     applyButtonText: { color: Colors.white, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
     jobCompanyLogo: { backgroundColor: Colors.white, borderWidth: 1, borderColor: '#E4E7EB', borderRadius: 2, height: 50, width: 50 },
+    listContent: { paddingBottom: MarginHW.MarginH10 },
 
 });

@@ -30,18 +30,12 @@ const styles = StyleSheet.create({
         paddingVertical: MarginHW.PaddingH24,
     },
     companyLogo: {
-        width: HWSize.W_Width60,
-        height: HWSize.W_Width60,
         borderRadius: MarginHW.MarginW12,
-        backgroundColor: Colors.heroNavy,
+        backgroundColor: Colors.cardGray,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: MarginHW.MarginH16,
-        shadowColor: Colors.black,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5,
+
     },
     jobTitle: {
         fontSize: FontsSize.size22,
@@ -72,7 +66,7 @@ const styles = StyleSheet.create({
         marginHorizontal: MarginHW.MarginW20,
         paddingHorizontal: MarginHW.PaddingW10,
         paddingVertical: MarginHW.PaddingH14,
-        borderRadius:15,
+        borderRadius: 15,
         backgroundColor: Colors.ctaBlue,
         shadowColor: Colors.ctaBlue,
         shadowOffset: { width: 0, height: 10 },
@@ -87,7 +81,7 @@ const styles = StyleSheet.create({
     },
     aiHeader: {
         flex: 1,
-      
+
     },
     aiTitleRow: {
         flexDirection: 'row',
@@ -101,7 +95,7 @@ const styles = StyleSheet.create({
     },
     skillsContainer: {
         flex: 0.5,
-      
+
     },
     skillBadge: {
         backgroundColor: Colors.white18,
@@ -247,12 +241,12 @@ const styles = StyleSheet.create({
         color: Colors.mutedSlate,
     },
     bottomBar: {
-     marginBottom: MarginHW.MarginH20,
-     flexDirection: 'row',
-     alignItems: 'center',
-     justifyContent: 'center',
-     paddingHorizontal: MarginHW.PaddingW16,
-     
+        marginBottom: MarginHW.MarginH20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: MarginHW.PaddingW16,
+
     },
     bookmarkButton: {
         width: HWSize.W_Width40,

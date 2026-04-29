@@ -1,11 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { FlatList, Image, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import HomeHeader from '../../../../components/HomeHeader';
 import { useNavigation } from '@react-navigation/native';
+import { Get_Api } from '../../../../Lib/ApiService/ApiRequest';
+import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
+import Colors from '../../../../comman/Colors';
+import Config from '../../../../Lib/ApiService/Config';
+import { handleNavigation } from '../../../../navigation/RootNavigator';
 
 const FILTERS = [
   APP_TEXT.jobsFilterLocation,
@@ -19,6 +24,28 @@ const JobsScreen = () => {
   const navigation = useNavigation<any>();
   const [selectedFilter, setSelectedFilter] = useState(FILTERS[0]);
   const filtersListRef = useRef<FlatList<FilterItem>>(null);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
+      console.log('Jobs Response:', response);
+      if (response?.data.status) {
+        let jobsData = response?.data?.data;
+        setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
+      }
+    } catch (error) {
+      console.log('Error fetching jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onFilterPress = (item: FilterItem, index: number) => {
     setSelectedFilter(item);
@@ -29,25 +56,109 @@ const JobsScreen = () => {
     });
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.jobsHeaderTitle} IconImg={Images.userImage}  bellIcon={Images.bellIcon} />
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        <View style={styles.searchRow}>
-          <View style={styles.searchBox}>
-            <Image source={Images.search} resizeMode="contain" style={styles.searchIconInInput} />
-            <TextInput
-              placeholder={APP_TEXT.jobsSearchPlaceholder}
-              placeholderTextColor="#6B7280"
-              style={styles.searchInput}
-            />
+  const renderJobItem = ({ item: job }: { item: any }) => {
+    const title = job.title || job.jobTitle || 'Untitled Job';
+    const company = job.company || 'Unknown Company';
+    const location = job.location || 'Remote';
+    const salary = job.salary || 'Competitive';
+    const aiMatch = job.aiMatch || '90%';
+    const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+    return (
+      <TouchableOpacity style={styles.jobCard} onPress={() => { handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
+        <View style={styles.jobTopRow}>
+          <View style={styles.logoWrap}>
+            <Image source={image ? { uri: image } : Images.amazonpay} resizeMode="contain" style={styles.logoImage} />
           </View>
-          <View style={styles.filterActionBox}>
-            <Image source={Images.filter} resizeMode="contain" style={styles.filterActionIcon} />
+          <View style={styles.jobTopCenter}>
+            <View style={styles.matchBadge}>
+              <Text style={styles.matchText}>⚡ {aiMatch}</Text>
+            </View>
+            <Text style={styles.jobTitle}>{title}</Text>
+            <Text style={styles.companyName}>{company}</Text>
+          </View>
+          <Image source={Images.bookmark} resizeMode="contain" style={styles.bookmarkIcon} />
+        </View>
+
+        <View style={styles.metaRow}>
+          <View style={styles.metaItem}>
+            <Image source={Images.locations} resizeMode="contain" style={styles.metaIcon} />
+            <Text style={styles.metaText}>{location}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Image source={Images.money} resizeMode="contain" style={styles.metaIcon} />
+            <Text style={styles.metaText}>{salary}</Text>
           </View>
         </View>
 
+        <TouchableOpacity onPress={() => { handleNavigation({ type: 'push', navigation, page: 'Apply', passProps: { jobs: job } }) }} style={styles.applyButton}>
+          <Text style={styles.applyButtonText}>{APP_TEXT.homeQuickApply}</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
+
+  const ListHeader = () => (
+    <>
+      <View style={styles.searchRow}>
+        <View style={styles.searchBox}>
+          <Image source={Images.search} resizeMode="contain" style={styles.searchIconInInput} />
+          <TextInput
+            placeholder={APP_TEXT.jobsSearchPlaceholder}
+            placeholderTextColor="#6B7280"
+            style={styles.searchInput}
+          />
+        </View>
+        <View style={styles.filterActionBox}>
+          <Image source={Images.filter} resizeMode="contain" style={styles.filterActionIcon} />
+        </View>
+      </View>
+
+      <FlatList
+        ref={filtersListRef}
+        horizontal
+        data={FILTERS}
+        keyExtractor={item => item}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filtersList}
+        onScrollToIndexFailed={() => { }}
+        renderItem={({ item, index }) => (
+          <Pressable
+            onPress={() => onFilterPress(item, index)}
+            style={[styles.filterChip, selectedFilter === item && styles.filterChipActive]}>
+            <Text style={[styles.filterChipText, selectedFilter === item && styles.filterChipTextActive]}>
+              {item}
+            </Text>
+          </Pressable>
+        )}
+      />
+
+      <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
+
+      {loading && (
+        <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+      )}
+    </>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <HomeHeader title={APP_TEXT.jobsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
+
+      <View style={styles.searchRow}>
+        <View style={styles.searchBox}>
+          <Image source={Images.search} resizeMode="contain" style={styles.searchIconInInput} />
+          <TextInput
+            placeholder={APP_TEXT.jobsSearchPlaceholder}
+            placeholderTextColor="#6B7280"
+            style={styles.searchInput}
+          />
+        </View>
+        <View style={styles.filterActionBox}>
+          <Image source={Images.filter} resizeMode="contain" style={styles.filterActionIcon} />
+        </View>
+      </View>
+
+      <View>
         <FlatList
           ref={filtersListRef}
           horizontal
@@ -55,53 +166,33 @@ const JobsScreen = () => {
           keyExtractor={item => item}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.filtersList}
-          onScrollToIndexFailed={() => {}}
+          onScrollToIndexFailed={() => { }}
           renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() => onFilterPress(item, index)}
-              style={[styles.filterChip, selectedFilter === item && styles.filterChipActive]}>
-              <Text style={[styles.filterChipText, selectedFilter === item && styles.filterChipTextActive]}>
-                {item}
-              </Text>
-            </Pressable>
+            <View key={index}>
+              <TouchableOpacity
+                onPress={() => onFilterPress(item, index)}
+                style={[styles.filterChip, selectedFilter === item && styles.filterChipActive]}>
+                <Text style={[styles.filterChipText, selectedFilter === item && styles.filterChipTextActive]}>
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
           )}
         />
+      </View>
+      <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
+      {loading && (
+        <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+      )}
 
-        <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
-
-        {APP_TEXT.jobsList.map(job => (
-          <TouchableOpacity key={job.title} style={styles.jobCard} onPress={() => {navigation.navigate('CareerArchitect')}}>
-            <View style={styles.jobTopRow}>
-              <View style={styles.logoWrap}>
-                <Image source={job.image} resizeMode="contain" style={styles.logoImage} />
-              </View>
-              <View style={styles.jobTopCenter}>
-                <View style={styles.matchBadge}>
-                  <Text style={styles.matchText}>{job.aiMatch}</Text>
-                </View>
-                <Text style={styles.jobTitle}>{job.title}</Text>
-                <Text style={styles.companyName}>{job.company}</Text>
-              </View>
-              <Image source={Images.bookmark} resizeMode="contain" style={styles.bookmarkIcon} />
-            </View>
-
-            <View style={styles.metaRow}>
-              <View style={styles.metaItem}>
-                <Image source={Images.locations} resizeMode="contain" style={styles.metaIcon} />
-                <Text style={styles.metaText}>{job.location}</Text>
-              </View>
-              <View style={styles.metaItem}>
-                <Image source={Images.money} resizeMode="contain" style={styles.metaIcon} />
-                <Text style={styles.metaText}>{job.salary}</Text>
-              </View>
-            </View>
-
-              <TouchableOpacity onPress={() => {navigation.navigate('Apply')}} style={styles.applyButton}>
-                <Text style={styles.applyButtonText}>{APP_TEXT.homeQuickApply}</Text>
-              </TouchableOpacity>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <FlatList
+        data={loading ? [] : jobs}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={renderJobItem}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
+      />
     </SafeAreaView>
   );
 };
