@@ -41,11 +41,9 @@ const LoginScreen = ({ route }: any) => {
     try {
       const payload = { number: mobileNumber, userType: userType };
       const res = await Auth_Api(ApiUrl.LOGIN, payload)();
-      console.log('LOGIN response', res);
       if (res?.data?.status === true) {
         setLoading(false);
         const userData = { ...res.data.user, token: res.data.token };
-        console.log('userData', userData);
         dispatch(loginSuccess(userData));
         await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
         await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);

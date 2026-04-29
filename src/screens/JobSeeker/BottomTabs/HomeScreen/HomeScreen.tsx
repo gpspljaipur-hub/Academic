@@ -10,6 +10,7 @@ import { Get_Api } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
+import { handleNavigation } from '../../../../navigation/RootNavigator';
 
 const QUICK_TILES = [
   {
@@ -104,7 +105,9 @@ const HomeScreen = () => {
               <Text style={styles.sectionSubTitle}>{APP_TEXT.homeCuratedBy}</Text>
             </View>
 
-            <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('RecommendedJobs')}>
+              <Text style={styles.sectionAction}>{APP_TEXT.homeSeeAll}</Text>
+            </TouchableOpacity>
           </View>
 
           {loading ? (
@@ -120,7 +123,7 @@ const HomeScreen = () => {
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
               console.log("image", image);
               return (
-                <Pressable onPress={() => navigation.navigate('CareerArchitect', { job })} key={index.toString()} style={styles.jobCard}>
+                <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>
                     <Image source={image ? { uri: image } : Images.amazonpay} resizeMode='cover' style={styles.jobCompanyLogo} />
                     <View style={styles.aiBadge}>

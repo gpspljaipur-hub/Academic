@@ -22,6 +22,7 @@ import { Post_ApiWithToken } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
 import Helper from '../../../Lib/HelperFiles/Helper';
+import { handleNavigation } from '../../../navigation/RootNavigator';
 
 const SIMILAR_ROLES = [
   {
@@ -47,11 +48,10 @@ const SIMILAR_ROLES = [
 const Career = () => {
   const navigation = useNavigation();
   const route = useRoute<any>();
-  const { job } = route.params || {};
   const user = useSelector((state: any) => state.user.user);
   const [similarJobs, setSimilarJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [jobDetails, setJobDetails] = useState(job);
+  const [loading, setLoading] = useState(false);
+  const [jobDetails, setJobDetails] = useState(route?.params?.jobs);
   const [seeAll, setSeeAll] = useState(false);
   const [applyClicked, setApplyClicked] = useState(false);
   const [bookmarkClicked, setBookmarkClicked] = useState(false);
@@ -70,6 +70,7 @@ const Career = () => {
       const res: any = await Post_ApiWithToken(ApiUrl.appliedByUser, {
         job_id: jobDetails._id,
         user_id: userId
+
       })();
       if (res?.data?.data?.length > 0) {
         setApplyClicked(true);
@@ -85,7 +86,6 @@ const Career = () => {
   const fetchSimilarJobs = async () => {
     if (!jobDetails?._id) return;
     try {
-      setLoading(true);
       const res: any = await Post_ApiWithToken(ApiUrl.similarJobs, { id: jobDetails._id })();
       if (res?.data?.status) {
         setSimilarJobs(res.data.data || []);
@@ -93,34 +93,11 @@ const Career = () => {
     } catch (error) {
       console.log('error', error);
     } finally {
-      setLoading(false);
     }
   };
 
   const handleApply = async () => {
-    const userId = user?._id || user?.id;
-    console.log("user Id", userId);
-    if (!jobDetails?._id || !userId) {
-      Helper.showToast('Unable to process application. Please login again.');
-      return;
-    }
-
-    try {
-      const res: any = await Post_ApiWithToken(ApiUrl.ApplyJob, {
-        job_id: jobDetails._id,
-        user_id: userId
-      })();
-
-      if (res?.data?.data?.status) {
-        Helper.showToast('Application submitted successfully!');
-        checkIfApplied();
-      } else {
-        Helper.showToast('Already applied for this job.');
-      }
-    } catch (error) {
-      console.log('Apply error', error);
-      Helper.showToast('Something went wrong. Please try again later.');
-    }
+    handleNavigation({ type: 'push', page: 'Apply', passProps: { jobs: jobDetails }, navigation });
   };
 
 
@@ -181,7 +158,7 @@ const Career = () => {
           <View style={styles.companyLogo}>
             <Image
               source={jobDetails?.companyLogo ? { uri: Config.imageurl + jobDetails.companyLogo } : Images.indesign}
-              style={{ width: '70%', height: '70%' }}
+              style={{ width: 100, height: 100, }}
               resizeMode="contain"
             />
           </View>
@@ -253,18 +230,16 @@ const Career = () => {
             <Text style={styles.viewAllText}>View All</Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
-        ) : (
-          <FlatList
-            data={similarJobs}
-            renderItem={renderSimilarRole}
-            keyExtractor={item => item._id || item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingRight: 20, paddingBottom: 10 }}
-          />
-        )}
+
+        <FlatList
+          data={similarJobs}
+          renderItem={renderSimilarRole}
+          keyExtractor={item => item._id || item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingRight: 20, paddingBottom: 10 }}
+        />
+
       </ScrollView>
 
       {/* Bottom Bar */}
@@ -274,6 +249,7 @@ const Career = () => {
         </TouchableOpacity>
         <View style={styles.applyButton}>
           <Button
+            loading={loading}
             disabled={applyClicked}
             label={applyClicked ? "Applied" : "Apply Now"}
             onPress={handleApply}

@@ -87,6 +87,8 @@ export const APP_TEXT = {
   jobsFilterType: 'Job Type',
   jobsFilterSalary: 'Salary',
   jobsRecommendedTitle: 'Recommended For You',
+  jobsRecommended: 'Recommended ',
+
   jobsLocationIcon: '📍',
   jobsSalaryIcon: '💸',
   prepTitle: 'Boost Your Preparation',
