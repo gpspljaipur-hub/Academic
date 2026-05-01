@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.cardGray,
         borderRadius: 12,
         paddingHorizontal: MarginHW.MarginW16,
-       
+
     },
     input: {
         flex: 1,
@@ -166,6 +166,36 @@ const styles = StyleSheet.create({
     continueButton: {
         borderRadius: 12,
         marginTop: 0,
+    },
+    skillsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: MarginHW.MarginH10,
+    },
+    skillTag: {
+        backgroundColor: Colors.aliceBlue,
+        borderRadius: 20,
+        paddingHorizontal: MarginHW.MarginW12,
+        paddingVertical: MarginHW.MarginH5,
+        marginRight: MarginHW.MarginW8,
+        marginBottom: MarginHW.MarginH8,
+        borderWidth: 1,
+        borderColor: Colors.periwinkle,
+    },
+    selectedSkillTag: {
+        backgroundColor: Colors.brandBlue,
+        borderColor: Colors.brandBlue,
+    },
+    skillText: {
+        fontSize: FontsSize.size12,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.brandBlue,
+    },
+    selectedSkillText: {
+        color: Colors.white,
+    },
+    skillsList: {
+        marginTop: MarginHW.MarginH4,
     },
 });
 

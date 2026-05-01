@@ -55,7 +55,7 @@ const Career = () => {
   const [seeAll, setSeeAll] = useState(false);
   const [applyClicked, setApplyClicked] = useState(false);
   const [bookmarkClicked, setBookmarkClicked] = useState(false);
-
+  console.log("jobDetails", jobDetails);
   useEffect(() => {
     fetchSimilarJobs();
     checkIfApplied();
