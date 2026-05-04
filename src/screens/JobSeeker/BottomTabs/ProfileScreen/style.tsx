@@ -351,7 +351,27 @@ const styles = StyleSheet.create({
     editIcon: {
         fontSize: wp(3),
         color: Colors.primaryBlue,
-    }
+    },
+    skillsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: hp(1.5),
+    },
+    skillTag: {
+        backgroundColor: Colors.white,
+        paddingHorizontal: wp(3),
+        paddingVertical: hp(0.8),
+        borderRadius: wp(2),
+        marginRight: wp(2),
+        marginBottom: hp(1),
+        borderWidth: 1,
+        borderColor: Colors.iceBlue,
+    },
+    skillText: {
+        fontSize: FontsSize.size12,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.heroNavy,
+    },
 });
 
 export default styles;
