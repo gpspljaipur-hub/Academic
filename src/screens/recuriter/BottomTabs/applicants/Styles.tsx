@@ -8,13 +8,14 @@ import MarginHW from '../../../../comman/Sizes/MarginHW';
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    container: { flex: 1,  backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
+    container: { flex: 1, backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
 
     scrollContent: {
 
         paddingBottom: MarginHW.MarginH30,
     },
     progressSection: {
+        marginBottom: MarginHW.MarginH14,
     },
     progressLabel: {
         fontSize: FontsSize.size14,
@@ -90,6 +91,11 @@ export const styles = StyleSheet.create({
     companyLogo: {
         width: wp(10),
         height: wp(10),
+    },
+    companyLogoText: {
+        fontSize: FontsSize.size18,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.titleInk,
     },
     statusBadge: {
         paddingHorizontal: wp(3),
@@ -207,7 +213,7 @@ export const styles = StyleSheet.create({
     actionButtonsContainer: {
         flexDirection: 'row',
         gap: MarginHW.MarginW12,
-        marginTop: MarginHW.MarginH12,
+        marginTop: MarginHW.MarginH1,
     },
     viewDetailsButton: {
         flex: 1,

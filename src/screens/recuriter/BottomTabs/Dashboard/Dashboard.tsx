@@ -108,12 +108,18 @@ const Dashboard = () => {
 
                 <View style={styles.actionButtonsRow}>
 
-                    <TouchableOpacity style={styles.secondaryButton}>
+                    <TouchableOpacity
+                        style={styles.secondaryButton}
+                        onPress={() => navigation.navigate('Applicants')}
+                    >
                         <Image source={Images.ProfileIcon} style={{ width: 16, height: 16, tintColor: Colors.brandBlue }} />
                         <Text style={styles.buttonTextSecondary} numberOfLines={1}>{strings.viewAllApplicants}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.primaryButton}>
+                    <TouchableOpacity
+                        style={styles.primaryButton}
+                        onPress={() => navigation.navigate('Job')}
+                    >
                         <Text style={{ color: Colors.white, fontSize: 18 }}>+</Text>
                         <Text style={styles.buttonTextPrimary} numberOfLines={1}>{strings.postAJob}</Text>
                     </TouchableOpacity>
@@ -147,7 +153,9 @@ const Dashboard = () => {
 
                         <View style={styles.sectionHeader}>
                             <Text style={styles.sectionTitle}>{strings.recentJobPostings}</Text>
-                            <TouchableOpacity onPress={() => { }}>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate("RecuiterRecentJobs")
+                            }}>
                                 <Text style={styles.seeAllText}>{strings.seeAll}</Text>
                             </TouchableOpacity>
                         </View>

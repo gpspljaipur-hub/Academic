@@ -309,6 +309,7 @@ export const APP_TEXT = {
     totalApplicants: 'Total Applicants',
     shortlisted: 'Shortlisted',
     recentJobPostings: 'Recent Job Postings',
+    recruiterRecentJobs: 'Recruiter Recent Jobs',
     seeAll: 'See All',
     applicationTrends: 'Application Trends',
     downloadFullReport: 'Download Full Report',

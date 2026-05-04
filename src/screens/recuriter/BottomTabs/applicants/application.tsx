@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ScrollView,
@@ -113,6 +114,12 @@ const APPLICATIONS: Application[] = [
   },
 ];
 
+import { useSelector } from 'react-redux';
+import { Post_Api } from '../../../../Lib/ApiService/ApiRequest';
+import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Config from '../../../../Lib/ApiService/Config';
+
 type TabType = 'All' | 'Active' | 'Interviews' | 'Closed';
 
 const FILTERS = [
@@ -121,39 +128,65 @@ const FILTERS = [
   'Interviews',
   'Closed'
 ];
+
 const ApplicationsScreen = () => {
   const [selectedTab, setSelectedTab] = useState<TabType>(FILTERS[0] as TabType);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const filtersListRef = useRef<FlatList<any>>(null);
+  const { user } = useSelector((state: any) => state.user);
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+
+  React.useEffect(() => {
+    if (isFocused) {
+      fetchJobs();
+    }
+  }, [isFocused]);
+
+  const fetchJobs = async () => {
+    const recruiterId = user?.id || user?._id;
+    if (!recruiterId) return;
+
+    try {
+      setLoading(true);
+      const res: any = await Post_Api(`${ApiUrl.myJobs}/${recruiterId}`, {})();
+      console.log('fetchJobs in Application.tsx res', res.data.data);
+
+      if (res?.data?.status) {
+        setJobs(res.data.data || []);
+      }
+    } catch (error) {
+      console.log('fetchJobs error', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getTabCounts = () => ({
-    All: APPLICATIONS.length,
-    Active: APPLICATIONS.filter(a => a.status === 'APPLIED' || a.status === 'SHORTLISTED').length,
-    Interviews: APPLICATIONS.filter(a => a.status === 'INTERVIEW_SET').length,
-    Closed: APPLICATIONS.filter(a => a.status === 'REJECTED').length,
+    All: jobs.length,
+    Active: jobs.filter(a => a.status === 'OPEN' || a.status === 'open').length,
+    Interviews: 0, // Placeholder as we don't have this data yet
+    Closed: jobs.filter(a => a.status === 'CLOSED' || a.status === 'closed').length,
   });
 
   const filteredApplications = () => {
     switch (selectedTab) {
       case 'Active':
-        return APPLICATIONS.filter(a => a.status === 'APPLIED' || a.status === 'SHORTLISTED');
-      case 'Interviews':
-        return APPLICATIONS.filter(a => a.status === 'INTERVIEW_SET');
+        return jobs.filter(a => a.status === 'OPEN' || a.status === 'open');
       case 'Closed':
-        return APPLICATIONS.filter(a => a.status === 'REJECTED');
+        return jobs.filter(a => a.status === 'CLOSED' || a.status === 'closed');
       default:
-        return APPLICATIONS;
+        return jobs;
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case 'SHORTLISTED':
-        return Colors.periwinkle;
-      case 'APPLIED':
+    const s = status?.toUpperCase();
+    switch (s) {
+      case 'OPEN':
         return Colors.iceBlue;
-      case 'INTERVIEW_SET':
-        return Colors.badgeBlueTint;
-      case 'REJECTED':
+      case 'CLOSED':
         return '#FFE6E6';
       default:
         return Colors.iceBlue;
@@ -161,14 +194,11 @@ const ApplicationsScreen = () => {
   };
 
   const getStatusBadgeTextColor = (status: string) => {
-    switch (status) {
-      case 'SHORTLISTED':
-        return Colors.phaseBlue;
-      case 'APPLIED':
+    const s = status?.toUpperCase();
+    switch (s) {
+      case 'OPEN':
         return Colors.primaryBlue;
-      case 'INTERVIEW_SET':
-        return Colors.phaseBlue;
-      case 'REJECTED':
+      case 'CLOSED':
         return '#C41E3A';
       default:
         return Colors.primaryBlue;
@@ -176,18 +206,7 @@ const ApplicationsScreen = () => {
   };
 
   const getStatusText = (status: string) => {
-    switch (status) {
-      case 'SHORTLISTED':
-        return 'SHORTLISTED';
-      case 'APPLIED':
-        return 'APPLIED';
-      case 'INTERVIEW_SET':
-        return 'INTERVIEW SET';
-      case 'REJECTED':
-        return 'REJECTED';
-      default:
-        return 'APPLIED';
-    }
+    return status?.toUpperCase() || 'OPEN';
   };
 
   const counts = getTabCounts();
@@ -212,14 +231,13 @@ const ApplicationsScreen = () => {
         </View>
 
         {/* Tab Filters */}
-        <View style={styles.tabsContainer} >
+        {/* <View style={styles.tabsContainer} >
           <FlatList
             ref={filtersListRef}
             horizontal
-            data={FILTERS}
+            data={FILTERS.filter(f => f !== 'Interviews')}
             keyExtractor={item => item}
             showsHorizontalScrollIndicator={false}
-            onScrollToIndexFailed={() => { }}
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 key={item}
@@ -235,127 +253,78 @@ const ApplicationsScreen = () => {
                     selectedTab === item && styles.tabTextActive,
                   ]}
                 >
-                  {item} ({counts[item as TabType]})
+                  {item} ({counts[item as TabType] || 0})
                 </Text>
               </TouchableOpacity>
             )}
           />
-       
-        </View>
+        </View> */}
 
-        {/* Applications List */}
-        <FlatList
-          data={filteredApplications()}
-          keyExtractor={item => item.id}
-          scrollEnabled={false}
-          contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => (
-            <View style={styles.applicationCard}>
-              {/* Header Row with Logo and Status */}
-              <View style={styles.cardHeader}>
-                <View style={styles.logoWrapper}>
-                  <Image
-                    source={item.companyLogo}
-                    resizeMode="contain"
-                    style={styles.companyLogo}
-                  />
-                </View>
-                <View style={[
-                  styles.statusBadge,  { backgroundColor: getStatusBadgeColor(item.status) }]}>
-                  <Text style={[
-                    styles.statusBadgeText,
-                    { color: getStatusBadgeTextColor(item.status) }
-                  ]}>
-                    {getStatusText(item.status)}
-                  </Text>
-                </View>
-              </View>
+        {loading && jobs.length === 0 ? (
+          <ActivityIndicator size="large" color={Colors.brandBlue} style={{ marginTop: 50 }} />
+        ) : (
+          <FlatList
+            data={filteredApplications()}
+            keyExtractor={item => item._id}
+            scrollEnabled={false}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <View style={styles.applicationCard}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.logoWrapper}>
+                    {item?.companyLogo ?
+                      <Image
+                        source={item?.companyLogo && { uri: Config.imageurl + item.companyLogo } || Images.indesign} // Placeholder or from API if available
+                        resizeMode="contain"
+                        style={styles.companyLogo}
+                      />
+                      :
+                      <Text style={styles.companyLogoText}>{item?.company?.substring(0, 2)?.toUpperCase()}</Text>
+                    }
 
-              {/* Job Title */}
-              <Text style={styles.jobTitle}>{item.jobTitle}</Text>
-
-              {/* Company and Location */}
-              <Text style={styles.companyLocation}>
-                {item.company} • {item.location}
-              </Text>
-
-              {/* Timeline */}
-              <View style={styles.timelineContainer}>
-                {item.stages.map((stage, index) => (
-                  <View key={stage.name} style={styles.timelineItem}>
-                    {/* Dot */}
-                    <View style={[
-                      styles.timelineDot,
-                      stage.completed && styles.timelineDotCompleted,
-                      !stage.completed && styles.timelineDotIncomplete,
-                    ]} />
-
-                    {/* Line */}
-                    {index < item.stages.length - 1 && (
-                      <View style={[
-                        styles.timelineLine,
-                        stage.completed && styles.timelineLineCompleted,
-                        !stage.completed && styles.timelineLineIncomplete,
-                      ]} />
-                    )}
                   </View>
-                ))}
-              </View>
-
-              {/* Stage Labels */}
-              <View style={styles.stageLabelsContainer}>
-                {item.stages.map(stage => (
-                  <Text key={stage.name} style={styles.stageLabel}> {stage.name}   </Text>
-                ))}
-              </View>
-
-              {/* Applied Date */}
-              <Text style={styles.appliedDate}>Applied {item.appliedDate}</Text>
-
-              {/* Interview Info (if applicable) */}
-              {item.interviewInfo && (
-                <View style={styles.interviewInfoCard}>
-                  <Text style={styles.interviewInfoIcon}>📅</Text>
-                  <View style={styles.interviewInfoContent}>
-                    <Text style={styles.interviewInfoTitle}>
-                      {item.interviewInfo.type}
-                    </Text>
-                    <Text style={styles.interviewInfoTime}>
-                      {item.interviewInfo.date} • {item.interviewInfo.time}
+                  <View style={[
+                    styles.statusBadge, { backgroundColor: getStatusBadgeColor(item.status) }]}>
+                    <Text style={[
+                      styles.statusBadgeText,
+                      { color: getStatusBadgeTextColor(item.status) }
+                    ]}>
+                      {getStatusText(item.status)}
                     </Text>
                   </View>
                 </View>
-              )}
 
-              {/* Action Buttons */}
-              <View style={styles.actionButtonsContainer}>
-                {item.status === 'SHORTLISTED' || item.status === 'APPLIED' ? (
-                  <>
-                    <TouchableOpacity style={styles.viewDetailsButton}>
-                      <Text style={styles.viewDetailsButtonText}>View Details</Text>
-                    </TouchableOpacity>
-                    {item.canWithdraw && (
-                      <TouchableOpacity style={styles.withdrawButton}>
-                        <Text style={styles.withdrawButtonText}>Withdraw</Text>
-                      </TouchableOpacity>
-                    )}
-                  </>
-                ) : item.status === 'REJECTED' ? (
-                  <TouchableOpacity style={styles.archivedButton}>
-                    <Text style={styles.archivedButtonText}>Archived</Text>
+                <Text style={styles.jobTitle}>{item.title}</Text>
+
+                <Text style={styles.companyLocation}>
+                  {item.company} • {item.location}
+                </Text>
+
+                <View style={{ marginTop: 1 }}>
+                  <Text style={styles.appliedDate}>Posted {new Date(item.createdAt).toLocaleDateString()}</Text>
+                </View>
+
+                <View style={styles.actionButtonsContainer}>
+                  <TouchableOpacity
+                    style={styles.viewDetailsButton}
+                    onPress={() => navigation.navigate('RecuiterRecentJobs')} // Navigate to see details
+                  >
+                    <Text style={styles.viewDetailsButtonText}>Manage Applicants</Text>
                   </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity style={styles.viewDetailsButton}>
-                    <Text style={styles.viewDetailsButtonText}>View Details</Text>
-                  </TouchableOpacity>
-                )}
+                </View>
               </View>
-            </View>
-          )}
-        />
+            )}
+            ListEmptyComponent={
+              <View style={{ alignItems: 'center', marginTop: 50 }}>
+                <Text style={{ color: Colors.bodyGray }}>No jobs found</Text>
+              </View>
+            }
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
+
 };
 
 export default ApplicationsScreen;
