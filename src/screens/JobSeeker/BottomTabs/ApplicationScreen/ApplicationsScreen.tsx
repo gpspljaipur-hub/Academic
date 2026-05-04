@@ -94,11 +94,11 @@ const ApplicationsScreen = () => {
           status: app.status?.toUpperCase() || 'APPLIED',
           appliedDate: new Date(app.appliedDate || app.createdAt).toLocaleDateString(),
           stages: [
-            { name: 'APPLIED', completed: true },
-            { name: 'REVIEW', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'SHORTLIST', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'INTERVIEW', completed: app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'FINAL', completed: app.status?.toUpperCase() === 'HIRED' },
+            { name: 'Applied', completed: true },
+            { name: 'Review', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'APPLIED' || app.status?.toUpperCase() === 'HIRED' },
+            { name: 'Shortlisted', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
+            { name: 'Interview', completed: app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
+            { name: 'Rejected', completed: app.status?.toUpperCase() === 'REJECTED' },
           ],
           canWithdraw: true,
         }));

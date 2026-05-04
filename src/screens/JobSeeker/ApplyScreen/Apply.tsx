@@ -99,6 +99,7 @@ const Apply = () => {
                 email: emailAddress,
                 number: contactNumber,
             })();
+            console.log('Apply error', res);
             if (res?.data?.status) {
                 setIsSubmitted(true);
                 Helper.showToast('Application submitted successfully!');
@@ -242,7 +243,7 @@ const Apply = () => {
                     </View>
                 )}
 
-                <Button label={alreadyApplied ? 'Already Applied' : loading ? 'Submitting...' : APP_TEXT.applyScreen.submit} onPress={alreadyApplied ? () => {} : handleSubmit} loading={loading} />
+                <Button label={alreadyApplied ? 'Already Applied' : loading ? 'Submitting...' : APP_TEXT.applyScreen.submit} onPress={alreadyApplied ? () => { } : handleSubmit} loading={loading} />
 
                 {/* <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                     <Text style={styles.submitButtonText}>{APP_TEXT.applyScreen.submit}</Text>

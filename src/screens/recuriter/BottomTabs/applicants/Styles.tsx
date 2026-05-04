@@ -76,9 +76,10 @@ export const styles = StyleSheet.create({
     /* Card Header */
     cardHeader: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         marginBottom: MarginHW.MarginH12,
+        gap: MarginHW.MarginW12,
     },
     logoWrapper: {
         width: wp(14),
@@ -98,9 +99,6 @@ export const styles = StyleSheet.create({
         color: Colors.titleInk,
     },
     statusBadge: {
-        paddingHorizontal: wp(3),
-        paddingVertical: hp(0.6),
-        borderRadius: wp(3),
     },
     statusBadgeText: {
         fontSize: FontsSize.size10,
@@ -119,7 +117,7 @@ export const styles = StyleSheet.create({
         fontSize: FontsSize.size10,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.bodyGray,
-        marginBottom: MarginHW.MarginH12,
+        marginBottom: MarginHW.MarginH5,
     },
 
     /* Timeline */

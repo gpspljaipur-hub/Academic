@@ -119,6 +119,7 @@ import { Post_Api } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Config from '../../../../Lib/ApiService/Config';
+import { handleNavigation } from '../../../../navigation/RootNavigator';
 
 type TabType = 'All' | 'Active' | 'Interviews' | 'Closed';
 
@@ -140,24 +141,24 @@ const ApplicationsScreen = () => {
 
   React.useEffect(() => {
     if (isFocused) {
-      fetchJobs();
+      fetchApplicants();
     }
   }, [isFocused]);
 
-  const fetchJobs = async () => {
+  const fetchApplicants = async () => {
     const recruiterId = user?.id || user?._id;
     if (!recruiterId) return;
 
     try {
       setLoading(true);
-      const res: any = await Post_Api(`${ApiUrl.myJobs}/${recruiterId}`, {})();
-      console.log('fetchJobs in Application.tsx res', res.data.data);
+      const res: any = await Post_Api(ApiUrl.recruiterApplicants, { recruiterId })();
+      console.log('fetchApplicants in Application.tsx res', res.data.data);
 
       if (res?.data?.status) {
-        setJobs(res.data.data || []);
+        setJobs(res.data.data || []); // Keeping state name 'jobs' for minimal changes, but it's applicants now
       }
     } catch (error) {
-      console.log('fetchJobs error', error);
+      console.log('fetchApplicants error', error);
     } finally {
       setLoading(false);
     }
@@ -165,17 +166,19 @@ const ApplicationsScreen = () => {
 
   const getTabCounts = () => ({
     All: jobs.length,
-    Active: jobs.filter(a => a.status === 'OPEN' || a.status === 'open').length,
-    Interviews: 0, // Placeholder as we don't have this data yet
-    Closed: jobs.filter(a => a.status === 'CLOSED' || a.status === 'closed').length,
+    Active: jobs.filter(a => a.status === 'Applied' || a.status === 'Shortlisted').length,
+    Interviews: jobs.filter(a => a.status === 'Interview').length,
+    Closed: jobs.filter(a => a.status === 'Rejected').length,
   });
 
   const filteredApplications = () => {
     switch (selectedTab) {
       case 'Active':
-        return jobs.filter(a => a.status === 'OPEN' || a.status === 'open');
+        return jobs.filter(a => a.status === 'Applied' || a.status === 'Shortlisted');
+      case 'Interviews':
+        return jobs.filter(a => a.status === 'Interview');
       case 'Closed':
-        return jobs.filter(a => a.status === 'CLOSED' || a.status === 'closed');
+        return jobs.filter(a => a.status === 'Rejected');
       default:
         return jobs;
     }
@@ -184,9 +187,11 @@ const ApplicationsScreen = () => {
   const getStatusBadgeColor = (status: string) => {
     const s = status?.toUpperCase();
     switch (s) {
-      case 'OPEN':
+      case 'SHORTLISTED':
         return Colors.iceBlue;
-      case 'CLOSED':
+      case 'APPLIED':
+        return Colors.iceBlue;
+      case 'REJECTED':
         return '#FFE6E6';
       default:
         return Colors.iceBlue;
@@ -196,9 +201,11 @@ const ApplicationsScreen = () => {
   const getStatusBadgeTextColor = (status: string) => {
     const s = status?.toUpperCase();
     switch (s) {
-      case 'OPEN':
+      case 'SHORTLISTED':
         return Colors.primaryBlue;
-      case 'CLOSED':
+      case 'APPLIED':
+        return Colors.primaryBlue;
+      case 'REJECTED':
         return '#C41E3A';
       default:
         return Colors.primaryBlue;
@@ -206,7 +213,7 @@ const ApplicationsScreen = () => {
   };
 
   const getStatusText = (status: string) => {
-    return status?.toUpperCase() || 'OPEN';
+    return status?.toUpperCase() || 'APPLIED';
   };
 
   const counts = getTabCounts();
@@ -235,7 +242,7 @@ const ApplicationsScreen = () => {
           <FlatList
             ref={filtersListRef}
             horizontal
-            data={FILTERS.filter(f => f !== 'Interviews')}
+            data={FILTERS}
             keyExtractor={item => item}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => (
@@ -270,47 +277,73 @@ const ApplicationsScreen = () => {
             contentContainerStyle={styles.listContent}
             renderItem={({ item }) => (
               <View style={styles.applicationCard}>
+                {/* <View style={[
+                  styles.statusBadge, { backgroundColor: Colors.iceBlue }]}>
+                  <Text style={[
+                    styles.statusBadgeText,
+                    { color: Colors.primaryBlue }
+                  ]}>
+                    {getStatusText(item.job?.status)}
+                  </Text>
+                </View> */}
                 <View style={styles.cardHeader}>
                   <View style={styles.logoWrapper}>
-                    {item?.companyLogo ?
+                    {item?.job?.companyLogo ?
                       <Image
-                        source={item?.companyLogo && { uri: Config.imageurl + item.companyLogo } || Images.indesign} // Placeholder or from API if available
+                        source={{ uri: Config.imageurl + item.job.companyLogo }}
                         resizeMode="contain"
                         style={styles.companyLogo}
                       />
                       :
-                      <Text style={styles.companyLogoText}>{item?.company?.substring(0, 2)?.toUpperCase()}</Text>
+                      <Text style={styles.companyLogoText}>{item.job?.company?.substring(0, 2)?.toUpperCase()}</Text>
                     }
 
+
                   </View>
-                  <View style={[
-                    styles.statusBadge, { backgroundColor: getStatusBadgeColor(item.status) }]}>
-                    <Text style={[
-                      styles.statusBadgeText,
-                      { color: getStatusBadgeTextColor(item.status) }
-                    ]}>
-                      {getStatusText(item.status)}
-                    </Text>
+                  <View>
+                    <Text style={styles.jobTitle}>{item?.job?.title || ''}</Text>
+                    <Text style={styles.companyLocation}>Company: {item.job?.company || 'Applicant'}</Text>
+
                   </View>
+
                 </View>
 
-                <Text style={styles.jobTitle}>{item.title}</Text>
+
 
                 <Text style={styles.companyLocation}>
-                  {item.company} • {item.location}
+                  Location: {item.job?.location || 'Applicant'}
                 </Text>
 
-                <View style={{ marginTop: 1 }}>
-                  <Text style={styles.appliedDate}>Posted {new Date(item.createdAt).toLocaleDateString()}</Text>
+                <Text style={styles.companyLocation}>
+                  Job Type: {item.job?.jobType || 'N/A'}
+                </Text>
+
+                <Text style={styles.companyLocation}>
+                  Salary: {item.job?.salary || 'N/A'}
+                </Text>
+
+                <View style={{ marginTop: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.appliedDate}>Posted on {new Date(item?.job?.createdAt).toLocaleDateString()}</Text>
+                  <Text style={[styles.appliedDate,]}>
+                    Status : <Text style={[styles.statusBadgeText, { color: Colors.primaryBlue }]}>
+                      {getStatusText(item.job?.status)}
+                    </Text>
+                  </Text>
                 </View>
 
                 <View style={styles.actionButtonsContainer}>
                   <TouchableOpacity
                     style={styles.viewDetailsButton}
-                    onPress={() => navigation.navigate('RecuiterRecentJobs')} // Navigate to see details
+                    onPress={() => { handleNavigation({ type: 'push', page: 'ApplicantJobDetails', navigation: navigation, passProps: { job: item.job, applications: item.applications } }) }} // Navigate to see details
                   >
-                    <Text style={styles.viewDetailsButtonText}>Manage Applicants</Text>
+                    <Text style={styles.viewDetailsButtonText}>View Profile</Text>
                   </TouchableOpacity>
+                  {/* <TouchableOpacity
+                    style={[styles.viewDetailsButton, { backgroundColor: Colors.brandBlue }]}
+                    onPress={() => {  }}
+                  >
+                    <Text style={[styles.viewDetailsButtonText, { color: Colors.white }]}>Shortlist</Text>
+                  </TouchableOpacity> */}
                 </View>
               </View>
             )}

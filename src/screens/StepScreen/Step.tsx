@@ -133,6 +133,7 @@ const Step = () => {
   );
 
   const onNextPress = () => {
+    console.log(isLastStep, "isLastStep")
     if (isLastStep) {
       setIsModalVisible(true);
     }

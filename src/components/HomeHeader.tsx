@@ -29,14 +29,15 @@ const HomeHeader = ({ backArrow, title, IconImg = Images.userImage, bellIcon, on
 
         <Text style={styles.brand}>{title}</Text>
       </View>
-
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={onNotificationPress ? onNotificationPress : () => navigation.navigate(isRightUserImage ? 'ProfileSetup' : 'Notification')}
-        hitSlop={8}
-      >
-        <Image source={bellIcon} resizeMode="contain" style={styles.bellImage} />
-      </TouchableOpacity>
+      {!backArrow &&
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onNotificationPress ? onNotificationPress : () => navigation.navigate(isRightUserImage ? 'ProfileSetup' : 'Notification')}
+          hitSlop={8}
+        >
+          <Image source={bellIcon} resizeMode="contain" style={styles.bellImage} />
+        </TouchableOpacity>
+      }
     </View>
   );
 };
@@ -45,7 +46,7 @@ export default HomeHeader;
 const styles = StyleSheet.create({
   topBar: { height: 50, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', },
   userImageWrap: { alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
-  brand: { top: -1, color: Colors.primaryBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16 },
+  brand: { top: -1, color: Colors.primaryBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16, left: 10 },
   bellImage: { width: 20, height: 20, tintColor: Colors.bodyGray },
   userImage: { width: 30, height: 30, },
   BackImage: { width: 25, height: 25, tintColor: Colors.primaryBlue, },
