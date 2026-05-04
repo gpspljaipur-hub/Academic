@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Images from '../../../comman/Images'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import styles from './Style'
@@ -28,11 +28,35 @@ const Apply = () => {
     const [emailAddress, setEmailAddress] = useState(user?.email || '');
     const [coverLetter, setCoverLetter] = useState('');
     const [jobApply, setJobDetails] = useState<any>(route?.params?.jobs);
-
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
     const [loading, setLoading] = useState(false);
     const [resume, setResume] = useState<{ name: string; uri: string; size?: number } | null>(null);
+
+    const [alreadyApplied, setAlreadyApplied] = useState(false);
+
+    useEffect(() => {
+        checkIfApplied();
+    }, [jobApply?._id]);
+
+    const checkIfApplied = async () => {
+        const userId = user?._id || user?.id;
+        if (!jobApply?._id || !userId) return;
+        try {
+            const res: any = await Post_ApiWithToken(ApiUrl.appliedByUser, {
+                job_id: jobApply._id,
+                user_id: userId
+            })();
+            if (res?.data?.data?.length > 0) {
+                setAlreadyApplied(true);
+            } else {
+                setAlreadyApplied(false);
+            }
+        } catch (error) {
+            console.log('checkIfApplied error', error);
+        }
+    };
+
 
     const pickResume = async () => {
         try {
@@ -205,14 +229,20 @@ const Apply = () => {
             </ScrollView>
             {/* Bottom Fixed Container */}
             <View style={styles.bottomContainer}>
-                {isSubmitted && (
+                {isSubmitted && !alreadyApplied && (
                     <View style={styles.toastContainer}>
                         <Image source={Images.application} style={styles.toastIcon} />
                         <Text style={styles.toastText}>{APP_TEXT.applyScreen.successToast}</Text>
                     </View>
                 )}
+                {alreadyApplied && (
+                    <View style={styles.toastContainer}>
+                        <Image source={Images.application} style={styles.toastIcon} />
+                        <Text style={styles.toastText}>{'You have already applied for this job!'}</Text>
+                    </View>
+                )}
 
-                <Button label={loading ? 'Submitting...' : APP_TEXT.applyScreen.submit} onPress={handleSubmit} loading={loading} />
+                <Button label={alreadyApplied ? 'Already Applied' : loading ? 'Submitting...' : APP_TEXT.applyScreen.submit} onPress={alreadyApplied ? () => {} : handleSubmit} loading={loading} />
 
                 {/* <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                     <Text style={styles.submitButtonText}>{APP_TEXT.applyScreen.submit}</Text>

@@ -63,6 +63,7 @@ const JobsScreen = () => {
     const salary = job.salary || 'Competitive';
     const aiMatch = job.aiMatch || '90%';
     const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+    console.log("job", job);
     return (
       <TouchableOpacity style={styles.jobCard} onPress={() => { handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
         <View style={styles.jobTopRow}>
