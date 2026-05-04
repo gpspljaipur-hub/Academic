@@ -15,7 +15,7 @@ import CareerArchitect from '../screens/JobSeeker/CareerArchitect/Career';
 import Notification from '../components/Notification';
 import Setting from '../components/Setting';
 import RecommendedJobs from '../screens/JobSeeker/RecommendedJobs/RecommendedJobs';
-
+import Detail from '../screens/Details/Detail';
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
@@ -31,6 +31,7 @@ export type RootStackParamList = {
   CareerArchitect: undefined;
   Setting: undefined;
   RecommendedJobs: undefined;
+  Detail: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -62,7 +63,7 @@ const RootNavigator = () => {
       <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
       <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
       <Stack.Screen name="RecommendedJobs" component={RecommendedJobs} options={{ headerShown: false }} />
-
+      <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

@@ -3,9 +3,10 @@ const Config = {
     // imageurl: 'https://sanskar.geotree.xyz',
     // baseurlCertificate: "https://sanskar.geotree.xyz",
 
-    baseurl: 'https://employeement-backend.onrender.com/',
-    imageurl: 'https://employeement-backend.onrender.com',
-    baseurlCertificate: "https://employeement-backend.onrender.com",
+
+    baseurl: 'https://employeement-backend-fdi9.onrender.com/',
+    imageurl: 'https://employeement-backend-fdi9.onrender.com',
+    baseurlCertificate: "https://employeement-backend-fdi9.onrender.com",
 
 
     POST: 'POST',
