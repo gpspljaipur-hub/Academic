@@ -121,7 +121,6 @@ const HomeScreen = () => {
               const aiMatch = job.aiMatch || '90%';
               const salary = job.salary || 'Competitive';
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
-              console.log("image", image);
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>
@@ -143,7 +142,7 @@ const HomeScreen = () => {
                     </View>
                   </View>
 
-                  <TouchableOpacity onPress={() => navigation.navigate('Apply')} style={styles.quickApply}>
+                  <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Apply', passProps: { jobs: job } })} style={styles.quickApply}>
                     <Text style={styles.quickApplyText}>{APP_TEXT.homeQuickApply}</Text>
                   </TouchableOpacity>
                 </Pressable>

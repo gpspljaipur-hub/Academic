@@ -42,7 +42,7 @@ const LoginScreen = ({ route }: any) => {
       const payload = { number: mobileNumber, userType: userType };
       const res = await Auth_Api(ApiUrl.LOGIN, payload)();
       if (res?.data?.status === true) {
-        setLoading(false);
+        setLoading(true);
         const userData = { ...res.data.user, token: res.data.token };
         dispatch(loginSuccess(userData));
         await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
@@ -105,6 +105,7 @@ const LoginScreen = ({ route }: any) => {
         {mobileError ? <Text style={styles.errorText}>{mobileError}</Text> : null}
 
         <Button
+          loading={loading}
           label={APP_TEXT.loginButton}
           onPress={() => { LoginHandler() }}
 
