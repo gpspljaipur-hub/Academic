@@ -338,7 +338,7 @@ export const APP_TEXT = {
     userName: 'Rahul Sharma',
     userRole: 'Senior Product Designer',
     userLocation: 'New Delhi, India',
-    resumeName: 'Rahul_Sharma_Designer.pdf',
+    resumeName: '.pdf',
     resumeUploadTime: 'Uploaded 2 days ago • Primary',
   },
   jobPost: {
