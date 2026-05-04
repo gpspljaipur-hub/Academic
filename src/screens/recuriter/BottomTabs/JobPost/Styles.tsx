@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.Homebackground,
-        paddingHorizontal:MarginHW.PaddingW16,
+        paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {
         flexDirection: 'row',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         marginBottom: hp(2.5),
     },
     cardIcon: {
-        width:20,
+        width: 20,
         height: 20,
         marginRight: wp(3),
     },
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
         marginBottom: hp(1),
     },
     inputContainer: {
-        height:45,
-         fontSize: FontsSize.size18,
+        height: 45,
+        fontSize: FontsSize.size18,
         fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         backgroundColor: Colors.cardGray,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     inputText: {
-        height:45,
+        height: 45,
         fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.mutedSlate,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 1,
-        marginBottom: hp(7),
+        marginBottom: hp(5),
     },
     draftButton: {
         width: '45%',
@@ -195,29 +195,29 @@ const styles = StyleSheet.create({
         tintColor: Colors.mutedSlate,
     },
     dropdownStyle: {
-  backgroundColor: Colors.white,
-  borderRadius: 8,
-},
-dropdownPlaceholder: {
-  color: Colors.mutedSlate,
-  fontSize: FontsSize.size16,
-  fontFamily: fonts.Lexend_Medium,
-},
-dropdownSelectedText: {
-  color: Colors.black,
-  fontSize: FontsSize.size16,
-  fontFamily:fonts.Lexend_Medium,
- 
-},
-dropdownItemContainer: {
-  paddingVertical: 12,
-  paddingHorizontal: 14,
-},
-dropdownItemText: {
-  fontSize: FontsSize.size16,
-  color: Colors.primaryBlue,
-  fontFamily: fonts.Lexend_Medium,
- 
+        backgroundColor: Colors.white,
+        borderRadius: 8,
+    },
+    dropdownPlaceholder: {
+        color: Colors.mutedSlate,
+        fontSize: FontsSize.size16,
+        fontFamily: fonts.Lexend_Medium,
+    },
+    dropdownSelectedText: {
+        color: Colors.black,
+        fontSize: FontsSize.size16,
+        fontFamily: fonts.Lexend_Medium,
+
+    },
+    dropdownItemContainer: {
+        paddingVertical: 12,
+        paddingHorizontal: 14,
+    },
+    dropdownItemText: {
+        fontSize: FontsSize.size16,
+        color: Colors.primaryBlue,
+        fontFamily: fonts.Lexend_Medium,
+
     },
     logoContainer: {
         flexDirection: 'row',
@@ -261,6 +261,15 @@ dropdownItemText: {
         fontFamily: fonts.Lexend_Medium,
         color: Colors.primaryBlue,
         textAlign: 'center',
+    },
+    errorText: {
+        fontSize: FontsSize.size10,
+        fontFamily: fonts.Lexend_Regular,
+        color: Colors.errorRed,
+        marginTop: hp(0.5),
+    },
+    requiredMarker: {
+        color: Colors.errorRed,
     },
 });
 

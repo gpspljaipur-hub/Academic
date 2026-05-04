@@ -14,10 +14,13 @@ import HomeHeader from '../../../../components/HomeHeader';
 import { useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import { PermissionsAndroid } from 'react-native';
+import Helper from '../../../../Lib/HelperFiles/Helper';
+import Button from '../../../../components/Button';
 
 const Job = () => {
     const navigation = useNavigation();
     const { user } = useSelector((state: any) => state.user);
+    console.log("user", user.id)
     const { jobPost } = APP_TEXT;
     const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad'];
     const experiences = ['0-1 yrs', '1-3 yrs', '3-5 yrs', '5+ yrs'];
@@ -36,7 +39,8 @@ const Job = () => {
     const [jobTypeValue, setJobTypeValue] = useState<string | null>(null);
     const [statusValue, setStatusValue] = useState<string | null>(null);
     const [logo, setLogo] = useState<any>(null);
-
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<any>({});
     const locationOptions = useMemo(() => locations.map(l => ({ label: l, value: l })), [locations]);
     const experienceOptions = useMemo(() => experiences.map(e => ({ label: e, value: e })), [experiences]);
     const jobTypeOptions = useMemo(() => jobTypes.map(j => ({ label: j, value: j })), [jobTypes]);
@@ -88,9 +92,27 @@ const Job = () => {
             });
     };
     const createpost = async () => {
+        const newErrors: any = {};
+        if (!title) newErrors.title = 'Job title is required';
+        if (!description) newErrors.description = 'Description is required';
+        if (!company) newErrors.company = 'Company name is required';
+        if (!locationValue) newErrors.location = 'Location is required';
+        if (!experienceValue) newErrors.experience = 'Experience is required';
+        if (!minSalary) newErrors.minSalary = 'Min salary is required';
+        if (!maxSalary) newErrors.maxSalary = 'Max salary is required';
+        if (!jobTypeValue) newErrors.jobType = 'Job type is required';
+        if (!skills) newErrors.skills = 'Skills are required';
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            Helper.showToast('Please fill all required fields');
+            return;
+        }
+
+        setErrors({});
         try {
             const body = {
-                recruiterId: user?._id,
+                recruiterId: user?.id,
                 title: title,
                 description: description,
                 company: company,
@@ -105,19 +127,21 @@ const Job = () => {
                 logo: logo ? `data:${logo.mime};base64,${logo.data}` : null,
             };
             console.log('bodyyyyyyyyyy', body)
-
+            setLoading(true)
             const res = await Auth_ApiRequest(ApiUrl.createJob, body);
 
             if (res.status) {
                 console.log('Successsssssssss:', res.data);
+                setLoading(false)
                 clearFields();
             } else {
-                Alert.alert('Error', res.message || 'Something went wrong');
+                Helper.showToast(res.message);
             }
 
-        } catch (error) {
-            console.log('Error:', error);
-            Alert.alert('Error', 'Failed to connect to server');
+        } catch (error: any) {
+            Helper.showToast(error.message);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -156,57 +180,73 @@ const Job = () => {
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.jobTitle}</Text>
-                        <View style={styles.inputContainer}>
+                        <Text style={styles.label}>{jobPost.jobTitle} <Text style={styles.requiredMarker}>*</Text></Text>
+                        <View style={[styles.inputContainer, errors.title && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                             <TextInput
                                 placeholder={jobPost.jobTitlePlaceholder}
                                 placeholderTextColor={Colors.mutedSlate}
                                 style={styles.inputText}
                                 value={title}
-                                onChangeText={setTitle}
+                                onChangeText={(text) => {
+                                    setTitle(text);
+                                    if (errors.title) setErrors({ ...errors, title: null });
+                                }}
                             />
                         </View>
+                        {errors.title ? <Text style={styles.errorText}>{errors.title}</Text> : null}
                         <Text style={styles.hint}>{jobPost.jobTitleHint}</Text>
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.jobDescription}</Text>
-                        <View style={styles.textAreaContainer}>
+                        <Text style={styles.label}>{jobPost.jobDescription} <Text style={styles.requiredMarker}>*</Text></Text>
+                        <View style={[styles.textAreaContainer, errors.description && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                             <TextInput
                                 placeholder={jobPost.jobDescriptionPlaceholder}
                                 placeholderTextColor={Colors.mutedSlate}
                                 multiline
                                 style={styles.textArea}
                                 value={description}
-                                onChangeText={setDescription}
+                                onChangeText={(text) => {
+                                    setDescription(text);
+                                    if (errors.description) setErrors({ ...errors, description: null });
+                                }}
                             />
                         </View>
+                        {errors.description ? <Text style={styles.errorText}>{errors.description}</Text> : null}
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.companyName}</Text>
-                        <View style={styles.inputContainer}>
+                        <Text style={styles.label}>{jobPost.companyName} <Text style={styles.requiredMarker}>*</Text></Text>
+                        <View style={[styles.inputContainer, errors.company && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                             <TextInput
                                 placeholder={jobPost.companyPlaceholder}
                                 placeholderTextColor={Colors.mutedSlate}
                                 style={styles.inputText}
                                 value={company}
-                                onChangeText={setCompany}
+                                onChangeText={(text) => {
+                                    setCompany(text);
+                                    if (errors.company) setErrors({ ...errors, company: null });
+                                }}
                             />
                         </View>
+                        {errors.company ? <Text style={styles.errorText}>{errors.company}</Text> : null}
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.skillsRequired}</Text>
-                        <View style={styles.inputContainer}>
+                        <Text style={styles.label}>{jobPost.skillsRequired} <Text style={styles.requiredMarker}>*</Text></Text>
+                        <View style={[styles.inputContainer, errors.skills && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                             <TextInput
                                 placeholder={jobPost.skillsPlaceholder}
                                 placeholderTextColor={Colors.mutedSlate}
                                 style={styles.inputText}
                                 value={skills}
-                                onChangeText={setSkills}
+                                onChangeText={(text) => {
+                                    setSkills(text);
+                                    if (errors.skills) setErrors({ ...errors, skills: null });
+                                }}
                             />
                         </View>
+                        {errors.skills ? <Text style={styles.errorText}>{errors.skills}</Text> : null}
                         <Text style={styles.hint}>Separate skills with commas</Text>
                     </View>
                 </View>
@@ -219,9 +259,9 @@ const Job = () => {
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.location}</Text>
+                        <Text style={styles.label}>{jobPost.location} <Text style={styles.requiredMarker}>*</Text></Text>
                         <Dropdown
-                            style={[styles.inputContainer]}
+                            style={[styles.inputContainer, errors.location && { borderColor: Colors.errorRed, borderWidth: 1 }]}
                             data={locationOptions}
                             labelField="label"
                             valueField="value"
@@ -230,19 +270,23 @@ const Job = () => {
                             selectedTextStyle={styles.dropdownSelectedText}
                             containerStyle={styles.dropdownStyle}
                             value={locationValue}
-                            onChange={item => setLocationValue(item.value)}
+                            onChange={item => {
+                                setLocationValue(item.value);
+                                if (errors.location) setErrors({ ...errors, location: null });
+                            }}
                             renderItem={(item) => (
                                 <View style={styles.dropdownItemContainer}>
                                     <Text style={styles.dropdownItemText}>{item.label}</Text>
                                 </View>
                             )}
                         />
+                        {errors.location ? <Text style={styles.errorText}>{errors.location}</Text> : null}
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.experienceRequired}</Text>
+                        <Text style={styles.label}>{jobPost.experienceRequired} <Text style={styles.requiredMarker}>*</Text></Text>
                         <Dropdown
-                            style={[styles.inputContainer]}
+                            style={[styles.inputContainer, errors.experience && { borderColor: Colors.errorRed, borderWidth: 1 }]}
                             data={experienceOptions}
                             labelField="label"
                             valueField="value"
@@ -251,19 +295,23 @@ const Job = () => {
                             selectedTextStyle={styles.dropdownSelectedText}
                             containerStyle={styles.dropdownStyle}
                             value={experienceValue}
-                            onChange={item => setExperienceValue(item.value)}
+                            onChange={item => {
+                                setExperienceValue(item.value);
+                                if (errors.experience) setErrors({ ...errors, experience: null });
+                            }}
                             renderItem={(item) => (
                                 <View style={styles.dropdownItemContainer}>
                                     <Text style={styles.dropdownItemText}>{item.label}</Text>
                                 </View>
                             )}
                         />
+                        {errors.experience ? <Text style={styles.errorText}>{errors.experience}</Text> : null}
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>{jobPost.jobType}</Text>
+                        <Text style={styles.label}>{jobPost.jobType} <Text style={styles.requiredMarker}>*</Text></Text>
                         <Dropdown
-                            style={[styles.inputContainer]}
+                            style={[styles.inputContainer, errors.jobType && { borderColor: Colors.errorRed, borderWidth: 1 }]}
                             data={jobTypeOptions}
                             labelField="label"
                             valueField="value"
@@ -272,13 +320,17 @@ const Job = () => {
                             selectedTextStyle={styles.dropdownSelectedText}
                             containerStyle={styles.dropdownStyle}
                             value={jobTypeValue}
-                            onChange={item => setJobTypeValue(item.value)}
+                            onChange={item => {
+                                setJobTypeValue(item.value);
+                                if (errors.jobType) setErrors({ ...errors, jobType: null });
+                            }}
                             renderItem={(item) => (
                                 <View style={styles.dropdownItemContainer}>
                                     <Text style={styles.dropdownItemText}>{item.label}</Text>
                                 </View>
                             )}
                         />
+                        {errors.jobType ? <Text style={styles.errorText}>{errors.jobType}</Text> : null}
                     </View>
 
                     <View style={styles.inputGroup}>
@@ -312,31 +364,41 @@ const Job = () => {
 
                     <View style={styles.row}>
                         <View style={[styles.inputGroup, styles.halfWidth]}>
-                            <Text style={styles.label}>{jobPost.minSalary}</Text>
-                            <View style={styles.inputContainer}>
+                            <Text style={styles.label}>{jobPost.minSalary} <Text style={styles.requiredMarker}>*</Text></Text>
+                            <View style={[styles.inputContainer, errors.minSalary && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                                 <TextInput
                                     placeholder={jobPost.salaryPlaceholder}
                                     placeholderTextColor={Colors.mutedSlate}
                                     style={styles.inputText}
                                     keyboardType="numeric"
+                                    maxLength={7}
                                     value={minSalary}
-                                    onChangeText={setMinSalary}
+                                    onChangeText={(text) => {
+                                        setMinSalary(text);
+                                        if (errors.minSalary) setErrors({ ...errors, minSalary: null });
+                                    }}
                                 />
                             </View>
+                            {errors.minSalary ? <Text style={styles.errorText}>{errors.minSalary}</Text> : null}
                         </View>
 
                         <View style={[styles.inputGroup, styles.halfWidth]}>
-                            <Text style={styles.label}>{jobPost.maxSalary}</Text>
-                            <View style={styles.inputContainer}>
+                            <Text style={styles.label}>{jobPost.maxSalary} <Text style={styles.requiredMarker}>*</Text></Text>
+                            <View style={[styles.inputContainer, errors.maxSalary && { borderColor: Colors.errorRed, borderWidth: 1 }]}>
                                 <TextInput
                                     placeholder={jobPost.salaryMaxPlaceholder}
                                     placeholderTextColor={Colors.mutedSlate}
                                     style={styles.inputText}
                                     keyboardType="numeric"
                                     value={maxSalary}
-                                    onChangeText={setMaxSalary}
+                                    maxLength={7}
+                                    onChangeText={(text) => {
+                                        setMaxSalary(text);
+                                        if (errors.maxSalary) setErrors({ ...errors, maxSalary: null });
+                                    }}
                                 />
                             </View>
+                            {errors.maxSalary ? <Text style={styles.errorText}>{errors.maxSalary}</Text> : null}
                         </View>
                     </View>
 
@@ -405,9 +467,12 @@ const Job = () => {
                     <TouchableOpacity style={styles.draftButton}>
                         <Text style={styles.draftText}>{jobPost.saveDraft}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.postButton} onPress={() => { createpost() }}>
-                        <Text style={styles.postText}>{jobPost.postJob}</Text>
-                    </TouchableOpacity>
+                    <Button
+                        label={jobPost.postJob}
+                        onPress={() => createpost()}
+                        loading={loading}
+                        containerStyle={[styles.postButton, { marginTop: 0 }]}
+                    />
                 </View>
 
             </ScrollView>

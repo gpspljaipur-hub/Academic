@@ -14,6 +14,7 @@ const ApiUrl = {
   myAppliedJobs: 'jobApplication/myApplications',
   authGetProfile: 'auth/get-profile',
   authUpdateProfile: 'auth/update-profile',
+  dashboardStats: 'recruiterJob/dashboardStats'
 };
 
 export default ApiUrl;
