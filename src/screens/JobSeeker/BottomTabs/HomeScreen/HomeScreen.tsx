@@ -31,11 +31,13 @@ const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [jobs, setJobs] = useState<any[]>([]);
   const [latestJobs, setLatestJobs] = useState<any[]>([]);
+  const [latestExams, setLatestExams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchJobs();
     fetchLatestJobs();
+    fetchLatestExams();
   }, []);
 
   const fetchJobs = async () => {
@@ -57,13 +59,28 @@ const HomeScreen = () => {
   const fetchLatestJobs = async () => {
     try {
       setLoading(true);
-      const response: any = await Post_Api(ApiUrl.LATEST_JOBS, { limit: 4 })();
+      const response: any = await Post_Api(ApiUrl.LATEST_JOBS, {})();
       console.log('Latest Jobs Response:', response);
       if (response?.data?.success) {
         setLatestJobs(response?.data?.data || []);
       }
     } catch (error) {
       console.log('Error fetching latest jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchLatestExams = async () => {
+    try {
+      setLoading(true);
+      const response: any = await Post_Api(ApiUrl.LATEST_EXAMS, {})();
+      console.log('Latest Exams Response:', response);
+      if (response?.data?.success) {
+        setLatestExams(response?.data?.data || []);
+      }
+    } catch (error) {
+      console.log('Error fetching latest exams:', error);
     } finally {
       setLoading(false);
     }
@@ -220,27 +237,35 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{APP_TEXT.homeUpcomingExamTitle}</Text>
-            <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
+            {/* <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text> */}
           </View>
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={APP_TEXT.homeUpcomingExams}
-            keyExtractor={item => item.id}
+            data={latestExams}
+            keyExtractor={item => item._id}
             contentContainerStyle={styles.upcomingList}
             renderItem={({ item }) => (
-              <View style={styles.upcomingCard}>
+              <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })} style={styles.upcomingCard}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.upcomingDate}>{item.date}</Text>
+                  <Text style={styles.upcomingDate}>{item.startDate}</Text>
                   <Text style={styles.sectionAction}>{APP_TEXT.homeCalendarIcon}</Text>
                 </View>
                 <Text style={styles.upcomingTitle}>{item.title}</Text>
-                <Text style={styles.upcomingDesc}>{item.desc}</Text>
+                <Text style={styles.upcomingDesc}>{item.description}</Text>
                 <Text style={styles.sectionAction}>{APP_TEXT.homeDetailsArrow}</Text>
-              </View>
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={() => (
+              !loading && (
+                <View style={{ padding: 20, alignItems: 'center' }}>
+                  <Text style={{ color: Colors.mutedSlate }}>No upcoming exams found.</Text>
+                </View>
+              )
             )}
           />
         </View>
+        <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
   );

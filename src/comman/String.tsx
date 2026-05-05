@@ -66,7 +66,7 @@ export const APP_TEXT = {
   homeDeadlineLabel: 'DEADLINE',
   homePrivateSectorTitle: 'Private Sector',
   homePrivateSectionIcon: '🏢',
-  homeUpcomingExamTitle: 'Upcoming Exam Notifications',
+  homeUpcomingExamTitle: 'Upcoming Exam',
   homeFullSchedule: 'Full Schedule',
   homeCalendarIcon: '📅',
   homeDetailsArrow: 'Details →',

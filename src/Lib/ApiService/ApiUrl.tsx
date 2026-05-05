@@ -15,6 +15,7 @@ const ApiUrl = {
   authGetProfile: 'auth/get-profile',
   authUpdateProfile: 'auth/update-profile',
   LATEST_JOBS: 'jobs/latest',
+  LATEST_EXAMS: 'exams/latest',
 };
 
 export default ApiUrl;

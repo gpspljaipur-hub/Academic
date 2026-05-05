@@ -75,11 +75,11 @@ const Detail = () => {
                         ) : null}
                     </View>
                 </View>
-                {summary ? (
+                {(summary || description) ? (
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Brief Summary</Text>
+                        <Text style={styles.sectionTitle}>{summary ? 'Brief Summary' : 'Description'}</Text>
                         <View style={styles.card}>
-                            <Text style={styles.descriptionText}>{summary}</Text>
+                            <Text style={styles.descriptionText}>{summary || description}</Text>
                         </View>
                     </View>
                 ) : null}
