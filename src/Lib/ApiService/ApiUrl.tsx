@@ -19,6 +19,7 @@ const ApiUrl = {
   recruiterApplicants: 'recruiterJob/applicants',
   recruiterApplicantsByJob: 'recruiterJob/applicantsByJob',
   updateApplicationStatus: 'recruiterJob/updateStatus',
+  allAppliedApplicants: 'recruiterJob/allAppliedApplicants',
 
 };
 

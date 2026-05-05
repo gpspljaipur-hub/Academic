@@ -16,13 +16,14 @@ import Helper from '../../../Lib/HelperFiles/Helper';
 const ApplicantJobDetails = () => {
     const navigation = useNavigation();
     const route = useRoute<any>();
-    const { job, applications } = route.params;
+    const { job, applications: initialApplications } = route.params;
 
+    const [applications, setApplications] = useState<any[]>(initialApplications || []);
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedApp, setSelectedApp] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const STATUS_OPTIONS = ['Applied', 'Shortlisted', 'Interview', 'Rejected'];
+    const STATUS_OPTIONS = ['Applied', 'Review', 'Shortlisted', 'Interview', 'Rejected', 'Hired', ];
 
     const getStatusBadgeColor = (status: string) => {
         const s = status?.toUpperCase();
@@ -31,6 +32,8 @@ const ApplicantJobDetails = () => {
             case 'APPLIED': return Colors.iceBlue;
             case 'REJECTED': return '#FFE6E6';
             case 'INTERVIEW': return Colors.badgeBlueTint;
+            case 'REVIEW': return Colors.iceBlue;
+            case 'HIRED': return '#E6FFF0';
             default: return Colors.iceBlue;
         }
     };
@@ -42,6 +45,8 @@ const ApplicantJobDetails = () => {
             case 'APPLIED': return Colors.primaryBlue;
             case 'REJECTED': return '#C41E3A';
             case 'INTERVIEW': return Colors.primaryBlue;
+            case 'REVIEW': return Colors.primaryBlue;
+            case 'HIRED': return '#00873D';
             default: return Colors.primaryBlue;
         }
     };
@@ -59,7 +64,13 @@ const ApplicantJobDetails = () => {
 
             if (res?.data?.status) {
                 Helper.showToast('Status updated successfully');
-                // Ideally refresh the data here or update local state
+
+                // Update local state to reflect change immediately
+                const updatedApps = applications.map(app =>
+                    app._id === selectedApp._id ? { ...app, status: status } : app
+                );
+                setApplications(updatedApps);
+
                 setModalVisible(false);
             } else {
                 Helper.showToast(res?.data?.message || 'Failed to update status');
@@ -77,13 +88,17 @@ const ApplicantJobDetails = () => {
         const skills = typeof user?.skills === 'string'
             ? user.skills.split(',').map((s: string) => s.trim())
             : Array.isArray(user?.skills) ? user.skills : [];
-
+        console.log('Rendering applicant', item);
         return (
             <View style={styles.applicantCard}>
                 <View style={styles.applicantHeader}>
                     <View style={styles.avatarWrapper}>
                         <Text style={styles.avatarText}>
-                            {user?.name?.substring(0, 2)?.toUpperCase() || 'AP'}
+                            {user?.name
+                                ? user.name.split(' ').length > 1
+                                    ? user.name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+                                    : user.name.substring(0, 2).toUpperCase()
+                                : 'AP'}
                         </Text>
                     </View>
                     <View style={styles.applicantInfo}>
@@ -214,7 +229,10 @@ const ApplicantJobDetails = () => {
                                     style={styles.statusOption}
                                     onPress={() => handleUpdateStatus(status)}
                                 >
-                                    <Text style={styles.statusOptionText}>{status}</Text>
+                                    <Text style={[
+                                        styles.statusOptionText,
+                                        { color: selectedApp?.status?.toUpperCase() === status.toUpperCase() ? Colors.primaryBlue : Colors.bodyGray }
+                                    ]}>{status}</Text>
                                 </TouchableOpacity>
                             ))
                         )}

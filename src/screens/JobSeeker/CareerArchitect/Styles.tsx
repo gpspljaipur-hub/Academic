@@ -37,6 +37,21 @@ const styles = StyleSheet.create({
         marginBottom: MarginHW.MarginH16,
 
     },
+    avatarWrapper: {
+        width: 100,
+        height: 100,
+        borderRadius: 10,
+        overflow: 'hidden',
+        backgroundColor: '#E3F2FD', // Light blue background for avatar
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    avatarText: {
+
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.LexendBold,
+        color: Colors.primaryBlue,
+    },
     jobTitle: {
         fontSize: FontsSize.size22,
         fontFamily: fonts.LexendBold,

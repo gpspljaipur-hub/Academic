@@ -156,11 +156,23 @@ const Career = () => {
         {/* Job Header */}
         <View style={styles.jobHeader}>
           <View style={styles.companyLogo}>
-            <Image
-              source={jobDetails?.companyLogo ? { uri: Config.imageurl + jobDetails.companyLogo } : Images.indesign}
-              style={{ width: 100, height: 100, }}
-              resizeMode="contain"
-            />
+            {jobDetails?.companyLogo ? (
+              <Image
+                source={{ uri: Config.imageurl + jobDetails.companyLogo }}
+                resizeMode="contain"
+                style={{ width: 100, height: 100, }}
+              />
+            ) : (
+              <View style={styles.avatarWrapper}>
+                <Text style={styles.avatarText}>
+                  {jobDetails?.company
+                    ? jobDetails.company.split(' ').length > 1
+                      ? jobDetails.company.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+                      : jobDetails.company.substring(0, 2).toUpperCase()
+                    : 'AP'}
+                </Text>
+              </View>
+            )}
           </View>
           <Text style={styles.jobTitle}>{jobDetails?.title || 'Senior UI/UX Designer'}</Text>
           <Text style={styles.companyInfo}>{jobDetails?.company || 'InnovateTech'} · {jobDetails?.location || 'Bengaluru, India'}</Text>

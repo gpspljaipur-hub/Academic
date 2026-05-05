@@ -111,7 +111,7 @@ const Setting = () => {
 
         <TouchableOpacity activeOpacity={0.7} onPress={() => {
           dispatch(logout());
-          handleNavigation({ type: 'setRoot', page: 'Login', navigation: navigation as any, });
+          handleNavigation({ type: 'setRoot', page: 'Step', navigation: navigation as any, });
         }} style={styles.logoutButton}>
           <Text style={styles.logoutText}>{APP_TEXT.settings.logout}</Text>
         </TouchableOpacity>

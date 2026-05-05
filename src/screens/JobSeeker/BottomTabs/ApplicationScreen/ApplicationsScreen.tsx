@@ -32,7 +32,7 @@ interface Application {
   title: string;
   company: string;
   location: string;
-  status: 'SHORTLISTED' | 'APPLIED' | 'REJECTED' | 'INTERVIEW_SET';
+  status: 'SHORTLISTED' | 'APPLIED' | 'REJECTED' | 'INTERVIEW';
   appliedDate: string;
   stages: Stage[];
   interviewInfo?: {
@@ -48,7 +48,7 @@ interface Stage {
   completed: boolean;
 }
 
-type TabType = 'All' | 'Active' | 'Interviews' | 'Closed';
+type TabType = 'All' | 'Active' | 'Interview' | 'Closed';
 
 const FILTERS = [
   'All',
@@ -94,11 +94,11 @@ const ApplicationsScreen = () => {
           status: app.status?.toUpperCase() || 'APPLIED',
           appliedDate: new Date(app.appliedDate || app.createdAt).toLocaleDateString(),
           stages: [
-            { name: 'Applied', completed: true },
-            { name: 'Review', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'APPLIED' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'Shortlisted', completed: app.status?.toUpperCase() === 'SHORTLISTED' || app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'Interview', completed: app.status?.toUpperCase() === 'INTERVIEW_SET' || app.status?.toUpperCase() === 'HIRED' },
-            { name: 'Rejected', completed: app.status?.toUpperCase() === 'REJECTED' },
+            { name: 'APPLIED', completed: true },
+            { name: 'REVIEW', completed: ['REVIEW', 'SHORTLISTED', 'INTERVIEW', 'HIRED', 'REJECTED'].includes(app.status?.toUpperCase()) },
+            { name: 'SHORTLIST', completed: ['SHORTLISTED', 'INTERVIEW', 'HIRED', 'REJECTED'].includes(app.status?.toUpperCase()) },
+            { name: 'INTERVIEW', completed: ['INTERVIEW', 'HIRED', 'REJECTED'].includes(app.status?.toUpperCase()) },
+            { name: 'FINAL', completed: ['HIRED', 'REJECTED'].includes(app.status?.toUpperCase()) },
           ],
           canWithdraw: true,
         }));
@@ -115,7 +115,7 @@ const ApplicationsScreen = () => {
   const getTabCounts = () => ({
     All: applications.length,
     Active: applications.filter(a => a.status === 'APPLIED' || a.status === 'SHORTLISTED').length,
-    Interviews: applications.filter(a => a.status === 'INTERVIEW_SET').length,
+    Interviews: applications.filter(a => a.status === 'INTERVIEW').length,
     Closed: applications.filter(a => a.status === 'REJECTED').length,
   });
 
@@ -123,8 +123,8 @@ const ApplicationsScreen = () => {
     switch (selectedTab) {
       case 'Active':
         return applications.filter(a => a.status === 'APPLIED' || a.status === 'SHORTLISTED');
-      case 'Interviews':
-        return applications.filter(a => a.status === 'INTERVIEW_SET');
+      case 'Interview':
+        return applications.filter(a => a.status === 'INTERVIEW');
       case 'Closed':
         return applications.filter(a => a.status === 'REJECTED');
       default:
@@ -133,30 +133,40 @@ const ApplicationsScreen = () => {
   };
 
   const getStatusBadgeColor = (status: string) => {
-    switch (status) {
+    const s = status?.toUpperCase();
+    switch (s) {
       case 'SHORTLISTED':
         return Colors.periwinkle;
       case 'APPLIED':
         return Colors.iceBlue;
-      case 'INTERVIEW_SET':
+      case 'INTERVIEW':
         return Colors.badgeBlueTint;
       case 'REJECTED':
         return '#FFE6E6';
+      case 'REVIEW':
+        return Colors.iceBlue;
+      case 'HIRED':
+        return '#E6FFF0';
       default:
         return Colors.iceBlue;
     }
   };
 
   const getStatusBadgeTextColor = (status: string) => {
-    switch (status) {
+    const s = status?.toUpperCase();
+    switch (s) {
       case 'SHORTLISTED':
         return Colors.phaseBlue;
       case 'APPLIED':
         return Colors.primaryBlue;
-      case 'INTERVIEW_SET':
+      case 'INTERVIEW':
         return Colors.phaseBlue;
       case 'REJECTED':
         return '#C41E3A';
+      case 'REVIEW':
+        return Colors.primaryBlue;
+      case 'HIRED':
+        return '#00873D';
       default:
         return Colors.primaryBlue;
     }
@@ -168,10 +178,14 @@ const ApplicationsScreen = () => {
         return 'SHORTLISTED';
       case 'APPLIED':
         return 'APPLIED';
-      case 'INTERVIEW_SET':
-        return 'INTERVIEW SET';
+      case 'INTERVIEW':
+        return 'INTERVIEW';
       case 'REJECTED':
         return 'REJECTED';
+      case 'REVIEW':
+        return 'UNDER REVIEW';
+      case 'HIRED':
+        return 'HIRED';
       default:
         return 'APPLIED';
     }
@@ -189,14 +203,13 @@ const ApplicationsScreen = () => {
   };
 
   const handleJobsDetails = (job: any) => {
-    console.log("job", job);
     handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
   }
 
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.menu} />
+      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.progressSection}>
@@ -205,7 +218,7 @@ const ApplicationsScreen = () => {
         </View>
 
         {/* Tab Filters */}
-        <View style={styles.tabsContainer} >
+        {/* <View style={styles.tabsContainer} >
           <FlatList
             ref={filtersListRef}
             horizontal
@@ -234,7 +247,7 @@ const ApplicationsScreen = () => {
             )}
           />
 
-        </View>
+        </View> */}
 
         {/* Applications List */}
         {loading ? (
@@ -250,11 +263,21 @@ const ApplicationsScreen = () => {
                 {/* Header Row with Logo and Status */}
                 <View style={styles.cardHeader}>
                   <View style={styles.logoWrapper}>
-                    <Image
-                      source={item.companyLogo ? { uri: Config.imageurl + item.companyLogo } : Images.indesign}
-                      resizeMode="contain"
-                      style={styles.companyLogo}
-                    />
+                    {item.companyLogo ? (
+                      <Image
+                        source={{ uri: Config.imageurl + item.companyLogo }}
+                        resizeMode="contain"
+                        style={styles.companyLogo}
+                      />
+                    ) : (
+                      <Text style={styles.avatarText}>
+                        {item.company
+                          ? item.company.split(' ').length > 1
+                            ? item.company.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()
+                            : item.company.substring(0, 2).toUpperCase()
+                          : 'AP'}
+                      </Text>
+                    )}
                   </View>
                   <View style={[
                     styles.statusBadge, { backgroundColor: getStatusBadgeColor(item.status) }]}>
@@ -262,7 +285,7 @@ const ApplicationsScreen = () => {
                       styles.statusBadgeText,
                       { color: getStatusBadgeTextColor(item.status) }
                     ]}>
-                      {getStatusText(item.status)}
+                      {getStatusText(item.status.toUpperCase())}
                     </Text>
                   </View>
                 </View>
@@ -341,7 +364,7 @@ const ApplicationsScreen = () => {
                       <Text style={styles.archivedButtonText}>Archived</Text>
                     </TouchableOpacity>
                   ) : (
-                    <TouchableOpacity style={styles.viewDetailsButton}>
+                    <TouchableOpacity onPress={() => { item && handleJobsDetails(item) }} style={styles.viewDetailsButton}>
                       <Text style={styles.viewDetailsButtonText}>View Details</Text>
                     </TouchableOpacity>
                   )}

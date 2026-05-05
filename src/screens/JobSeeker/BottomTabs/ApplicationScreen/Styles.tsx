@@ -1,17 +1,17 @@
-import {  Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Colors from '../../../../comman/Colors';
 import fonts from '../../../../comman/fonts';
 import FontsSize from '../../../../comman/Sizes/FontsSize';
 import MarginHW from '../../../../comman/Sizes/MarginHW';
 
-const {width,height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-   container: { flex: 1, backgroundColor: Colors.Homebackground, paddingHorizontal: MarginHW.PaddingW16 },
+  container: { flex: 1, backgroundColor: Colors.Homebackground, paddingHorizontal: MarginHW.PaddingW16 },
 
   scrollContent: {
-  
+
     paddingBottom: MarginHW.MarginH30,
   },
   progressSection: {
@@ -26,9 +26,9 @@ export const styles = StyleSheet.create({
     fontSize: FontsSize.size16,
     fontFamily: fonts.LexendBold,
     color: Colors.titleInk,
-   
+
   },
-  
+
   /* Tab Filters */
   tabsContainer: {
     marginVertical: MarginHW.MarginH14,
@@ -53,13 +53,14 @@ export const styles = StyleSheet.create({
   },
   tabTextActive: {
     color: Colors.white,
-     fontSize: FontsSize.size14,
+    fontSize: FontsSize.size14,
     fontFamily: fonts.Lexend_Medium,
   },
 
   /* Applications List */
   listContent: {
     paddingBottom: MarginHW.MarginH20,
+    marginTop: MarginHW.MarginH16,
   },
 
   /* Application Card */
@@ -86,6 +87,11 @@ export const styles = StyleSheet.create({
     borderRadius: wp(3),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  avatarText: {
+    fontSize: FontsSize.size14,
+    fontFamily: fonts.LexendBold,
+    color: Colors.primaryBlue,
   },
   companyLogo: {
     width: wp(10),
@@ -122,7 +128,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: MarginHW.MarginH8,
     height: hp(3),
-  
+
   },
   timelineItem: {
     flex: 1,
@@ -158,14 +164,14 @@ export const styles = StyleSheet.create({
   /* Stage Labels */
   stageLabelsContainer: {
     flexDirection: 'row',
-   
+
     marginBottom: MarginHW.MarginH8,
   },
   stageLabel: {
     fontSize: FontsSize.size10,
     fontFamily: fonts.Lexend_Regular,
     color: Colors.bodyGray,
-    },
+  },
 
   /* Applied Date */
   appliedDate: {
