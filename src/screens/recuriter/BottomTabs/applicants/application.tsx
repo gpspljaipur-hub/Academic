@@ -229,7 +229,7 @@ const ApplicationsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.AppsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.menu} />
+      <HomeHeader title={APP_TEXT.AppsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.progressSection}>

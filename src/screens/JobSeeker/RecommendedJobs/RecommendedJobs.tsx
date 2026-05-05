@@ -26,7 +26,7 @@ const RecommendedJobs = () => {
         try {
             setLoading(true);
             const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
-            console.log('Jobs Response:', response);
+            console.log('Jobs Response:', response?.data?.data);
             if (response?.data.status) {
                 let jobsData = response?.data?.data;
                 setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));

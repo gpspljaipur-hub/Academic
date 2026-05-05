@@ -19,10 +19,11 @@ import { APP_TEXT } from '../comman/String';
 import { handleNavigation } from '../navigation/RootNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { logout } from '../Redux/Reducers/Userslice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 const Setting = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.user);
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState(true);
 
@@ -69,7 +70,7 @@ const Setting = () => {
         >
           <Image source={Images.userImage} style={styles.profileImage} />
           <View style={styles.profileInfo}>
-            <Text style={styles.userName}>Iti Tiwari</Text>
+            <Text style={styles.userName}>{user?.name || 'Guest'}</Text>
           </View>
           <View style={styles.editButton}>
             <Image source={Images.pencil} style={styles.editIcon} />
@@ -80,8 +81,14 @@ const Setting = () => {
           <Text style={styles.sectionTitle}>{APP_TEXT.settings.accountSection}</Text>
           <SettingItem icon={Images.ProfileIcon} title={APP_TEXT.settings.personalInfo} />
           <SettingItem icon={Images.verifieduser} title={APP_TEXT.settings.loginSecurity} />
+
           <SettingItem icon={Images.money} title={APP_TEXT.settings.Premium}
             onPress={() => navigation.navigate('Premium')} />
+          <SettingItem
+            icon={Images.bellIcon}
+            title={APP_TEXT.settings.notifications}
+            onPress={() => navigation.navigate('Notification')}
+          />
         </View>
 
         <View style={styles.section}>
@@ -91,6 +98,7 @@ const Setting = () => {
             title={APP_TEXT.settings.notifications}
             showSwitch={true}
             switchValue={isNotificationsEnabled}
+            onPress={() => navigation.navigate('Notification')}
             onSwitchChange={setIsNotificationsEnabled}
           />
           <SettingItem
@@ -100,6 +108,7 @@ const Setting = () => {
             switchValue={isDarkMode}
             onSwitchChange={setIsDarkMode}
           />
+
         </View>
 
         <View style={styles.section}>

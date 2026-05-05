@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Image,
     Text,
     TextInput,
     TouchableOpacity,
     View,
-    StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Styles';
@@ -14,27 +14,17 @@ import HomeHeader from '../../../../components/HomeHeader';
 import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
 import { APP_TEXT } from '../../../../comman/String';
-
+import fonts from '../../../../comman/fonts';
 import { useSelector } from 'react-redux';
 import { Post_Api } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
-import { useIsFocused } from '@react-navigation/native';
-import fonts from '../../../../comman/fonts';
-
-interface ChatItem {
-    id: string;
-    name: string;
-    lastMessage: string;
-    time: string;
-    unreadCount: number;
-    avatar: any;
-    isOnline: boolean;
-    initials: string;
-}
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { handleNavigation } from '../../../../navigation/RootNavigator';
 
 const Message = () => {
+    const navigation = useNavigation<any>();
     const [searchQuery, setSearchQuery] = useState('');
-    const [chats, setChats] = useState<ChatItem[]>([]);
+    const [chats, setChats] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((state: any) => state.user);
     const isFocused = useIsFocused();
@@ -54,22 +44,7 @@ const Message = () => {
             const res: any = await Post_Api(ApiUrl.allAppliedApplicants, { recruiterId })();
 
             if (res?.data?.status) {
-                const mappedChats = (res.data.data || []).map((app: any) => {
-                    const name = app.user?.name || 'Applicant';
-                    return {
-                        id: app._id,
-                        name: name,
-                        lastMessage: `Applied for: ${app.job?.title || 'Unknown Role'}`,
-                        time: new Date(app.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' }),
-                        unreadCount: 0,
-                        avatar: null,
-                        isOnline: false,
-                        initials: name.split(' ').length > 1
-                            ? name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
-                            : name.substring(0, 2).toUpperCase()
-                    };
-                });
-                setChats(mappedChats);
+                setChats(res.data.data || []);
             }
         } catch (error) {
             console.log('fetchApplicants error', error);
@@ -79,43 +54,52 @@ const Message = () => {
     };
 
     const filteredChats = chats.filter(chat =>
-        chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+        (chat.user?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (chat.job?.title || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const renderChatItem = ({ item }: { item: ChatItem }) => (
-        <TouchableOpacity style={styles.chatItem} activeOpacity={0.7}>
-            <View style={styles.avatarContainer}>
-                <View style={[styles.avatar, { backgroundColor: Colors.cardGray, justifyContent: 'center', alignItems: 'center' }]}>
-                    <Text style={{ fontSize: 16, fontFamily: fonts.LexendBold, color: Colors.primaryBlue }}>
-                        {item.initials}
-                    </Text>
-                </View>
-                {item.isOnline && <View style={styles.onlineBadge} />}
-            </View>
+    const OnHandleMasage = (item: any) => {
+        handleNavigation({ type: 'push', navigation, page: 'ChatMessage', passProps: { chats: item } })
 
-            <View style={styles.chatInfo}>
-                <View style={styles.chatHeader}>
-                    <Text style={styles.userName} numberOfLines={1}>{item.name}</Text>
-                    <Text style={styles.timeText}>{item.time}</Text>
+    }
+
+    const renderChatItem = ({ item }: { item: any }) => {
+        const name = item.user?.name || 'Applicant';
+        const jobTitle = item.job?.title || 'Unknown Role';
+        const time = new Date(item.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' });
+        const initials = name.split(' ').length > 1
+            ? name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+            : name.substring(0, 2).toUpperCase();
+
+        return (
+            <TouchableOpacity onPress={() => { OnHandleMasage(item) }} style={styles.chatItem} activeOpacity={0.7}>
+                <View style={styles.avatarContainer}>
+                    <View style={[styles.avatar, { backgroundColor: Colors.cardGray, justifyContent: 'center', alignItems: 'center' }]}>
+                        <Text style={{ fontSize: 16, fontFamily: fonts.LexendBold, color: Colors.primaryBlue }}>
+                            {initials}
+                        </Text>
+                    </View>
                 </View>
-                <View style={styles.lastMessageRow}>
-                    <Text style={styles.lastMessage} numberOfLines={1}>{item.lastMessage}</Text>
-                    {item.unreadCount > 0 && (
-                        <View style={styles.unreadBadge}>
-                            <Text style={styles.unreadText}>{item.unreadCount}</Text>
-                        </View>
-                    )}
+
+                <View style={styles.chatInfo}>
+                    <View style={styles.chatHeader}>
+                        <Text style={styles.userName} numberOfLines={1}>{name}</Text>
+                        <Text style={styles.timeText}>{time}</Text>
+                    </View>
+                    <View style={styles.lastMessageRow}>
+                        <Text style={styles.lastMessage} numberOfLines={1}>Applied for: {jobTitle}</Text>
+                    </View>
                 </View>
-            </View>
-        </TouchableOpacity>
-    );
+            </TouchableOpacity>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             <HomeHeader
                 title={APP_TEXT.messenger.headerTitle}
                 IconImg={Images.userImage}
+                bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')}
             />
 
             <View style={styles.searchContainer}>
@@ -128,21 +112,27 @@ const Message = () => {
                     onChangeText={setSearchQuery}
                 />
             </View>
-            <View style={{ flex: 1, paddingBottom: 70 }}>
-                <FlatList
-                    data={filteredChats}
-                    keyExtractor={item => item.id}
-                    renderItem={renderChatItem}
-                    contentContainerStyle={styles.chatListContent}
-                    showsVerticalScrollIndicator={false}
-                    ListEmptyComponent={
-                        <View style={styles.emptyContainer}>
-                            <Text style={styles.emptyText}>{APP_TEXT.messenger.noMessages}</Text>
-                        </View>
-                    }
-                />
-            </View>
 
+            <View style={{ flex: 1, paddingBottom: 70 }}>
+                {loading && chats.length === 0 ? (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size="large" color={Colors.brandBlue} />
+                    </View>
+                ) : (
+                    <FlatList
+                        data={filteredChats}
+                        keyExtractor={item => item._id}
+                        renderItem={renderChatItem}
+                        contentContainerStyle={styles.chatListContent}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={
+                            <View style={styles.emptyContainer}>
+                                <Text style={styles.emptyText}>{APP_TEXT.messenger.noMessages}</Text>
+                            </View>
+                        }
+                    />
+                )}
+            </View>
         </SafeAreaView>
     );
 };

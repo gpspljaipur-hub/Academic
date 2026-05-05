@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
 
     },
     avatarWrapper: {
-        width: 50,
-        height: 50,
-        borderRadius: 8,
+        width: 100,
+        height: 100,
+        borderRadius: 10,
         overflow: 'hidden',
-        backgroundColor: Colors.cardGray, // Light blue background for avatar
+        backgroundColor: '#E3F2FD', // Light blue background for avatar
         justifyContent: 'center',
         alignItems: 'center',
     },

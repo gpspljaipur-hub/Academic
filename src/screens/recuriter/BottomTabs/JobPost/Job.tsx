@@ -123,7 +123,7 @@ const Job = () => {
                 jobType: jobTypeValue,
                 postedDate: new Date().toISOString().split('T')[0],
                 status: statusValue,
-                Responsibility: responsibility,
+                responsibilities: responsibility,
                 logo: logo ? `data:${logo.mime};base64,${logo.data}` : null,
             };
             console.log('bodyyyyyyyyyy', body)

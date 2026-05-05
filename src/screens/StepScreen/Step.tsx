@@ -142,9 +142,7 @@ const Step = () => {
 
   const onSkipPress = () => {
     handleNavigation({ type: 'push', page: 'Login', navigation });
-
     // goToIndex(STEP_DATA.length - 1);
-
   };
 
   const slides = useMemo(

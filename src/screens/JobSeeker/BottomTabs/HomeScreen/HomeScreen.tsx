@@ -85,10 +85,9 @@ const HomeScreen = () => {
       setLoading(false);
     }
   };
-  console.log("latestjobs", latestJobs)
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
+      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>
@@ -258,7 +257,7 @@ const HomeScreen = () => {
                   <Text style={styles.sectionAction}>{APP_TEXT.homeCalendarIcon}</Text>
                 </View>
                 <Text style={styles.upcomingTitle}>{item.title}</Text>
-                <Text style={styles.upcomingDesc}>{item.description}</Text>
+                <Text numberOfLines={4} style={styles.upcomingDesc}>{item.description}</Text>
                 <Text style={styles.sectionAction}>{APP_TEXT.homeDetailsArrow}</Text>
               </TouchableOpacity>
             )}

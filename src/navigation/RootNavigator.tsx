@@ -18,6 +18,8 @@ import RecommendedJobs from '../screens/JobSeeker/RecommendedJobs/RecommendedJob
 import RecuiterRecentJobs from '../screens/Recuriter/BottomTabs/Dashboard/RecuiterRecentJobs';
 import ApplicantJobDetails from '../screens/Recuriter/ApplicantJobDetails/ApplicantJobDetails';
 import Detail from '../screens/Details/Detail';
+import ChatMessage from '../screens/Recuriter/ChatMessage/ChatMessage';
+import PostDetails from '../screens/Recuriter/PostDetails/PostDetails';
 import Form from '../screens/JobSeeker/PrivateJob/Form';
 export type RootStackParamList = {
   Login: undefined;
@@ -36,9 +38,11 @@ export type RootStackParamList = {
   RecommendedJobs: undefined;
   RecuiterRecentJobs: undefined;
   Applicants: undefined;
+  PostDetails: undefined;
   Job: undefined;
   ApplicantJobDetails: { job: any, applications: any[] };
   Detail: undefined;
+  ChatMessage: { chats: any };
   Form: undefined;
 };
 
@@ -74,6 +78,8 @@ const RootNavigator = () => {
       <Stack.Screen name="RecuiterRecentJobs" component={RecuiterRecentJobs} options={{ headerShown: false }} />
       <Stack.Screen name="ApplicantJobDetails" component={ApplicantJobDetails} options={{ headerShown: false }} />
       <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }} />
+      <Stack.Screen name="ChatMessage" component={ChatMessage} options={{ headerShown: false }} />
+      <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
       <Stack.Screen name="Form" component={Form} options={{ headerShown: false }} />
     </Stack.Navigator>
   );

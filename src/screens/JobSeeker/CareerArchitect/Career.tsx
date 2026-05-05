@@ -72,7 +72,10 @@ const Career = () => {
         user_id: userId
 
       })();
-      if (res?.data?.data?.length > 0) {
+      console.log('-===== applied for this job', res?.data?.data);
+
+      if (res?.data?.data?.status === "Applied") {
+
         setApplyClicked(true);
       } else {
         setApplyClicked(false);
@@ -109,7 +112,7 @@ const Career = () => {
   );
 
   const renderSimilarRole = ({ item }: { item: any }) => {
-    const logo = item.companyLogo ? { uri: Config.imageurl + item.companyLogo } : Images.indesign;
+    const logo = Config.imageurl + item.companyLogo;
     const salary = item.salary || 'Competitive';
     const tags = Array.isArray(item.skills) ? item.skills.slice(0, 2) : (item.jobType ? [item.jobType] : []);
 
@@ -117,7 +120,19 @@ const Career = () => {
       <TouchableOpacity onPress={() => { setJobDetails(item) }} style={styles.roleCard}>
         <View style={styles.roleCardHeader}>
           <View style={styles.roleLogo}>
-            <Image source={logo} style={{ width: '70%', height: '70%', borderRadius: 4 }} resizeMode="contain" />
+            {item.companyLogo ? (
+              <Image source={{ uri: logo }} style={{ width: '70%', height: '70%', borderRadius: 4 }} resizeMode="contain" />
+            ) : (
+              <View style={styles.avatarWrapper}>
+                <Text style={styles.avatarText}>
+                  {item?.company
+                    ? item.company.split(' ').length > 1
+                      ? item.company.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+                      : item.company.substring(0, 2).toUpperCase()
+                    : 'AP'}
+                </Text>
+              </View>
+            )}
           </View>
           <Text style={styles.companyName} numberOfLines={1}>{item.company}</Text>
         </View>

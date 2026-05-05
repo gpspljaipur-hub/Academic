@@ -152,7 +152,7 @@ const ExamsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.menu} />
+      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
 
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
