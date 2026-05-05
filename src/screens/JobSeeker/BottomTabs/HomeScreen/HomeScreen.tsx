@@ -106,7 +106,7 @@ const HomeScreen = () => {
           <View style={styles.highlightBadge}>
             <Text style={styles.highlightBadgeText}>{APP_TEXT.homeNewJobsBadge}</Text>
           </View>
-          <Text style={styles.highlightTitle}>{APP_TEXT.homeNewJobsTitle}</Text>
+          <Text style={styles.highlightTitle}>{latestJobs.length} {APP_TEXT.homeNewJobsTitle}</Text>
 
           <View style={styles.highlightMatchesBadge}>
             <Text style={styles.highlightMatchesBadgeText}>{APP_TEXT.homeNewJobsMatches}</Text>
@@ -154,6 +154,7 @@ const HomeScreen = () => {
               const aiMatch = job.aiMatch || '90%';
               const salary = job.salary || 'Competitive';
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+              console.log("imagessss", image)
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>

@@ -50,7 +50,7 @@ export const APP_TEXT = {
   homeSearchPlaceholder: 'Search jobs, exams, or companies',
   homeFindNow: 'Find Now',
   homeNewJobsBadge: 'NEW JOBS',
-  homeNewJobsTitle: '36 New jobs match your profile perfectly today.',
+  homeNewJobsTitle: ' New jobs match your profile perfectly today.',
   homeNewJobsMatches: 'View All Matches',
   homeQuickViewLabel: 'QUICK VIEW',
   homeQuickViewTitle: 'Exam Results',

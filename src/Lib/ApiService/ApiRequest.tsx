@@ -139,3 +139,23 @@ export async function ImageRequestPut(Url: string, SendData: any) {
     return axiosCatchLegacy(error);
   }
 }
+export async function Post_FormData(Url: string, SendData: any) {
+  const token = await getToken();
+  try {
+    const response = await axios.post(fullUrl(Url), SendData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log('Post_FormData error', error);
+    return error ? { error: true } : null;
+  }
+}
+
+export const Post_Api_FormData = (Url: string, SendData: any) => async () => {
+  const data = await Post_FormData(Url, SendData);
+  return { data };
+};

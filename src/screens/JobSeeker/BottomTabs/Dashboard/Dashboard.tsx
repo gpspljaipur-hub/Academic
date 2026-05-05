@@ -8,6 +8,7 @@ import { APP_TEXT } from '../../../../comman/String'
 import Images from '../../../../comman/Images'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeHeader from '../../../../components/HomeHeader'
+import Config from '../../../../Lib/ApiService/Config'
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
     const [jobs, setJobs] = useState<any[]>([]);
@@ -54,10 +55,14 @@ const Dashboard = () => {
         </View>
     );
 
-    const JobItem = ({ title, status, time, shortCode }: any) => (
+    const JobItem = ({ title, status, time, image, formattedSalary, tags }: any) => (
         <TouchableOpacity style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
-                <Text style={styles.jobIconText}>{shortCode}</Text>
+                {image ? (
+                    <Image source={{ uri: image }} style={{ width: '100%', height: '100%', borderRadius: 8 }} resizeMode="cover" />
+                ) : (
+                    <Text style={styles.jobIconText}>{title.substring(0, 2).toUpperCase()}</Text>
+                )}
             </View>
             <View style={styles.jobDetails}>
                 <Text style={styles.jobTitle}>{title}</Text>
@@ -134,7 +139,10 @@ const Dashboard = () => {
                         const status = job.status || 'ACTIVE';
                         const time = job.createdAt ? new Date(job.createdAt).toLocaleDateString() : 'Recently';
                         const shortCode = job.shortCode || title.substring(0, 2).toUpperCase();
-
+                        const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+                        const formattedSalary = job.salary || 'Competitive';
+                        const tags = job.skills || [];
+                        console.log("image", image)
                         return (
                             <JobItem
                                 key={index.toString()}
@@ -142,6 +150,9 @@ const Dashboard = () => {
                                 status={status}
                                 time={time}
                                 shortCode={shortCode}
+                                image={image}
+                                formattedSalary={formattedSalary}
+                                tags={tags}
                             />
                         );
                     })

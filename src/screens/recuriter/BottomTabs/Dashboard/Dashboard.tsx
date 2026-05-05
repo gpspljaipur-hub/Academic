@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 import { Post_Api } from '../../../../Lib/ApiService/ApiRequest'
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl'
 import { handleNavigation } from '../../../../navigation/RootNavigator'
+import Config from '../../../../Lib/ApiService/Config'
 
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
@@ -67,10 +68,14 @@ const Dashboard = () => {
         </View>
     );
 
-    const JobItem = ({ title, status, time, shortCode, job }: any) => (
+    const JobItem = ({ title, status, time, shortCode, job, companyLogo }: any) => (
         <TouchableOpacity onPress={() => { handleNavigation({ type: "push", page: "PostDetails", passProps: { jobs: job }, navigation }); }} style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
-                <Text style={styles.jobIconText}>{shortCode}</Text>
+                {companyLogo ? (
+                    <Image source={{ uri: Config.imageurl + companyLogo }} style={{ width: '100%', height: '100%', borderRadius: 8 }} resizeMode="cover" />
+                ) : (
+                    <Text style={styles.jobIconText}>{shortCode}</Text>
+                )}
             </View>
             <View style={styles.jobDetails}>
                 <Text style={styles.jobTitle}>{title}</Text>
@@ -170,6 +175,7 @@ const Dashboard = () => {
                                     time={new Date(job.createdAt).toLocaleDateString()}
                                     shortCode={getShortCode(job.title)}
                                     job={job}
+                                    companyLogo={job.companyLogo}
                                 />
                             ))
                         ) : (
