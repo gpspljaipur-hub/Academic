@@ -254,7 +254,7 @@ const HomeScreen = () => {
               <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })} style={styles.upcomingCard}>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.upcomingDate}>{item.startDate}</Text>
-                  <Text style={styles.sectionAction}>{APP_TEXT.homeCalendarIcon}</Text>
+                  <Image source={Images.calendar} resizeMode='contain' style={styles.calendaricon} />
                 </View>
                 <Text style={styles.upcomingTitle}>{item.title}</Text>
                 <Text numberOfLines={4} style={styles.upcomingDesc}>{item.description}</Text>
