@@ -20,7 +20,8 @@ const ApiUrl = {
   recruiterApplicantsByJob: 'recruiterJob/applicantsByJob',
   updateApplicationStatus: 'recruiterJob/updateStatus',
   allAppliedApplicants: 'recruiterJob/allAppliedApplicants',
-
+  LATEST_JOBS: 'jobs/latest',
+  LATEST_EXAMS: 'exams/latest',
 };
 
 export default ApiUrl;

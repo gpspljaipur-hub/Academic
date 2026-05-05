@@ -6,7 +6,7 @@ import HomeHeader from '../../../../components/HomeHeader';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import { useNavigation } from '@react-navigation/native';
-import { Get_Api } from '../../../../Lib/ApiService/ApiRequest';
+import { Get_Api, Post_Api } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
@@ -30,10 +30,14 @@ const QUICK_TILES = [
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [jobs, setJobs] = useState<any[]>([]);
+  const [latestJobs, setLatestJobs] = useState<any[]>([]);
+  const [latestExams, setLatestExams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchJobs();
+    fetchLatestJobs();
+    fetchLatestExams();
   }, []);
 
   const fetchJobs = async () => {
@@ -52,10 +56,40 @@ const HomeScreen = () => {
     }
   };
 
+  const fetchLatestJobs = async () => {
+    try {
+      setLoading(true);
+      const response: any = await Post_Api(ApiUrl.LATEST_JOBS, {})();
+      console.log('Latest Jobs Response:', response);
+      if (response?.data?.success) {
+        setLatestJobs(response?.data?.data || []);
+      }
+    } catch (error) {
+      console.log('Error fetching latest jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchLatestExams = async () => {
+    try {
+      setLoading(true);
+      const response: any = await Post_Api(ApiUrl.LATEST_EXAMS, {})();
+      console.log('Latest Exams Response:', response);
+      if (response?.data?.success) {
+        setLatestExams(response?.data?.data || []);
+      }
+    } catch (error) {
+      console.log('Error fetching latest exams:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  console.log("latestjobs", latestJobs)
   return (
     <SafeAreaView style={styles.container}>
       <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>
             <TextInput
@@ -159,23 +193,32 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{APP_TEXT.homeLatestGovtJobsTitle}</Text>
-            <Image source={Images.bank} resizeMode='contain' style={styles.bankimage} />
+            <TouchableOpacity
+            // onPress={fetchLatestJobs}
+            >
+              <Image source={Images.bank} resizeMode='contain' style={styles.bankimage} /></TouchableOpacity>
           </View>
-          {APP_TEXT.homeGovtJobs.map(job => (
-            <View key={job.title} style={styles.govtCard}>
-              <View style={styles.govtCodeWrap}>
-                <Text style={styles.govtCode}>{job.code}</Text>
-              </View>
-              <View style={styles.govtCenter}>
-                <Text style={styles.govtTitle}>{job.title}</Text>
-                <Text style={styles.govtMeta}>{APP_TEXT.homeGovtDepartment}</Text>
-              </View>
-              <View>
-                <Text style={styles.deadlineLabel}>{APP_TEXT.homeDeadlineLabel}</Text>
-                <Text style={styles.deadlineDate}>{job.deadline}</Text>
-              </View>
+          {loading ? (
+            <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+          ) : latestJobs.length > 0 ? (
+            latestJobs.map((job, index) => (
+              <Pressable key={index} onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job } })}
+                style={({ pressed }) => [styles.govtCard, pressed && { opacity: 0.7 }]}>
+                <View style={styles.govtCenter}>
+                  <Text numberOfLines={1} style={styles.govtTitle}>{job.title}</Text>
+                  <Text style={styles.govtMeta}>{job.description}</Text>
+                </View>
+                <View>
+                  <Text style={styles.deadlineLabel}>{APP_TEXT.homePublish}</Text>
+                  <Text style={styles.deadlineDate}>{new Date(job.publishedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</Text>
+                </View>
+              </Pressable>
+            ))
+          ) : (
+            <View style={{ padding: 20, alignItems: 'center' }}>
+              <Text style={{ color: Colors.mutedSlate }}>No recent notifications found.</Text>
             </View>
-          ))}
+          )}
         </View>
 
         <View style={styles.section}>
@@ -199,27 +242,35 @@ const HomeScreen = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{APP_TEXT.homeUpcomingExamTitle}</Text>
-            <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text>
+            {/* <Text style={styles.sectionAction}>{APP_TEXT.homeFullSchedule}</Text> */}
           </View>
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={APP_TEXT.homeUpcomingExams}
-            keyExtractor={item => item.id}
+            data={latestExams}
+            keyExtractor={item => item._id}
             contentContainerStyle={styles.upcomingList}
             renderItem={({ item }) => (
-              <View style={styles.upcomingCard}>
+              <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })} style={styles.upcomingCard}>
                 <View style={styles.sectionHeader}>
-                  <Text style={styles.upcomingDate}>{item.date}</Text>
+                  <Text style={styles.upcomingDate}>{item.startDate}</Text>
                   <Text style={styles.sectionAction}>{APP_TEXT.homeCalendarIcon}</Text>
                 </View>
                 <Text style={styles.upcomingTitle}>{item.title}</Text>
-                <Text style={styles.upcomingDesc}>{item.desc}</Text>
+                <Text style={styles.upcomingDesc}>{item.description}</Text>
                 <Text style={styles.sectionAction}>{APP_TEXT.homeDetailsArrow}</Text>
-              </View>
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={() => (
+              !loading && (
+                <View style={{ padding: 20, alignItems: 'center' }}>
+                  <Text style={{ color: Colors.mutedSlate }}>No upcoming exams found.</Text>
+                </View>
+              )
             )}
           />
         </View>
+        <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
   );

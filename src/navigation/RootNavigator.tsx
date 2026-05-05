@@ -17,6 +17,7 @@ import Setting from '../components/Setting';
 import RecommendedJobs from '../screens/JobSeeker/RecommendedJobs/RecommendedJobs';
 import RecuiterRecentJobs from '../screens/Recuriter/BottomTabs/Dashboard/RecuiterRecentJobs';
 import ApplicantJobDetails from '../screens/Recuriter/ApplicantJobDetails/ApplicantJobDetails';
+import Detail from '../screens/Details/Detail';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -37,6 +38,7 @@ export type RootStackParamList = {
   Applicants: undefined;
   Job: undefined;
   ApplicantJobDetails: { job: any, applications: any[] };
+  Detail: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -70,8 +72,7 @@ const RootNavigator = () => {
       <Stack.Screen name="RecommendedJobs" component={RecommendedJobs} options={{ headerShown: false }} />
       <Stack.Screen name="RecuiterRecentJobs" component={RecuiterRecentJobs} options={{ headerShown: false }} />
       <Stack.Screen name="ApplicantJobDetails" component={ApplicantJobDetails} options={{ headerShown: false }} />
-
-
+      <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

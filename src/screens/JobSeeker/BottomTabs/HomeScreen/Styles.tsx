@@ -6,7 +6,7 @@ import MarginHW from '../../../../comman/Sizes/MarginHW';
 
 export const styles = StyleSheet.create({
   container: { backgroundColor: Colors.screenGray, flex: 1, paddingHorizontal: MarginHW.PaddingW16 },
-  content: { paddingTop: 8, paddingBottom: MarginHW.MarginH70 },
+  content: { paddingTop: 8, paddingBottom: MarginHW.MarginH60 },
   searchRow: { alignItems: 'center', flexDirection: 'row', gap: 8, marginBottom: MarginHW.MarginH10 },
   searchBox: { backgroundColor: Colors.white, borderRadius: 10, flex: 1, paddingHorizontal: MarginHW.PaddingW10, paddingVertical: MarginHW.PaddingH3 },
   searchText: { height: 40, color: '#8B93A1', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size14 },
