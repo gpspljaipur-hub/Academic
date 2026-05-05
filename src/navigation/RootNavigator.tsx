@@ -79,6 +79,7 @@ const RootNavigator = () => {
   );
 };
 
+
 export default RootNavigator;
 
 export function handleNavigation(nav: any) {
