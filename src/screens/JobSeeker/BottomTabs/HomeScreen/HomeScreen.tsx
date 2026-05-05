@@ -256,7 +256,7 @@ const HomeScreen = () => {
                   <Text style={styles.sectionAction}>{APP_TEXT.homeCalendarIcon}</Text>
                 </View>
                 <Text style={styles.upcomingTitle}>{item.title}</Text>
-                <Text style={styles.upcomingDesc}>{item.description}</Text>
+                <Text numberOfLines={4} style={styles.upcomingDesc}>{item.description}</Text>
                 <Text style={styles.sectionAction}>{APP_TEXT.homeDetailsArrow}</Text>
               </TouchableOpacity>
             )}

@@ -29,15 +29,15 @@ const styles = StyleSheet.create({
         paddingBottom: hp(5),
     },
     pencilIcon: {
-      width: 15, height: 15,tintColor: Colors.primaryBlue
+        width: 15, height: 15, tintColor: Colors.primaryBlue
     },
     PencilIcon: {
-       width: 12, height: 12,tintColor: Colors.white
+        width: 12, height: 12, tintColor: Colors.white
     },
     aistarIcon: { width: 24, height: 24, tintColor: Colors.primaryBlue },
     profileSection: {
         alignItems: 'center',
-      
+
     },
 
     avatarContainer: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         right: 0,
         backgroundColor: Colors.primaryBlue,
         width: 30,
-        height:30,
+        height: 30,
         borderRadius: wp(4),
         justifyContent: 'center',
         alignItems: 'center',
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginTop: hp(0.5),
+        textAlign: 'center'
     },
     userLocation: {
         flexDirection: 'row',
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     },
     strengthCard: {
         backgroundColor: Colors.primaryBlue,
-      
+
         marginTop: hp(2),
         borderRadius: wp(5),
         padding: wp(5),
@@ -163,18 +164,18 @@ const styles = StyleSheet.create({
     sectionTitleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-      
+
         marginTop: hp(3),
     },
     sectionTitle: {
-       fontFamily: fonts.LexendBold, 
-       fontSize: FontsSize.size16,
+        fontFamily: fonts.LexendBold,
+        fontSize: FontsSize.size16,
         color: Colors.titleInk,
         marginLeft: wp(2),
     },
     tipsContainer: {
         flexDirection: 'row',
-      
+
         marginTop: hp(1.5),
         justifyContent: 'space-between',
     },
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: hp(1.5),
     },
-    tipIcon: {width: 20, height: 20, tintColor: Colors.brandBlue},
+    tipIcon: { width: 20, height: 20, tintColor: Colors.brandBlue },
     tipText: {
         fontSize: FontsSize.size12,
         fontFamily: fonts.Lexend_Medium,
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     },
     statsContainer: {
         flexDirection: 'row',
-     
+
         marginTop: hp(2),
         justifyContent: 'space-between',
     },
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-       
+
         marginTop: hp(3),
     },
     resumeTitle: {
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     },
     experienceCard: {
         backgroundColor: Colors.white,
-       
+
         marginTop: hp(1.5),
         padding: wp(4),
         borderRadius: wp(4),
@@ -345,7 +346,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-      
+
         marginTop: hp(1.5),
     },
     editIcon: {

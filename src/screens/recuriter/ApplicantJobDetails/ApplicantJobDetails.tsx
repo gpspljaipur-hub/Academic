@@ -23,7 +23,7 @@ const ApplicantJobDetails = () => {
     const [selectedApp, setSelectedApp] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
-    const STATUS_OPTIONS = ['Applied', 'Review', 'Shortlisted', 'Interview', 'Rejected', 'Hired', ];
+    const STATUS_OPTIONS = ['Applied', 'Review', 'Shortlisted', 'Interview', 'Rejected', 'Hired',];
 
     const getStatusBadgeColor = (status: string) => {
         const s = status?.toUpperCase();
