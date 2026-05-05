@@ -47,8 +47,14 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: hp(1.5),
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        borderRadius: 5,
         borderBottomWidth: 1,
-        borderBottomColor: Colors.cardGray,
+        borderBottomColor: Colors.white,
+        backgroundColor: Colors.white,
+        elevation: 1
+
     },
     avatarContainer: {
         position: 'relative',

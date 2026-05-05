@@ -10,6 +10,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { Post_Api } from '../../../../Lib/ApiService/ApiRequest'
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl'
+import { handleNavigation } from '../../../../navigation/RootNavigator'
 
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
@@ -66,8 +67,8 @@ const Dashboard = () => {
         </View>
     );
 
-    const JobItem = ({ title, status, time, shortCode }: any) => (
-        <TouchableOpacity style={styles.jobCard}>
+    const JobItem = ({ title, status, time, shortCode, job }: any) => (
+        <TouchableOpacity onPress={() => { handleNavigation({ type: "push", page: "PostDetails", passProps: { jobs: job }, navigation }); }} style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
                 <Text style={styles.jobIconText}>{shortCode}</Text>
             </View>
@@ -97,7 +98,7 @@ const Dashboard = () => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
-            <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage} bellIcon={Images.bellIcon} />
+            <HomeHeader title={APP_TEXT.appName} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
                 <View style={styles.welcomeSection}>
                     <Text style={styles.recruiterTitle}>{strings.recruiterTitle}</Text>
@@ -168,6 +169,7 @@ const Dashboard = () => {
                                     status={job.status?.toUpperCase() || 'OPEN'}
                                     time={new Date(job.createdAt).toLocaleDateString()}
                                     shortCode={getShortCode(job.title)}
+                                    job={job}
                                 />
                             ))
                         ) : (

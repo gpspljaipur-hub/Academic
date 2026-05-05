@@ -15,6 +15,7 @@ import ApiUrl from '../../../Lib/ApiService/ApiUrl'
 import Helper from '../../../Lib/HelperFiles/Helper'
 import { pick, types } from '@react-native-documents/picker'
 import Config from '../../../Lib/ApiService/Config'
+import { handleNavigation } from '../../../navigation/RootNavigator'
 
 const Apply = () => {
     const navigation = useNavigation<any>();
@@ -47,7 +48,7 @@ const Apply = () => {
                 job_id: jobApply._id,
                 user_id: userId
             })();
-            if (res?.data?.data?.length > 0) {
+            if (res?.data?.data?.status === "Applied") {
                 setAlreadyApplied(true);
             } else {
                 setAlreadyApplied(false);
@@ -103,7 +104,7 @@ const Apply = () => {
             if (res?.data?.status) {
                 setIsSubmitted(true);
                 Helper.showToast('Application submitted successfully!');
-                setTimeout(() => navigation.goBack(), 1500);
+                handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
             } else {
                 Helper.showToast(res?.data?.message || 'Already applied for this job.');
             }

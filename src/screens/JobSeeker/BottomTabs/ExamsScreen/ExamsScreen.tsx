@@ -5,11 +5,13 @@ import Images from '../../../../comman/Images';
 import { styles } from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
 import HomeHeader from '../../../../components/HomeHeader';
+import { useNavigation } from '@react-navigation/native';
 
 const EXAM_FILTERS = APP_TEXT.examFilters;
 const EXAM_NOTIFICATIONS = APP_TEXT.examNotifications;
 
 const ExamsScreen = () => {
+  const navigation = useNavigation<any>();
   const [selectedFilter, setSelectedFilter] = useState<string>(EXAM_FILTERS[0]);
 
   const renderNotification = ({ item }: any) => (
@@ -102,7 +104,7 @@ const ExamsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.menu} />
+      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
 
       <FlatList
         data={EXAM_NOTIFICATIONS}
