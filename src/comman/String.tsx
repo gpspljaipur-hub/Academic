@@ -93,7 +93,7 @@ export const APP_TEXT = {
   jobsLocationIcon: '📍',
   jobsSalaryIcon: '💸',
   prepTitle: 'Boost Your Preparation',
-  examFilters: ['Govt Jobs', 'Results', 'Admit Cards',],
+  examFilters: ['Govt Exam', 'Results', 'Admit Cards',],
   examSearchPlaceholder: 'Search for exam notifications, updates',
   examLatestAnnouncements: 'Latest Announcements',
   examRecentNotifications: 'Recent Notifications',
@@ -248,6 +248,7 @@ export const APP_TEXT = {
     },
   ],
   applyScreen: {
+    uploadResume: '+',
     title: 'Apply Now',
     applyingFor: 'APPLYING FOR',
     personalInfo: 'PERSONAL INFORMATION',

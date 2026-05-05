@@ -227,13 +227,14 @@ const HomeScreen = () => {
           </View>
           <View style={styles.chipRow}>
             {APP_TEXT.homePrivateCompanies.map(company => (
-              <View key={company.name} style={styles.chip}>
+              <Pressable key={company.name} style={styles.chip}
+                onPress={() => handleNavigation({ type: 'push', navigation, page: 'Form', passProps: { job: company } })}>
                 <View >
                   <Image source={company.image} resizeMode="contain" style={styles.chipIcon} />
                 </View>
                 <Text style={styles.chipText}>{company.name}</Text>
                 <Text style={styles.companyRoles}>{company.roles}</Text>
-              </View>
+              </Pressable>
             ))}
           </View>
         </View>
