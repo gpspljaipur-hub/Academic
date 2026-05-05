@@ -1,5 +1,8 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import Colors from '../../comman/Colors';
+import FontsSize from '../../comman/Sizes/FontsSize';
+import fonts from '../../comman/fonts';
+import MarginHW from '../../comman/Sizes/MarginHW';
 
 const { width } = Dimensions.get('window');
 
@@ -7,6 +10,7 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
+        paddingHorizontal: MarginHW.MarginW16
     },
     header: {
         flexDirection: 'row',
@@ -30,7 +34,6 @@ export const styles = StyleSheet.create({
         paddingBottom: 160,
     },
     heroSection: {
-        padding: 24,
         alignItems: 'center',
         backgroundColor: Colors.white,
     },
@@ -51,17 +54,17 @@ export const styles = StyleSheet.create({
         color: Colors.brandBlue,
     },
     title: {
-        fontSize: 24,
-        fontWeight: '800',
+        fontSize: FontsSize.size18,
+        fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
         textAlign: 'center',
         lineHeight: 32,
     },
     department: {
-        fontSize: 16,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.mutedSlate,
         marginTop: 8,
-        fontWeight: '600',
         textTransform: 'uppercase',
     },
     highlightsContainer: {
@@ -87,8 +90,8 @@ export const styles = StyleSheet.create({
         marginRight: 8,
     },
     highlightText: {
-        fontSize: 14,
-        fontWeight: '700',
+        fontSize: FontsSize.size12,
+        fontFamily: fonts.Lexend_Regular,
         color: Colors.bodyGray,
     },
     section: {
@@ -96,15 +99,16 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 24,
     },
     sectionTitle: {
-        fontSize: 20,
-        fontWeight: '800',
+        fontSize: FontsSize.size18,
+        fontFamily: fonts.Lexend_Medium,
         color: Colors.titleInk,
+
         marginBottom: 16,
     },
     card: {
         backgroundColor: Colors.white,
-        borderRadius: 24,
-        padding: 24,
+        borderRadius: 10,
+        padding: 15,
         borderWidth: 1,
         borderColor: Colors.borderGray,
         shadowColor: Colors.black,
@@ -114,7 +118,8 @@ export const styles = StyleSheet.create({
         elevation: 2,
     },
     descriptionText: {
-        fontSize: 16,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Regular,
         color: Colors.bodyGray,
         lineHeight: 26,
     },

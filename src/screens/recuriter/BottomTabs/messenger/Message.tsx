@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     FlatList,
     Image,
@@ -15,6 +15,12 @@ import Images from '../../../../comman/Images';
 import Colors from '../../../../comman/Colors';
 import { APP_TEXT } from '../../../../comman/String';
 
+import { useSelector } from 'react-redux';
+import { Post_Api } from '../../../../Lib/ApiService/ApiRequest';
+import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
+import { useIsFocused } from '@react-navigation/native';
+import fonts from '../../../../comman/fonts';
+
 interface ChatItem {
     id: string;
     name: string;
@@ -23,68 +29,54 @@ interface ChatItem {
     unreadCount: number;
     avatar: any;
     isOnline: boolean;
+    initials: string;
 }
-
-const MOCK_CHATS: ChatItem[] = [
-    {
-        id: '1',
-        name: 'John Doe',
-        lastMessage: 'Hi, I saw your job posting for Senior UI...',
-        time: '10:30 AM',
-        unreadCount: 2,
-        avatar: Images.userImage,
-        isOnline: true,
-    },
-    {
-        id: '2',
-        name: 'Sarah Smith',
-        lastMessage: 'Thank you for the opportunity!',
-        time: 'Yesterday',
-        unreadCount: 0,
-        avatar: Images.userImage,
-        isOnline: false,
-    },
-    {
-        id: '3',
-        name: 'Alex Johnson',
-        lastMessage: 'When is the interview scheduled?',
-        time: '2 days ago',
-        unreadCount: 0,
-        avatar: Images.userImage,
-        isOnline: true,
-    },
-    {
-        id: '4',
-        name: 'Emily Davis',
-        lastMessage: 'I have updated my portfolio link.',
-        time: '1 week ago',
-        unreadCount: 5,
-        avatar: Images.userImage,
-        isOnline: false,
-    },
-    {
-        id: '5',
-        name: 'Michael Brown',
-        lastMessage: 'Looking forward to hearing from you.',
-        time: 'Mar 20',
-        unreadCount: 0,
-        avatar: Images.userImage,
-        isOnline: false,
-    },
-    {
-        id: '6',
-        name: 'Jessica Wilson',
-        lastMessage: 'Can we reschedule the call?',
-        time: 'Mar 18',
-        unreadCount: 1,
-        avatar: Images.userImage,
-        isOnline: true,
-    }
-];
 
 const Message = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [chats, setChats] = useState(MOCK_CHATS);
+    const [chats, setChats] = useState<ChatItem[]>([]);
+    const [loading, setLoading] = useState(false);
+    const { user } = useSelector((state: any) => state.user);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchApplicants();
+        }
+    }, [isFocused]);
+
+    const fetchApplicants = async () => {
+        const recruiterId = user?.id || user?._id;
+        if (!recruiterId) return;
+
+        try {
+            setLoading(true);
+            const res: any = await Post_Api(ApiUrl.allAppliedApplicants, { recruiterId })();
+
+            if (res?.data?.status) {
+                const mappedChats = (res.data.data || []).map((app: any) => {
+                    const name = app.user?.name || 'Applicant';
+                    return {
+                        id: app._id,
+                        name: name,
+                        lastMessage: `Applied for: ${app.job?.title || 'Unknown Role'}`,
+                        time: new Date(app.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' }),
+                        unreadCount: 0,
+                        avatar: null,
+                        isOnline: false,
+                        initials: name.split(' ').length > 1
+                            ? name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+                            : name.substring(0, 2).toUpperCase()
+                    };
+                });
+                setChats(mappedChats);
+            }
+        } catch (error) {
+            console.log('fetchApplicants error', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filteredChats = chats.filter(chat =>
         chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -94,7 +86,11 @@ const Message = () => {
     const renderChatItem = ({ item }: { item: ChatItem }) => (
         <TouchableOpacity style={styles.chatItem} activeOpacity={0.7}>
             <View style={styles.avatarContainer}>
-                <Image source={item.avatar} style={styles.avatar} />
+                <View style={[styles.avatar, { backgroundColor: Colors.cardGray, justifyContent: 'center', alignItems: 'center' }]}>
+                    <Text style={{ fontSize: 16, fontFamily: fonts.LexendBold, color: Colors.primaryBlue }}>
+                        {item.initials}
+                    </Text>
+                </View>
                 {item.isOnline && <View style={styles.onlineBadge} />}
             </View>
 
@@ -132,19 +128,21 @@ const Message = () => {
                     onChangeText={setSearchQuery}
                 />
             </View>
+            <View style={{ flex: 1, paddingBottom: 70 }}>
+                <FlatList
+                    data={filteredChats}
+                    keyExtractor={item => item.id}
+                    renderItem={renderChatItem}
+                    contentContainerStyle={styles.chatListContent}
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>{APP_TEXT.messenger.noMessages}</Text>
+                        </View>
+                    }
+                />
+            </View>
 
-            <FlatList
-                data={filteredChats}
-                keyExtractor={item => item.id}
-                renderItem={renderChatItem}
-                contentContainerStyle={styles.chatListContent}
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={
-                    <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>{APP_TEXT.messenger.noMessages}</Text>
-                    </View>
-                }
-            />
         </SafeAreaView>
     );
 };

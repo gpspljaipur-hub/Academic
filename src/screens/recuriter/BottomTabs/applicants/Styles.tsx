@@ -8,13 +8,14 @@ import MarginHW from '../../../../comman/Sizes/MarginHW';
 const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    container: { flex: 1,  backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
+    container: { flex: 1, backgroundColor: '#F4F5F7', paddingHorizontal: MarginHW.PaddingW16 },
 
     scrollContent: {
 
         paddingBottom: MarginHW.MarginH30,
     },
     progressSection: {
+        marginBottom: MarginHW.MarginH14,
     },
     progressLabel: {
         fontSize: FontsSize.size14,
@@ -75,9 +76,10 @@ export const styles = StyleSheet.create({
     /* Card Header */
     cardHeader: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         marginBottom: MarginHW.MarginH12,
+        gap: MarginHW.MarginW12,
     },
     logoWrapper: {
         width: wp(14),
@@ -91,10 +93,12 @@ export const styles = StyleSheet.create({
         width: wp(10),
         height: wp(10),
     },
+    companyLogoText: {
+        fontSize: FontsSize.size18,
+        fontFamily: fonts.Lexend_Medium,
+        color: Colors.titleInk,
+    },
     statusBadge: {
-        paddingHorizontal: wp(3),
-        paddingVertical: hp(0.6),
-        borderRadius: wp(3),
     },
     statusBadgeText: {
         fontSize: FontsSize.size10,
@@ -113,7 +117,7 @@ export const styles = StyleSheet.create({
         fontSize: FontsSize.size10,
         fontFamily: fonts.Lexend_Regular,
         color: Colors.bodyGray,
-        marginBottom: MarginHW.MarginH12,
+        marginBottom: MarginHW.MarginH5,
     },
 
     /* Timeline */
@@ -207,7 +211,7 @@ export const styles = StyleSheet.create({
     actionButtonsContainer: {
         flexDirection: 'row',
         gap: MarginHW.MarginW12,
-        marginTop: MarginHW.MarginH12,
+        marginTop: MarginHW.MarginH1,
     },
     viewDetailsButton: {
         flex: 1,

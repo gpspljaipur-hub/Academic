@@ -61,4 +61,19 @@ export const styles = StyleSheet.create({
   upcomingDate: { color: Colors.brandBlue, fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size10 },
   upcomingTitle: { color: Colors.titleInk, fontFamily: fonts.LexendBold, fontSize: FontsSize.size14, marginBottom: MarginHW.MarginH4 },
   upcomingDesc: { color: '#6E7685', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size10, marginBottom: MarginHW.MarginH8 },
+  jobIconText: {
+    fontSize: FontsSize.size14,
+    fontWeight: 'bold',
+    color: Colors.brandBlue,
+  },
+  jobCompanyLogoImage: {
+    alignItems: 'center',
+    backgroundColor: Colors.cardGray,
+    borderWidth: 1,
+    borderColor: '#E4E7EB',
+    borderRadius: 8,
+    height: 50,
+    justifyContent: 'center',
+    width: 50,
+  },
 });

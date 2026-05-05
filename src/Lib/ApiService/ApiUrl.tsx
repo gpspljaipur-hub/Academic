@@ -14,6 +14,12 @@ const ApiUrl = {
   myAppliedJobs: 'jobApplication/myApplications',
   authGetProfile: 'auth/get-profile',
   authUpdateProfile: 'auth/update-profile',
+  dashboardStats: 'recruiterJob/dashboardStats',
+  myJobs: 'recruiterJob/myJobs',
+  recruiterApplicants: 'recruiterJob/applicants',
+  recruiterApplicantsByJob: 'recruiterJob/applicantsByJob',
+  updateApplicationStatus: 'recruiterJob/updateStatus',
+  allAppliedApplicants: 'recruiterJob/allAppliedApplicants',
   LATEST_JOBS: 'jobs/latest',
   LATEST_EXAMS: 'exams/latest',
 };

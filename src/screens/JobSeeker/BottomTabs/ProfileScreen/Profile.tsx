@@ -17,6 +17,7 @@ const Profile = () => {
     const { profile } = APP_TEXT;
     const user = useSelector((state: any) => state.user.user);
     const [userData, setUserData] = useState<any>(null);
+    const [appliedCount, setAppliedCount] = useState(0);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -31,9 +32,17 @@ const Profile = () => {
 
         try {
             setLoading(true);
-            const res: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
-            if (res?.data?.status) {
-                setUserData(res.data.user);
+            // Fetch profile data
+            const profileRes: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
+            if (profileRes?.data?.status) {
+                setUserData(profileRes.data.user);
+            }
+
+            // Fetch applied jobs count from myApplications API
+            const appsRes: any = await Post_Api(ApiUrl.myAppliedJobs, { user_id: userId })();
+            const appsData = appsRes?.data?.data || appsRes?.data || [];
+            if (Array.isArray(appsData)) {
+                setAppliedCount(appsData.length);
             }
         } catch (error) {
             console.log('fetchProfile error', error);
@@ -150,7 +159,7 @@ const Profile = () => {
                             <Text style={styles.statLabel}>{profile.savedJobs}</Text>
                         </View>
                         <View style={styles.statCard}>
-                            <Text style={styles.statNumber}>{userData?.appliedJobsCount || 0}</Text>
+                            <Text style={styles.statNumber}>{appliedCount}</Text>
                             <Text style={styles.statLabel}>{profile.applications}</Text>
                         </View>
                     </View>

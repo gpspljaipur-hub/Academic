@@ -158,7 +158,12 @@ const HomeScreen = () => {
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>
-                    <Image source={image ? { uri: image } : Images.amazonpay} resizeMode='cover' style={styles.jobCompanyLogo} />
+                    {image ?
+                      <Image source={image ? { uri: image } : Images.amazonpay} resizeMode='cover' style={styles.jobCompanyLogo} />
+                      :
+                      <View style={styles.jobCompanyLogoImage}>
+                        <Text style={styles.jobIconText}>{title.charAt(0).toUpperCase()}</Text>
+                      </View>}
                     <View style={styles.aiBadge}>
                       <Text style={styles.aiBadgeText}>⚡ {aiMatch} {APP_TEXT.aiMatch} </Text>
                     </View>

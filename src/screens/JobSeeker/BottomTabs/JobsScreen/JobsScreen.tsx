@@ -61,23 +61,41 @@ const JobsScreen = () => {
     const company = job.company || 'Unknown Company';
     const location = job.location || 'Remote';
     const salary = job.salary || 'Competitive';
-    const aiMatch = job.aiMatch || '90%';
+    const aiMatch = job.aiMatch || '10%';
     const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
-    console.log("job", job);
     return (
       <TouchableOpacity style={styles.jobCard} onPress={() => { handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
         <View style={styles.jobTopRow}>
-          <View style={styles.logoWrap}>
-            <Image source={image ? { uri: image } : Images.amazonpay} resizeMode="contain" style={styles.logoImage} />
-          </View>
-          <View style={styles.jobTopCenter}>
-            <View style={styles.matchBadge}>
-              <Text style={styles.matchText}>⚡ {aiMatch}</Text>
+          {job?.companyLogo ? (
+            <View style={styles.logoWrap}>
+              <Image
+                source={{ uri: Config.imageurl + job.companyLogo }}
+                resizeMode="contain"
+                style={{ width: 50, height: 50, }}
+              />
             </View>
+          ) : (
+
+            <View style={styles.avatarWrapper}>
+              <Text style={styles.avatarText}>
+                {job?.company
+                  ? job.company.split(' ').length > 1
+                    ? job.company.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
+                    : job.company.substring(0, 2).toUpperCase()
+                  : 'AP'}
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.jobTopCenter}>
+
             <Text style={styles.jobTitle}>{title}</Text>
             <Text style={styles.companyName}>{company}</Text>
           </View>
-          <Image source={Images.bookmark} resizeMode="contain" style={styles.bookmarkIcon} />
+          <View style={styles.matchBadge}>
+            <Text style={styles.matchText}>⚡ {aiMatch}</Text>
+          </View>
+          {/* <Image source={Images.bookmark} resizeMode="contain" style={styles.bookmarkIcon} /> */}
         </View>
 
         <View style={styles.metaRow}>

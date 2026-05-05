@@ -14,6 +14,8 @@ import Images from '../../comman/Images';
 import Colors from '../../comman/Colors';
 import { APP_TEXT } from '../../comman/String';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import HomeHeader from '../../components/HomeHeader';
+import Button from '../../components/Button';
 const Detail = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
@@ -38,18 +40,11 @@ const Detail = () => {
     };
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image source={Images.backArrow} style={styles.headerIcon} resizeMode="contain" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Job Details</Text>
-                <TouchableOpacity onPress={handleOpenLink}>
-                    <Image source={Images.dots} style={styles.headerIcon} resizeMode="contain" />
-                </TouchableOpacity>
-            </View>
+            <HomeHeader
+                title="Job Details"
+                IconImg={Images.backArrow}
+                backArrow
+            />
 
             <ScrollView
                 style={{ flex: 1 }}
@@ -110,12 +105,11 @@ const Detail = () => {
             {
                 originalLink ? (
                     <View style={styles.footer}>
-                        <TouchableOpacity
-                            style={styles.applyButton}
+                        <Button
+                            label="View Full Details"
                             onPress={handleOpenLink}
-                        >
-                            <Text style={styles.applyButtonText}>View Full Details</Text>
-                        </TouchableOpacity>
+                            containerStyle={{ marginTop: 0 }}
+                        />
                     </View>
                 ) : null
             }
