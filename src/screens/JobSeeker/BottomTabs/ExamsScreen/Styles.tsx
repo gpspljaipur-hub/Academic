@@ -3,19 +3,19 @@ import Colors from '../../../../comman/Colors';
 import FontsSize from '../../../../comman/Sizes/FontsSize';
 import MarginHW from '../../../../comman/Sizes/MarginHW';
 import fonts from '../../../../comman/fonts';
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.Homebackground,paddingHorizontal: MarginHW.PaddingW16},
+  container: { flex: 1, backgroundColor: Colors.Homebackground, paddingHorizontal: MarginHW.PaddingW16 },
   filterContainer: { marginVertical: MarginHW.MarginH14 },
   content: { paddingBottom: MarginHW.PaddingH70 },
   headerWrap: { alignItems: 'center', flexDirection: 'row', gap: MarginHW.MarginW10 },
   headerRow: { flex: 1 },
   menuIcon: { color: '#2D3748', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size20 },
-  filterList: { gap: MarginHW.MarginW8,  marginBottom: MarginHW.MarginH10 },
-  filterChip: {width: width /3-20 ,alignItems: 'center',  backgroundColor: '#E5E7EB', borderRadius: 10,marginHorizontal: 5, paddingHorizontal: MarginHW.PaddingW14, paddingVertical: MarginHW.PaddingH8 },
+  filterList: { gap: MarginHW.MarginW8, marginBottom: MarginHW.MarginH10 },
+  filterChip: { width: width / 3 - 20, alignItems: 'center', backgroundColor: '#E5E7EB', borderRadius: 10, marginHorizontal: 5, paddingHorizontal: MarginHW.PaddingW14, paddingVertical: MarginHW.PaddingH8 },
   filterChipActive: { backgroundColor: '#1D4ED8' },
-  filterChipText: { color: '#374151', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14},
+  filterChipText: { color: '#374151', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
   filterChipTextActive: { color: Colors.white },
   searchBox: { alignItems: 'center', backgroundColor: '#E5E7EB', borderRadius: 10, flexDirection: 'row', paddingHorizontal: MarginHW.PaddingW10 },
   searchIcon: { height: 14, width: 14, tintColor: '#6B7280', marginRight: MarginHW.MarginW8 },
@@ -26,13 +26,13 @@ export const styles = StyleSheet.create({
   sectionAction: { color: '#1E40AF', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size14 },
   notificationCard: { backgroundColor: Colors.white, borderRadius: 14, marginBottom: MarginHW.MarginH10, padding: MarginHW.PaddingW12 },
   cardTop: { flexDirection: 'row', justifyContent: 'space-between' },
-  leftWrap: { flex: 1, flexDirection: 'row', gap: MarginHW.MarginW10 },
-  iconWrap: { alignItems: 'center', backgroundColor: '#EFF6FF', borderRadius: 5,paddingHorizontal: MarginHW.PaddingW10, paddingVertical: MarginHW.PaddingH5, justifyContent: 'center',  },
+  leftWrap: { flex: 1, flexDirection: 'row', gap: MarginHW.MarginW10, marginBottom: 10 },
+  iconWrap: { height: 50, width: 60, alignItems: 'center', backgroundColor: '#EFF6FF', borderRadius: 5, paddingHorizontal: MarginHW.PaddingW10, paddingVertical: MarginHW.PaddingH5, justifyContent: 'center', },
   cardIcon: { height: 25, width: 25, tintColor: '#1E40AF' },
-  textWrap: { flex: 1,marginVertical: MarginHW.MarginH10 },
+  textWrap: { flex: 1, },
   cardTitle: { color: '#111827', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size16, lineHeight: 24 },
   cardSubTitle: { color: '#6B7280', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size14, marginTop: MarginHW.MarginH2 },
-  statusBadge: { alignSelf: 'flex-start',backgroundColor: '#EFF6FF', borderRadius: 5, paddingHorizontal: MarginHW.PaddingW8, paddingVertical: MarginHW.PaddingH5 },
+  statusBadge: { alignSelf: 'flex-start', backgroundColor: '#EFF6FF', borderRadius: 5, paddingHorizontal: MarginHW.PaddingW8, paddingVertical: MarginHW.PaddingH5 },
   statusText: { color: '#1F2937', fontFamily: fonts.Lexend_Medium, fontSize: FontsSize.size12 },
   cardFooter: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: MarginHW.MarginH8 },
   footerText: { color: '#374151', fontFamily: fonts.Lexend_Regular, fontSize: FontsSize.size12 },

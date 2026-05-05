@@ -131,13 +131,14 @@ const ExamsScreen = () => {
             <View style={styles.iconWrap}>
               <Image source={Images.bank} resizeMode="contain" style={styles.cardIcon} />
             </View>
+            <View style={styles.textWrap}>
+              <Text style={styles.cardTitle}>{item.title}</Text>
+            </View>
           </View>
         </View>
+        <Text numberOfLines={4} style={styles.cardSubTitle}>{item.description}</Text>
 
-        <View style={styles.textWrap}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-          <Text style={styles.cardSubTitle}>{item.description}</Text>
-        </View>
+
 
         <View style={styles.cardFooter}>
           <Text style={styles.footerText}>{item.source}</Text>
