@@ -1,6 +1,6 @@
-import { Text, View, ScrollView, Image, TouchableOpacity, TextInput, StatusBar, Alert } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity, TextInput, StatusBar, Alert, Platform } from 'react-native';
 import React, { useMemo, useState } from 'react';
-import { Auth_ApiRequest } from '../../../../Lib/ApiService/ApiRequest';
+import { Auth_ApiRequest, Post_Api, Post_Api_FormData } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import styles from './Styles';
 import { APP_TEXT } from '../../../../comman/String';
@@ -22,7 +22,7 @@ const Job = () => {
     const { user } = useSelector((state: any) => state.user);
     console.log("user", user.id)
     const { jobPost } = APP_TEXT;
-    const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad'];
+    const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad', 'Lucknow', 'Jaipur'];
     const experiences = ['0-1 yrs', '1-3 yrs', '3-5 yrs', '5+ yrs'];
     const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
     const statuses = [jobPost.statusOpen, jobPost.statusClose];
@@ -111,37 +111,49 @@ const Job = () => {
 
         setErrors({});
         try {
-            const body = {
-                recruiterId: user?.id,
-                title: title,
-                description: description,
-                company: company,
-                skills: skills.split(',').map(s => s.trim()).filter(s => s !== ''),
-                location: locationValue,
-                experience: experienceValue,
-                salary: `${minSalary}-${maxSalary} LPA`,
-                jobType: jobTypeValue,
-                postedDate: new Date().toISOString().split('T')[0],
-                status: statusValue,
-                responsibilities: responsibility,
-                logo: logo ? `data:${logo.mime};base64,${logo.data}` : null,
-            };
-            console.log('bodyyyyyyyyyy', body)
-            setLoading(true)
-            const res = await Auth_ApiRequest(ApiUrl.createJob, body);
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('recruiterId', user?.id || user?._id);
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('company', company);
+            formData.append('location', locationValue);
+            formData.append('experience', experienceValue);
+            formData.append('salary', `${minSalary}-${maxSalary} LPA`);
+            formData.append('jobType', jobTypeValue);
+            formData.append('postedDate', new Date().toISOString().split('T')[0]);
+            formData.append('status', statusValue || 'OPEN');
+            formData.append('responsibilities', responsibility);
 
-            if (res.status) {
-                console.log('Successsssssssss:', res.data);
-                setLoading(false)
-                clearFields();
-            } else {
-                Helper.showToast(res.message);
+            // Handle skills as an array in FormData
+            const skillsArr = skills.split(',').map(s => s.trim()).filter(s => s !== '');
+            skillsArr.forEach(skill => {
+                formData.append('skills', skill);
+            });
+
+            if (logo) {
+                formData.append('companyLogo', {
+                    uri: Platform.OS === 'android' ? logo.path : logo.path.replace('file://', ''),
+                    type: logo.mime,
+                    name: `logo-${Date.now()}.jpg`,
+                } as any);
             }
 
+            console.log('Sending FormData:', formData);
+            const res: any = await Post_Api_FormData(ApiUrl.createJob, formData)();
+
+            if (res?.data?.status || res?.data?._id) {
+                console.log('Success:', res.data);
+                Helper.showToast('Job posted successfully!');
+                clearFields();
+            } else {
+                Helper.showToast(res?.data?.message || 'Failed to post job');
+            }
         } catch (error: any) {
-            Helper.showToast(error.message);
+            console.log('createpost error', error);
+            Helper.showToast(error.message || 'Something went wrong');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 

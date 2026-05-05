@@ -75,7 +75,6 @@ const Career = () => {
       console.log('-===== applied for this job', res?.data?.data);
 
       if (res?.data?.data?.status === "Applied") {
-
         setApplyClicked(true);
       } else {
         setApplyClicked(false);
