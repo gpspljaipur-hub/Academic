@@ -81,41 +81,17 @@ const ExamsScreen = () => {
   const navigation = useNavigation<any>();
   const [selectedFilter, setSelectedFilter] = useState<string>(EXAM_FILTERS[0]);
   const [loading, setLoading] = useState(true);
+  const [tabLoading, setTabLoading] = useState(false);
   const [exams, setExams] = useState<any[]>([]);
-  const [results, setResults] = useState<any[]>([]);
-  const [admitCards, setAdmitCards] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    const loadAllData = async () => {
-      setLoading(true);
-      await Promise.all([
-        fetchExams(),
-        fetchResults()
-      ]);
-      setLoading(false);
-    };
-    loadAllData();
+    fetchExams();
   }, []);
-
-  const fetchResults = async () => {
-    try {
-      const response: any = await Post_Api(ApiUrl.examsResults, {})();
-      console.log('Latest Results Response:', response);
-      if (response?.data?.success) {
-        setResults(response?.data?.data || []);
-      }
-    } catch (error) {
-      console.log('Error fetching results:', error);
-    }
-  };
-
-  const fetchAdmitCards = async () => {
-    setAdmitCards([]);
-  };
 
   const fetchExams = async () => {
     try {
+      setLoading(true);
       const response: any = await Post_Api(ApiUrl.LATEST_EXAMS, {})();
       console.log('Latest Exams Response:', response);
       if (response?.data?.success) {
@@ -123,49 +99,55 @@ const ExamsScreen = () => {
       }
     } catch (error) {
       console.log('Error fetching exams:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const filteredExams = (() => {
-    let dataToFilter = [];
-    if (selectedFilter === EXAM_FILTERS[0]) dataToFilter = exams;
-    else if (selectedFilter === EXAM_FILTERS[1]) dataToFilter = results;
-    else if (selectedFilter === EXAM_FILTERS[2]) dataToFilter = admitCards;
-    else dataToFilter = exams;
+  const handleFilterChange = (filter: string) => {
+    setTabLoading(true);
+    setSelectedFilter(filter);
+    setTimeout(() => {
+      setTabLoading(false);
+    }, 400);
+  };
 
-    return dataToFilter.filter(item => {
+  const filteredExams = (() => {
+    return exams.filter(item => {
+      if (selectedFilter === EXAM_FILTERS[0] && item.type !== 'exam') return false;
+      if (selectedFilter === EXAM_FILTERS[1] && item.type !== 'result') return false;
+      if (selectedFilter === EXAM_FILTERS[2] && item.type !== 'admit_card') return false;
       const title = item.title?.toLowerCase() || '';
       const description = item.description?.toLowerCase() || '';
       const query = searchQuery.toLowerCase();
       return title.includes(query) || description.includes(query);
     });
   })();
-  const renderNotification = ({ item }: any) => (
-    <View key={item._id || item.id} style={styles.notificationCard}>
-      <View style={styles.cardTop}>
-        <View style={styles.leftWrap}>
-          <View style={styles.iconWrap}>
-            <Image source={Images.bank} resizeMode="contain" style={styles.cardIcon} />
+  const renderNotification = ({ item }: any) => {
+    return (
+      <View style={styles.notificationCard}>
+        <View style={styles.cardTop}>
+          <View style={styles.leftWrap}>
+            <View style={styles.iconWrap}>
+              <Image source={Images.bank} resizeMode="contain" style={styles.cardIcon} />
+            </View>
           </View>
         </View>
-        {/* <View style={styles.statusBadge}>
-          <Text style={styles.statusText}>{item.status || 'NEW'}</Text>
-        </View> */}
-      </View>
 
-      <View style={styles.textWrap}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
-        <Text style={styles.cardSubTitle}>{item.description} • </Text>
-      </View>
+        <View style={styles.textWrap}>
+          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardSubTitle}>{item.description}</Text>
+        </View>
 
-      <View style={styles.cardFooter}>
-        <Text style={styles.footerText}>{item.source}</Text>
-        <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })}>
-          <Text style={styles.footerAction}>View Details</Text>
-        </TouchableOpacity>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>{item.source}</Text>
+          <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })}>
+            <Text style={styles.footerAction}>View Details</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
 
   return (
@@ -178,13 +160,13 @@ const ExamsScreen = () => {
         </View>
       ) : (
         <FlatList
-          data={filteredExams}
+          data={tabLoading ? [] : filteredExams}
           keyExtractor={item => item._id || item.id}
           renderItem={renderNotification}
           ListHeaderComponent={
             <ListHeader
               selectedFilter={selectedFilter}
-              setSelectedFilter={setSelectedFilter}
+              setSelectedFilter={handleFilterChange}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
             />
@@ -193,10 +175,14 @@ const ExamsScreen = () => {
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
-            <View style={{ padding: 20, alignItems: 'center' }}>
-              <Text style={{ color: Colors.mutedSlate }}>
-                No {selectedFilter.toLowerCase()} found.
-              </Text>
+            <View style={{ padding: 20, alignItems: 'center', justifyContent: 'center', minHeight: 200 }}>
+              {tabLoading ? (
+                <ActivityIndicator size="large" color={Colors.brandBlue} />
+              ) : (
+                <Text style={{ color: Colors.mutedSlate, fontSize: 16 }}>
+                  No results found for {selectedFilter}.
+                </Text>
+              )}
             </View>
           )}
         />
