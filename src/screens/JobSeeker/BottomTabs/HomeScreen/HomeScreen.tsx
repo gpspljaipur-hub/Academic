@@ -253,12 +253,12 @@ const HomeScreen = () => {
             contentContainerStyle={styles.upcomingList}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })} style={styles.upcomingCard}>
-                <View style={styles.sectionHeader}>
+                <View style={styles.upcomingCardHeader}>
                   <Text style={styles.upcomingDate}>{item.startDate}</Text>
                   <Image source={Images.calendar} resizeMode='contain' style={styles.calendaricon} />
                 </View>
-                <Text style={styles.upcomingTitle}>{item.title}</Text>
-                <Text numberOfLines={4} style={styles.upcomingDesc}>{item.description}</Text>
+                <Text numberOfLines={1} style={styles.upcomingTitle}>{item.title}</Text>
+                <Text numberOfLines={3} style={styles.upcomingDesc}>{item.description}</Text>
                 <Text style={styles.sectionAction}>{APP_TEXT.homeDetailsArrow}</Text>
               </TouchableOpacity>
             )}
