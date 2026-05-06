@@ -23,6 +23,7 @@ import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
 import Helper from '../../../Lib/HelperFiles/Helper';
 import { handleNavigation } from '../../../navigation/RootNavigator';
+import Header from '../../../components/Header';
 
 const SIMILAR_ROLES = [
     {
@@ -55,6 +56,9 @@ const PostDetails = () => {
     const [seeAll, setSeeAll] = useState(false);
     const [applyClicked, setApplyClicked] = useState(false);
     const [bookmarkClicked, setBookmarkClicked] = useState(false);
+    const { userType } = useSelector((state: any) => state.user);
+    console.log("userType====", userType);
+
     console.log("jobDetails", jobDetails);
     useEffect(() => {
         fetchSimilarJobs();
@@ -136,18 +140,10 @@ const PostDetails = () => {
 
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.offWhite} />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image source={Images.backArrow} style={{ width: 20, height: 20, tintColor: Colors.inkDark }} resizeMode="contain" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>{APP_TEXT.CareerArchitect}</Text>
-                <TouchableOpacity>
-                    <Image source={Images.dots} style={{ width: 20, height: 20, tintColor: Colors.inkDark }} resizeMode="contain" />
-                </TouchableOpacity>
-            </View>
+            <Header
+                title={APP_TEXT.CareerArchitect}
+                onBackPress={() => navigation.goBack()}
+            />
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -226,49 +222,9 @@ const PostDetails = () => {
                     {renderBulletPoint(jobDetails?.responsibilities)}
                 </View>
 
-                {/* Requirements */}
-                {/* <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <View style={styles.sectionIndicator} />
-            <Text style={styles.sectionTitle}>Requirements</Text>
-          </View>
-          {renderBulletPoint(job?.requirements)}
-        </View> */}
-
-                {/* Similar Roles */}
-                <View style={styles.similarRolesHeader}>
-                    <Text style={styles.similarRolesTitle}>Similar Roles</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.viewAllText}>View All</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <FlatList
-                    data={similarJobs}
-                    renderItem={renderSimilarRole}
-                    keyExtractor={item => item._id || item.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingRight: 20, paddingBottom: 10 }}
-                />
 
             </ScrollView>
 
-            {/* Bottom Bar */}
-            <View style={styles.bottomBar}>
-                <TouchableOpacity style={styles.bookmarkButton} onPress={() => setBookmarkClicked(!bookmarkClicked)}>
-                    <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: bookmarkClicked ? Colors.brandBlue : Colors.inkDark }} resizeMode="contain" />
-                </TouchableOpacity>
-                <View style={styles.applyButton}>
-                    <Button
-                        loading={loading}
-                        disabled={applyClicked}
-                        label={applyClicked ? "Applied" : "Apply Now"}
-                        onPress={handleApply}
-
-                    />
-                </View>
-            </View>
         </SafeAreaView>
     );
 };

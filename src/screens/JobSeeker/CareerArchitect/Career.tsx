@@ -55,7 +55,9 @@ const Career = () => {
   const [seeAll, setSeeAll] = useState(false);
   const [applyClicked, setApplyClicked] = useState(false);
   const [bookmarkClicked, setBookmarkClicked] = useState(false);
-  console.log("jobDetails", jobDetails);
+  const { userType } = useSelector((state: any) => state.user);
+
+
   useEffect(() => {
     fetchSimilarJobs();
     checkIfApplied();
@@ -273,6 +275,8 @@ const Career = () => {
         <TouchableOpacity style={styles.bookmarkButton} onPress={() => setBookmarkClicked(!bookmarkClicked)}>
           <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: bookmarkClicked ? Colors.brandBlue : Colors.inkDark }} resizeMode="contain" />
         </TouchableOpacity>
+
+
         <View style={styles.applyButton}>
           <Button
             loading={loading}

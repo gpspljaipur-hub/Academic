@@ -34,10 +34,9 @@ const Dashboard = () => {
         try {
             setLoading(true);
             const res: any = await Post_Api(ApiUrl.dashboardStats, { recruiterId })();
-            console.log('fetchDashboardData res', res);
 
-            if (res?.data?.status) {
-                setDashboardData(res.data);
+            if (res?.data) {
+                setDashboardData(res?.data);
             }
         } catch (error) {
             console.log('fetchDashboardData error', error);
@@ -157,7 +156,7 @@ const Dashboard = () => {
                             icon={Images.bookmark}
                         />
 
-                        {/* <View style={styles.sectionHeader}>
+                        <View style={styles.sectionHeader}>
                             <Text style={styles.sectionTitle}>{strings.recentJobPostings}</Text>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate("RecuiterRecentJobs")
@@ -182,7 +181,7 @@ const Dashboard = () => {
                             <View style={{ padding: 20, alignItems: 'center' }}>
                                 <Text style={{ color: Colors.bodyGray }}>No recent job postings</Text>
                             </View>
-                        )} */}
+                        )}
                     </>
                 )}
 
