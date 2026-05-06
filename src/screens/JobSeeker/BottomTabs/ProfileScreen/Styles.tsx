@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.LexendBold,
         color: Colors.titleInk,
         marginBottom: MarginHW.MarginH8,
+        textAlign: "center",
     },
     subtitle: {
         fontSize: FontsSize.size14,
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
         color: Colors.mutedSlate,
         lineHeight: FontsSize.size22,
         marginBottom: MarginHW.MarginH40,
+        textAlign: "center",
     },
     section: {
         marginBottom: MarginHW.MarginH28,
