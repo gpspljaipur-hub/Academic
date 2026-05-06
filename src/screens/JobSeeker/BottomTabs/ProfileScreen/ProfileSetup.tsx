@@ -83,9 +83,12 @@ const ProfileSetup = () => {
         setEducation(u.education || '');
         setLocation(u.location || '');
         setJobPreference(u.jobPreference || APP_TEXT.profileSetup.jobPreferenceGovt);
-        setResume(u.resume || '');
-
-        if (u.skills) {
+        
+        if (u.resume) {
+          setResume(u.resume.split('/').pop());
+        } else {
+          setResume('');
+        }        if (u.skills) {
           let skillsArr: string[] = [];
           if (Array.isArray(u.skills)) {
             if (u.skills.length === 1 && typeof u.skills[0] === 'string' && u.skills[0].includes(',')) {
@@ -119,7 +122,7 @@ const ProfileSetup = () => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf],
       });
-      setResume(res[0].name);
+      setResume(res[0]);
     } catch (err) {
       if (!DocumentPicker.isCancel(err)) {
         console.log('Error picking document:', err);
@@ -149,7 +152,7 @@ const ProfileSetup = () => {
       formData.append('skills', skillsString);
       formData.append('jobPreference', jobPreference);
 
-      if (resume) {
+      if (resume && typeof resume !== 'string') {
         formData.append('resume', {
           uri: Platform.OS === 'android' ? resume.uri : resume.uri.replace('file://', ''),
           type: resume.type,
@@ -237,7 +240,9 @@ const ProfileSetup = () => {
             <Text style={styles.label}>Resume</Text>
 
             <TouchableOpacity style={styles.uploadBox} onPress={handleUploadResume}>
-              <Text style={styles.uploadText}>{resume ? resume : '+ Upload Resume (PDF)'}</Text>
+              <Text style={styles.uploadText}>
+                {resume ? (typeof resume === 'string' ? resume : resume.name) : '+ Upload Resume (PDF)'}
+              </Text>
             </TouchableOpacity>
           </View>
 
