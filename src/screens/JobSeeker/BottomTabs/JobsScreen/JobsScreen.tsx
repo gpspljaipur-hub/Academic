@@ -70,8 +70,8 @@ const JobsScreen = () => {
             <View style={styles.logoWrap}>
               <Image
                 source={{ uri: Config.imageurl + job.companyLogo }}
-                resizeMode="contain"
-                style={{ width: 50, height: 50, }}
+                resizeMode="cover"
+                style={{ width: 48, height: 48,borderRadius: 8 }}
               />
             </View>
           ) : (
