@@ -22,6 +22,7 @@ const ApiUrl = {
   allAppliedApplicants: 'recruiterJob/allAppliedApplicants',
   LATEST_JOBS: 'jobs/latest',
   LATEST_EXAMS: 'exams/latest',
+  ALL_SKILLS: 'auth/all-skills',
 };
 
 export default ApiUrl;

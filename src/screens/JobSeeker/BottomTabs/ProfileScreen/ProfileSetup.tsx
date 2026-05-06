@@ -15,7 +15,7 @@ import Images from '../../../../comman/Images';
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { Post_Api, Post_ApiWithToken } from '../../../../Lib/ApiService/ApiRequest';
+import { Post_Api, Post_ApiWithToken, Get_Api } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Helper from '../../../../Lib/HelperFiles/Helper';
 import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
@@ -33,6 +33,9 @@ const ProfileSetup = () => {
   const [company, setCompany] = useState('');
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [jobPreference, setJobPreference] = useState<string>(APP_TEXT.profileSetup.jobPreferenceGovt);
+  const [allSkills, setAllSkills] = useState<string[]>([]);
+  const [showAllSkills, setShowAllSkills] = useState(false);
+  const [skillSearchQuery, setSkillSearchQuery] = useState('');
 
   const preferences = [
     APP_TEXT.profileSetup.jobPreferenceGovt,
@@ -46,7 +49,19 @@ const ProfileSetup = () => {
 
   useEffect(() => {
     fetchProfile();
+    fetchAllSkills();
   }, []);
+
+  const fetchAllSkills = async () => {
+    try {
+      const res: any = await Get_Api(ApiUrl.ALL_SKILLS, null)();
+      if (res?.data?.status) {
+        setAllSkills(res.data.data);
+      }
+    } catch (error) {
+      console.log('fetchAllSkills error', error);
+    }
+  };
 
   const fetchProfile = async () => {
     const userId = user?._id || user?.id;
@@ -293,8 +308,22 @@ const ProfileSetup = () => {
 
           <View style={styles.section}>
             <Text style={styles.label}>{APP_TEXT.profileSetup.skillsLabel}</Text>
+            
+            <View style={[styles.inputContainer, { marginBottom: 12 }]}>
+              <TextInput
+                style={styles.input}
+                placeholder="Search skills..."
+                placeholderTextColor={Colors.mutedSlate}
+                value={skillSearchQuery}
+                onChangeText={setSkillSearchQuery}
+              />
+            </View>
+
             <View style={styles.skillsContainer}>
-              {APP_TEXT.profileSetup.skillsList.map((skill) => (
+              {allSkills
+                .filter(skill => skill.toLowerCase().includes(skillSearchQuery.toLowerCase()))
+                .slice(0, showAllSkills || skillSearchQuery.length > 0 ? allSkills.length : 10)
+                .map((skill) => (
                 <TouchableOpacity
                   key={skill}
                   style={[
@@ -313,6 +342,16 @@ const ProfileSetup = () => {
                   </Text>
                 </TouchableOpacity>
               ))}
+              {!skillSearchQuery && allSkills.length > 10 && (
+                <TouchableOpacity
+                  style={styles.skillTag}
+                  onPress={() => setShowAllSkills(!showAllSkills)}
+                >
+                  <Text style={[styles.skillText, { color: Colors.primaryBlue, fontWeight: 'bold' }]}>
+                    {showAllSkills ? 'Show Less' : `+ ${allSkills.length - 10} more`}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 

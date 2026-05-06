@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
   logoImage: { height: 35, width: 35 },
   avatarWrapper: {
     marginRight: MarginHW.MarginW10,
-    width: 44,
-    height: 44,
+    width: 50, 
+    height: 50,
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: Colors.cardGray,

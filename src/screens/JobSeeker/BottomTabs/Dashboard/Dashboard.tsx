@@ -59,7 +59,7 @@ const Dashboard = () => {
         <TouchableOpacity style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
                 {image ? (
-                    <Image source={{ uri: image }} style={{ width: '100%', height: '100%', borderRadius: 8 }} resizeMode="cover" />
+                    <Image   source={{ uri: image }} style={{ width: '100%', height: '100%', borderRadius: 10 }} resizeMode="cover" />
                 ) : (
                     <Text style={styles.jobIconText}>{title.substring(0, 2).toUpperCase()}</Text>
                 )}

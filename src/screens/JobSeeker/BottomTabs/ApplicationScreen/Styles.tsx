@@ -81,21 +81,23 @@ export const styles = StyleSheet.create({
     marginBottom: MarginHW.MarginH12,
   },
   logoWrapper: {
-    width: wp(14),
-    height: wp(14),
+    width: 48,
+    height: 48,
     backgroundColor: Colors.cardGray,
-    borderRadius: wp(3),
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarText: {
+    
     fontSize: FontsSize.size14,
     fontFamily: fonts.LexendBold,
     color: Colors.primaryBlue,
   },
   companyLogo: {
-    width: wp(10),
-    height: wp(10),
+    width: 48,
+    height: 48,
+    borderRadius: 8,
   },
   statusBadge: {
     paddingHorizontal: wp(3),

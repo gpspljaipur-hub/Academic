@@ -266,7 +266,7 @@ const ApplicationsScreen = () => {
                     {item.companyLogo ? (
                       <Image
                         source={{ uri: Config.imageurl + item.companyLogo }}
-                        resizeMode="contain"
+                        resizeMode="cover"
                         style={styles.companyLogo}
                       />
                     ) : (
