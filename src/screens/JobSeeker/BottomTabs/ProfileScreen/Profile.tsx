@@ -191,7 +191,7 @@ const Profile = () => {
                     {/* Resumes Section */}
                     <View style={styles.resumeSectionHeader}>
                         <Text style={styles.resumeTitle}>{profile.myResumes}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => (navigation as any).navigate('ProfileSetup')}>
                             <Text style={styles.uploadNewText}>+ {profile.uploadNew}</Text>
                         </TouchableOpacity>
                     </View>

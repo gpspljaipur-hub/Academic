@@ -11,6 +11,7 @@ import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
+import { useSelector } from 'react-redux';
 
 const QUICK_TILES = [
   {
@@ -35,6 +36,7 @@ const HomeScreen = () => {
   const [latestExams, setLatestExams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const user = useSelector((state: any) => state.user.user);
 
   useEffect(() => {
     fetchJobs();
@@ -45,15 +47,15 @@ const HomeScreen = () => {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
-      console.log('Jobs Response:', response);
-      if (response?.data.status) {
+      const userId = user?._id || user?.id;
+      const response: any = await Post_Api(ApiUrl.userJobMatchProfile, { userId })();
+      console.log('Jobs Response====::::', response);
+      if (response?.data?.status) {
         let jobsData = response?.data?.data;
         setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
         setFilteredJobs(jobsData);
       }
     } catch (error) {
-      console.log('Error fetching jobs:', error);
     } finally {
       setLoading(false);
     }
@@ -79,12 +81,10 @@ const HomeScreen = () => {
     try {
       setLoading(true);
       const response: any = await Post_Api(ApiUrl.LATEST_JOBS, {})();
-      console.log('Latest Jobs Response:', response);
       if (response?.data?.success) {
         setLatestJobs(response?.data?.data || []);
       }
     } catch (error) {
-      console.log('Error fetching latest jobs:', error);
     } finally {
       setLoading(false);
     }
@@ -94,12 +94,10 @@ const HomeScreen = () => {
     try {
       setLoading(true);
       const response: any = await Post_Api(ApiUrl.LATEST_EXAMS, {})();
-      console.log('Latest Exams Response:', response);
       if (response?.data?.success) {
         setLatestExams(response?.data?.data || []);
       }
     } catch (error) {
-      console.log('Error fetching latest exams:', error);
     } finally {
       setLoading(false);
     }
@@ -172,10 +170,10 @@ const HomeScreen = () => {
               const company = job.company || 'Unknown Company';
               const location = job.location || 'Remote';
               const tags = job.jobType || ['Full Time'];
-              const aiMatch = job.aiMatch || '90%';
+              const aiMatch = job.matchPercentage ? `${job.matchPercentage}%` : '90%';
               const salary = job.salary || 'Competitive';
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
-              console.log("imagessss", image)
+              console.log("image1234", image)
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>

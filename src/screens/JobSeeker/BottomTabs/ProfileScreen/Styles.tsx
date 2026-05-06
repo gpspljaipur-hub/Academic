@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     },
 
     uploadText: {
+        textAlign: "center",
         color: Colors.brandBlue,
         fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Medium,

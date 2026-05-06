@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Image,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -15,11 +16,12 @@ import Images from '../../../../comman/Images';
 import Header from '../../../../components/Header';
 import Button from '../../../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { Post_Api, Post_ApiWithToken, Get_Api } from '../../../../Lib/ApiService/ApiRequest';
+import { Post_Api, Post_ApiWithToken, Get_Api, Post_Api_FormData } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Helper from '../../../../Lib/HelperFiles/Helper';
 import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
 import styles from './Styles';
+import DocumentPicker from 'react-native-document-picker';
 
 
 const ProfileSetup = () => {
@@ -36,6 +38,7 @@ const ProfileSetup = () => {
   const [allSkills, setAllSkills] = useState<string[]>([]);
   const [showAllSkills, setShowAllSkills] = useState(false);
   const [skillSearchQuery, setSkillSearchQuery] = useState('');
+  const [resume, setResume] = useState<any>(null);
 
   const preferences = [
     APP_TEXT.profileSetup.jobPreferenceGovt,
@@ -80,6 +83,8 @@ const ProfileSetup = () => {
         setEducation(u.education || '');
         setLocation(u.location || '');
         setJobPreference(u.jobPreference || APP_TEXT.profileSetup.jobPreferenceGovt);
+        setResume(u.resume || '');
+
         if (u.skills) {
           let skillsArr: string[] = [];
           if (Array.isArray(u.skills)) {
@@ -109,35 +114,50 @@ const ProfileSetup = () => {
     }
   };
 
+  const handleUploadResume = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+      });
+      setResume(res[0].name);
+    } catch (err) {
+      if (!DocumentPicker.isCancel(err)) {
+        console.log('Error picking document:', err);
+      }
+    }
+  };
+
   const handleContinue = async () => {
     if (!fullName || !phoneNumber) {
       Helper.showToast('Please fill in required fields');
       return;
     }
 
-    const payload = {
-      user_id: user?._id || user?.id,
-      name: fullName,
-      headline: headline,
-      number: phoneNumber,
-      experience: experience,
-      company: company,
-      education: education,
-      location: location,
-      skills: selectedSkills,
-      jobPreference: jobPreference
-    };
-    console.log("payload", payload);
     try {
       setLoading(true);
-      // Convert skills array to comma-separated string for form-urlencoded if necessary
-      // Based on curl, it seems to be a single string
       const skillsString = selectedSkills.join(', ');
 
-      const res: any = await Post_Api(ApiUrl.authUpdateProfile, {
-        ...payload,
-        skills: skillsString
-      })();
+      const formData = new FormData();
+      formData.append('user_id', user?._id || user?.id);
+      formData.append('name', fullName);
+      formData.append('headline', headline);
+      formData.append('number', phoneNumber);
+      formData.append('experience', experience);
+      formData.append('company', company);
+      formData.append('education', education);
+      formData.append('location', location);
+      formData.append('skills', skillsString);
+      formData.append('jobPreference', jobPreference);
+
+      if (resume) {
+        formData.append('resume', {
+          uri: Platform.OS === 'android' ? resume.uri : resume.uri.replace('file://', ''),
+          type: resume.type,
+          name: resume.name,
+        } as any);
+      }
+
+      const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
 
       if (res?.data?.status) {
         Helper.showToast('Profile updated successfully');
@@ -216,8 +236,8 @@ const ProfileSetup = () => {
           <View style={styles.section}>
             <Text style={styles.label}>Resume</Text>
 
-            <TouchableOpacity style={styles.uploadBox}>
-              <Text style={styles.uploadText}>+ Upload Resume</Text>
+            <TouchableOpacity style={styles.uploadBox} onPress={handleUploadResume}>
+              <Text style={styles.uploadText}>{resume ? resume : '+ Upload Resume (PDF)'}</Text>
             </TouchableOpacity>
           </View>
 
@@ -308,7 +328,7 @@ const ProfileSetup = () => {
 
           <View style={styles.section}>
             <Text style={styles.label}>{APP_TEXT.profileSetup.skillsLabel}</Text>
-            
+
             <View style={[styles.inputContainer, { marginBottom: 12 }]}>
               <TextInput
                 style={styles.input}
@@ -324,24 +344,24 @@ const ProfileSetup = () => {
                 .filter(skill => skill.toLowerCase().includes(skillSearchQuery.toLowerCase()))
                 .slice(0, showAllSkills || skillSearchQuery.length > 0 ? allSkills.length : 10)
                 .map((skill) => (
-                <TouchableOpacity
-                  key={skill}
-                  style={[
-                    styles.skillTag,
-                    selectedSkills.includes(skill) && styles.selectedSkillTag,
-                  ]}
-                  onPress={() => toggleSkill(skill)}
-                >
-                  <Text
+                  <TouchableOpacity
+                    key={skill}
                     style={[
-                      styles.skillText,
-                      selectedSkills.includes(skill) && styles.selectedSkillText,
+                      styles.skillTag,
+                      selectedSkills.includes(skill) && styles.selectedSkillTag,
                     ]}
+                    onPress={() => toggleSkill(skill)}
                   >
-                    {skill}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={[
+                        styles.skillText,
+                        selectedSkills.includes(skill) && styles.selectedSkillText,
+                      ]}
+                    >
+                      {skill}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               {!skillSearchQuery && allSkills.length > 10 && (
                 <TouchableOpacity
                   style={styles.skillTag}
