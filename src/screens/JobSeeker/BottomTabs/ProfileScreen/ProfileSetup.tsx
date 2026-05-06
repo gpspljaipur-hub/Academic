@@ -198,6 +198,14 @@ const ProfileSetup = () => {
               />
             </View>
           </View>
+          <View style={styles.section}>
+            <Text style={styles.label}>Resume</Text>
+
+            <TouchableOpacity style={styles.uploadBox}>
+              <Text style={styles.uploadText}>+ Upload Resume</Text>
+            </TouchableOpacity>
+          </View>
+
 
           <View style={styles.section}>
             <Text style={styles.label}>{APP_TEXT.profileSetup.jobPreferenceLabel}</Text>

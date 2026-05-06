@@ -40,6 +40,22 @@ const styles = StyleSheet.create({
     section: {
         marginBottom: MarginHW.MarginH28,
     },
+    uploadBox: {
+        borderWidth: 1,
+        borderColor: Colors.brandBlue,
+        borderStyle: 'dashed',
+        borderRadius: 12,
+        paddingVertical: 18,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.white,
+    },
+
+    uploadText: {
+        color: Colors.brandBlue,
+        fontSize: FontsSize.size14,
+        fontFamily: fonts.Lexend_Medium,
+    },
     label: {
         fontSize: FontsSize.size14,
         fontFamily: fonts.Lexend_Medium,

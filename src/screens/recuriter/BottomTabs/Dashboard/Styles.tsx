@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: MarginHW.MarginH16,
+        marginTop: MarginHW.MarginH10,
     },
     sectionTitle: {
         fontSize: FontsSize.size16,

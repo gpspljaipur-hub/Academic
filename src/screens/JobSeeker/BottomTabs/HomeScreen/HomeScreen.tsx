@@ -30,9 +30,11 @@ const QUICK_TILES = [
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [jobs, setJobs] = useState<any[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
   const [latestJobs, setLatestJobs] = useState<any[]>([]);
   const [latestExams, setLatestExams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchJobs();
@@ -48,11 +50,28 @@ const HomeScreen = () => {
       if (response?.data.status) {
         let jobsData = response?.data?.data;
         setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
+        setFilteredJobs(jobsData);
       }
     } catch (error) {
       console.log('Error fetching jobs:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
+
+  const onFindPress = () => {
+    if (searchQuery.trim() === '') {
+      setFilteredJobs(jobs);
+    } else {
+      const filtered = jobs.filter(job => {
+        const title = (job.title || job.jobTitle || '').toLowerCase();
+        return title.includes(searchQuery.toLowerCase());
+      });
+      setFilteredJobs(filtered);
     }
   };
 
@@ -95,11 +114,13 @@ const HomeScreen = () => {
               placeholder={APP_TEXT.homeSearchPlaceholder}
               placeholderTextColor="#8B93A1"
               style={styles.searchText}
+              value={searchQuery}
+              onChangeText={handleSearch}
             />
           </View>
-          <View style={styles.findButton}>
+          <TouchableOpacity onPress={onFindPress} style={styles.findButton}>
             <Text style={styles.findButtonText}>{APP_TEXT.homeFindNow}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.highlightCard}>
@@ -145,8 +166,8 @@ const HomeScreen = () => {
 
           {loading ? (
             <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
-          ) : jobs.length > 0 ? (
-            jobs.slice(0, 5).map((job: any, index: number) => {
+          ) : filteredJobs.length > 0 ? (
+            filteredJobs.slice(0, 5).map((job: any, index: number) => {
               const title = job.title || job.jobTitle || 'Untitled Job';
               const company = job.company || 'Unknown Company';
               const location = job.location || 'Remote';
@@ -187,6 +208,10 @@ const HomeScreen = () => {
                 </Pressable>
               );
             })
+          ) : !loading && searchQuery ? (
+            <View style={{ padding: 20, alignItems: 'center' }}>
+              <Text style={{ color: Colors.mutedSlate }}>No jobs found matching "{searchQuery}"</Text>
+            </View>
           ) : null}
         </View>
 
@@ -255,7 +280,7 @@ const HomeScreen = () => {
               <TouchableOpacity onPress={() => handleNavigation({ type: 'push', navigation, page: 'Detail', passProps: { job: item } })} style={styles.upcomingCard}>
                 <View style={styles.upcomingCardHeader}>
                   <Text style={styles.upcomingDate}>{item.startDate}</Text>
-                  <Image source={Images.calendar} resizeMode='contain' style={styles.calendaricon} />
+                  {/* <Image source={Images.calendar} resizeMode='contain' style={styles.calendaricon} /> */}
                 </View>
                 <Text numberOfLines={1} style={styles.upcomingTitle}>{item.title}</Text>
                 <Text numberOfLines={3} style={styles.upcomingDesc}>{item.description}</Text>

@@ -26,6 +26,7 @@ const JobsScreen = () => {
   const filtersListRef = useRef<FlatList<FilterItem>>(null);
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     fetchJobs();
@@ -159,6 +160,10 @@ const JobsScreen = () => {
     </>
   );
 
+  const filteredJobs = jobs.filter(job =>
+    (job.title || '').toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <HomeHeader title={APP_TEXT.jobsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
@@ -170,6 +175,8 @@ const JobsScreen = () => {
             placeholder={APP_TEXT.jobsSearchPlaceholder}
             placeholderTextColor="#6B7280"
             style={styles.searchInput}
+            value={searchText}
+            onChangeText={setSearchText}
           />
         </View>
         <View style={styles.filterActionBox}>
@@ -206,7 +213,14 @@ const JobsScreen = () => {
       )}
 
       <FlatList
-        data={loading ? [] : jobs}
+        data={loading ? [] : filteredJobs}
+        ListEmptyComponent={!loading ? (
+          <View style={{ alignItems: 'center', marginTop: 50 }}>
+            <Text style={{ fontSize: 16, color: '#6B7280' }}>
+              {searchText !== '' ? `Not Found: "${searchText}"` : 'No jobs available'}
+            </Text>
+          </View>
+        ) : null}
         keyExtractor={(_, index) => index.toString()}
         renderItem={renderJobItem}
         showsVerticalScrollIndicator={false}
