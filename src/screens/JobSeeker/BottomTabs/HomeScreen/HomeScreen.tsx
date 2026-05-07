@@ -48,7 +48,7 @@ const HomeScreen = () => {
     try {
       setLoading(true);
       const userId = user?._id || user?.id;
-      const response: any = await Post_Api(ApiUrl.userJobMatchProfile, { userId })();
+      const response: any = await Post_Api(ApiUrl.PostAllJobs, { userId })();
       console.log('Jobs Response====::::', response);
       if (response?.data?.status) {
         let jobsData = response?.data?.data;

@@ -216,6 +216,47 @@ export const APP_TEXT = {
       image: Images.tiktok,
     },
   ],
+  filterData : [
+  {
+    label: 'Location',
+    data: [
+      { name: 'Remote' },
+      { name: 'Bengaluru' },
+      { name: 'Mumbai' },
+      { name: 'Delhi' },
+      { name: 'Hyderabad' },
+      { name: 'Lucknow' },
+      { name: 'Jaipur' },
+    ],
+  },
+  {
+    label: 'Experience',
+    data: [
+      { name: '0-1 yrs' },
+      { name: '1-3 yrs' },
+      { name: '3-5 yrs' },
+      { name: '5+ yrs' },
+    ],
+  },
+  {
+    label: 'Job Type',
+    data: [
+      { name: 'Full-time' },
+      { name: 'Part-time' },
+      { name: 'Contract' },
+      { name: 'Internship' },
+    ],
+  },
+  {
+    label: 'Salary',
+    data: [
+      { name: '30000-80000' },
+      { name: '50000-100000' },
+      { name: '100000-150000' },
+      { name: '150000+' },
+    ],
+  },
+],
   homeGovtJobs: [
     { code: 'UPSC', title: 'Civil Services Exam 2024', deadline: '15 Oct' },
     { code: 'SSC', title: 'Combined Graduate Level', deadline: '22 Oct' },

@@ -71,7 +71,6 @@ const ProfileSetup = () => {
     if (!userId) return;
 
     try {
-      setLoading(true);
       const res: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
       if (res?.data?.status) {
         const u = res.data.user;
@@ -83,12 +82,12 @@ const ProfileSetup = () => {
         setEducation(u.education || '');
         setLocation(u.location || '');
         setJobPreference(u.jobPreference || APP_TEXT.profileSetup.jobPreferenceGovt);
-        
         if (u.resume) {
           setResume(u.resume.split('/').pop());
         } else {
           setResume('');
-        }        if (u.skills) {
+        }
+        if (u.skills) {
           let skillsArr: string[] = [];
           if (Array.isArray(u.skills)) {
             if (u.skills.length === 1 && typeof u.skills[0] === 'string' && u.skills[0].includes(',')) {
@@ -103,6 +102,7 @@ const ProfileSetup = () => {
         }
       }
     } catch (error) {
+
       console.log('fetchProfile error', error);
     } finally {
       setLoading(false);
@@ -135,11 +135,9 @@ const ProfileSetup = () => {
       Helper.showToast('Please fill in required fields');
       return;
     }
-
     try {
       setLoading(true);
       const skillsString = selectedSkills.join(', ');
-
       const formData = new FormData();
       formData.append('user_id', user?._id || user?.id);
       formData.append('name', fullName);
@@ -151,7 +149,6 @@ const ProfileSetup = () => {
       formData.append('location', location);
       formData.append('skills', skillsString);
       formData.append('jobPreference', jobPreference);
-
       if (resume && typeof resume !== 'string') {
         formData.append('resume', {
           uri: Platform.OS === 'android' ? resume.uri : resume.uri.replace('file://', ''),
@@ -161,7 +158,6 @@ const ProfileSetup = () => {
       }
 
       const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
-
       if (res?.data?.status) {
         Helper.showToast('Profile updated successfully');
         dispatch(loginSuccess({ ...user, ...res.data.user }));
