@@ -188,7 +188,7 @@ const Career = () => {
 
               </View>
               <View>
-                <Text style={styles.matchPercentage}>{jobDetails?.aiMatch?.split(' ')?.[0] || '94%'}</Text>
+                <Text style={styles.matchPercentage}>{jobDetails?.matchPercentage +'%' || '10%'}</Text>
               </View>
 
             </View>

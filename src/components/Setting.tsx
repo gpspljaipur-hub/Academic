@@ -79,7 +79,7 @@ const Setting = () => {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{APP_TEXT.settings.accountSection}</Text>
-          <SettingItem icon={Images.ProfileIcon} title={APP_TEXT.settings.personalInfo} />
+          <SettingItem icon={Images.ProfileIcon} title={APP_TEXT.settings.personalInfo}  onPress={() => navigation.navigate('ProfileSetup')} />
           <SettingItem icon={Images.verifieduser} title={APP_TEXT.settings.loginSecurity} />
 
           <SettingItem icon={Images.money} title={APP_TEXT.settings.Premium}

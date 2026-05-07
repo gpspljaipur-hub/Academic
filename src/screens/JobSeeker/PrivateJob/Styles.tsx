@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.screenGray,
         flex: 1,
+        paddingHorizontal: MarginHW.PaddingW16,
     },
     header: {
         flexDirection: 'row',
@@ -29,7 +30,7 @@ export const styles = StyleSheet.create({
         marginLeft: MarginHW.MarginW12,
     },
     content: {
-        paddingHorizontal: MarginHW.PaddingW16,
+        paddingHorizontal: MarginHW.PaddingW10,
         paddingTop: MarginHW.MarginH20,
         paddingBottom: MarginHW.MarginH60,
     },
@@ -72,7 +73,7 @@ export const styles = StyleSheet.create({
     uploadText: {
         color: Colors.mutedSlate,
         fontFamily: fonts.Lexend_Medium,
-        fontSize: FontsSize.size24,
+        fontSize: FontsSize.size14,
     },
     fileName: {
         color: Colors.brandBlue,
@@ -81,5 +82,12 @@ export const styles = StyleSheet.create({
     },
     submitButton: {
         marginTop: MarginHW.MarginH30,
+    },
+    errorText: {
+        color: Colors.errorRed,
+        fontFamily: fonts.Lexend_Regular,
+        fontSize: FontsSize.size14,
+        textAlign: 'center',
+        marginBottom: MarginHW.MarginH10,
     },
 });

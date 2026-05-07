@@ -8,8 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import HomeHeader from '../../../../components/HomeHeader';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { Post_Api } from '../../../../Lib/ApiService/ApiRequest';
+import { Post_Api, Post_Api_FormData } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
+import ImagePicker from 'react-native-image-crop-picker';
+import Toast from 'react-native-root-toast';
+import Config from '../../../../Lib/ApiService/Config';
 
 const Profile = () => {
     const navigation = useNavigation();
@@ -19,6 +22,10 @@ const Profile = () => {
     const [userData, setUserData] = useState<any>(null);
     const [appliedCount, setAppliedCount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [profileImage, setProfileImage] = useState<any>(null);
+    const [profileStrength, setProfileStrength] = useState<number>(0);
+    console.log("userData", user);
+
 
     useEffect(() => {
         if (isFocused) {
@@ -35,7 +42,8 @@ const Profile = () => {
             // Fetch profile data
             const profileRes: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
             if (profileRes?.data?.status) {
-                setUserData(profileRes.data.user);
+                console.log('Profile data:', profileRes?.data?.user);
+                setUserData(profileRes?.data?.user);
             }
 
             // Fetch applied jobs count from myApplications API
@@ -44,8 +52,102 @@ const Profile = () => {
             if (Array.isArray(appsData)) {
                 setAppliedCount(appsData.length);
             }
+
+            // Fetch profile strength
+            const strengthRes: any = await Post_Api(ApiUrl.authProfileStrength, { userId })();
+            if (strengthRes?.data?.status) {
+                console.log('Profile strength:', strengthRes?.data?.strength);
+                setProfileStrength(strengthRes?.data?.strength || 0);
+            }
         } catch (error) {
             console.log('fetchProfile error', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handlePickImage = () => {
+        const options = [
+            { text: 'Take Photo', onPress: openCamera },
+            { text: 'Choose from Gallery', onPress: openPicker },
+            { text: 'Cancel', style: 'cancel' },
+        ];
+
+        require('react-native').Alert.alert(
+            'Change Profile Picture',
+            'Select an option to update your profile image',
+            options
+        );
+    };
+
+    const openPicker = async () => {
+        try {
+            const image = await ImagePicker.openPicker({
+                width: 300,
+                height: 300,
+                cropping: true,
+                cropperCircleOverlay: true,
+                mediaType: 'photo',
+            });
+            setProfileImage(image.path);
+            uploadProfileImage(image);
+        } catch (error) {
+            console.log('openPicker error', error);
+        }
+    };
+
+    const openCamera = async () => {
+        try {
+            const image = await ImagePicker.openCamera({
+                width: 300,
+                height: 300,
+                cropping: true,
+                cropperCircleOverlay: true,
+                mediaType: 'photo',
+            });
+            setProfileImage(image.path);
+            uploadProfileImage(image);
+        } catch (error) {
+            console.log('openCamera error', error);
+        }
+    };
+
+    const uploadProfileImage = async (image: any) => {
+        const userId = user?._id || user?.id;
+        if (!userId) return;
+
+        try {
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('userId', userId);
+            formData.append('name', userData?.name || '');
+            formData.append('email', userData?.email || '');
+            formData.append('profilePic', {
+                uri: image.path,
+                type: image.mime,
+                name: `profile_${userId}_${Date.now()}.jpg`,
+            });
+
+            console.log('Uploading image with formData:', formData);
+         const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
+            if (res?.data?.status) {
+                Toast.show('Profile picture updated successfully!', {
+                    backgroundColor: Colors.online,
+                    textColor: Colors.white,
+                });
+                fetchProfile(); // Refresh profile data to get new image URL
+            } else {
+                Toast.show('Failed to update profile picture', {
+                    backgroundColor: Colors.errorRed,
+                    textColor: Colors.white,
+                });
+            }
+        } catch (error) {
+            console.log('uploadProfileImage error', error);
+            Toast.show('Error uploading image', {
+                backgroundColor: Colors.errorRed,
+                textColor: Colors.white,
+            });
         } finally {
             setLoading(false);
         }
@@ -73,7 +175,9 @@ const Profile = () => {
             </View>
         </View>
     );
-
+    console.log("profileImage", profileImage);
+    console.log("userData?.profilePic", userData?.profilePic);
+ 
     return (
         <SafeAreaView style={styles.container}>
             <HomeHeader
@@ -92,8 +196,12 @@ const Profile = () => {
 
                     {/* Profile Info Section */}
                     <View style={styles.profileSection}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('ProfileSetup')} style={styles.avatarContainer}>
-                            <Image source={Images.userImage} style={styles.avatar} />
+                        <TouchableOpacity activeOpacity={0.8} onPress={handlePickImage} style={styles.avatarContainer}>
+                            
+                            <Image
+                                source={profileImage ? { uri: profileImage } : (userData?.profilePic ? { uri: Config.imageurl + userData.profilePic } : Images.userImage)}
+                                style={styles.avatar}
+                            />
                             <View style={styles.editIconContainer}>
                                 <Image source={Images.pencil} style={styles.PencilIcon} />
                             </View>
@@ -120,7 +228,7 @@ const Profile = () => {
                         </View>
                         <View style={styles.progressContainer}>
                             <View style={styles.progressCircle}>
-                                <Text style={styles.progressText}>70%</Text>
+                                <Text style={styles.progressText}>{profileStrength}%</Text>
                             </View>
                         </View>
                     </View>

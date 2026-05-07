@@ -12,6 +12,7 @@ import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
 import { useSelector } from 'react-redux';
+import fonts from '../../../../comman/fonts';
 
 const FILTERS = APP_TEXT.filterData;
 
@@ -190,6 +191,7 @@ const JobsScreen = () => {
           </TouchableOpacity>
         </View>
       ) : null}
+      
       <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
       {loading && (
         <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
@@ -199,7 +201,7 @@ const JobsScreen = () => {
         data={loading ? [] : filteredJobs}
         ListEmptyComponent={!loading ? (
           <View style={{ alignItems: 'center', marginTop: 50 }}>
-            <Text style={{ fontSize: 16, color: '#6B7280' }}>
+            <Text style={{ fontSize: 16, color: '#6B7280',fontFamily: fonts.Lexend_Medium }}>
               {searchText !== '' ? `Not Found: "${searchText}"` : 'No jobs available'}
             </Text>
           </View>
