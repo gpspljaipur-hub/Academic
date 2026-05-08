@@ -11,7 +11,7 @@ import {
 import { styles } from './Styles';
 import Button from '../../../components/Button';
 import { useNavigation } from '@react-navigation/native';
-import DocumentPicker from 'react-native-document-picker';
+import { pick } from '@react-native-documents/picker';
 import Toast from 'react-native-root-toast';
 import Colors from '../../../comman/Colors';
 import { APP_TEXT } from '../../../comman/String';
@@ -30,17 +30,13 @@ const Form = () => {
 
     const handlePickDocument = async () => {
         try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.pdf, DocumentPicker.types.doc, DocumentPicker.types.docx],
+           const res = await pick({
+                  type: ['application/pdf'],
             });
             setResume(res[0]);
             setErrorMessage('');
         } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                // User cancelled the picker
-            } else {
-                throw err;
-            }
+           
         }
     };
 

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../../Redux/Reducers/Userslice';
 import Config from '../../../Lib/ApiService/Config';
 import AsyncStorageHelper from '../../../Lib/HelperFiles/AsyncStorageHelper';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ route }: any) => {
   const navigation = useNavigation();
@@ -21,7 +22,16 @@ const LoginScreen = ({ route }: any) => {
   const { userType } = useSelector((state: any) => state.user);
   const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [mobileError, setMobileError] = useState('');
+
+  // Configure Google Sign-In
+  React.useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '52812460885-2tik8eqi5ij94qmv899eku2c2t49vmfe.apps.googleusercontent.com', // Replace with your actual web client ID from Google Console
+      offlineAccess: true,
+    });
+  }, []);
 
   const checkValidation = () => {
     const mobileErr = validate('mobile', mobileNumber);
@@ -67,6 +77,48 @@ const LoginScreen = ({ route }: any) => {
 
 
   }
+
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('Google user info:', userInfo);
+
+      // Send Google user data to your backend
+      const payload = {
+        googleId: userInfo.data?.user.id,
+        email: userInfo.data?.user.email,
+        name: userInfo.data?.user.name,
+        photo: userInfo.data?.user.photo,
+        userType: userType
+      };
+
+      const res = await Auth_Api(ApiUrl.LOGIN, payload)();
+      if (res?.data?.status === true) {
+        const userData = { ...res.data.user, token: res.data.token };
+        dispatch(loginSuccess(userData));
+        await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
+        await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
+        if (userType === 'JobSeeker') {
+          handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+        } else {
+          handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+        }
+      } else {
+        Helper.showToast(res?.data?.message || 'Google login failed');
+      }
+    } catch (error: any) {
+      console.warn('Google login error:', error);
+      if (error.code === 'CANCELED') {
+        Helper.showToast('Google login cancelled');
+      } else {
+        Helper.showToast('Google login failed');
+      }
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -117,13 +169,15 @@ const LoginScreen = ({ route }: any) => {
           <View style={styles.dividerLine} />
         </View>
 
-        <TouchableOpacity style={styles.socialButton}>
-          <Text style={styles.socialText}>{APP_TEXT.loginButtonGoogle}</Text>
+        <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} disabled={googleLoading}>
+          <Text style={styles.socialText}>
+            {googleLoading ? 'Signing in...' : APP_TEXT.loginButtonGoogle}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secureButton}>
+        {/* <TouchableOpacity style={styles.secureButton}>
           <Text style={styles.secureText}>{APP_TEXT.loginButtonSecure}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.footerHighlightContainer}>

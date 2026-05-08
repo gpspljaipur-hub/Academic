@@ -21,7 +21,7 @@ import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Helper from '../../../../Lib/HelperFiles/Helper';
 import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
 import styles from './Styles';
-import DocumentPicker from 'react-native-document-picker';
+import { pick } from '@react-native-documents/picker';
 
 
 const ProfileSetup = () => {
@@ -119,13 +119,15 @@ const ProfileSetup = () => {
 
   const handleUploadResume = async () => {
     try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
+      const res = await pick({
+        type: ['application/pdf'],
       });
       setResume(res[0]);
-    } catch (err) {
-      if (!DocumentPicker.isCancel(err)) {
+      Helper.showToast('Resume selected successfully');
+    } catch (err: any) {
+      if (err.code !== 'DOCUMENT_PICKER_CANCELLED') {
         console.log('Error picking document:', err);
+        Helper.showToast('Failed to pick resume');
       }
     }
   };
