@@ -181,6 +181,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    jobIcon: {
+        width: 48,
+        height: 48,
+        resizeMode: 'contain',
+        borderRadius: 8,
+    },
     jobIconText: {
         fontSize: FontsSize.size16,
         fontFamily: fonts.LexendBold,

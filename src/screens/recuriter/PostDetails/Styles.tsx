@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.offWhite,
+        paddingHorizontal: MarginHW.PaddingW16,
+        paddingBottom: MarginHW.PaddingH10,
     },
     header: {
         flexDirection: 'row',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
         color: Colors.brandBlue,
     },
     containercard: {
-        marginHorizontal: MarginHW.MarginW20,
+        marginHorizontal: MarginHW.MarginW10,
         paddingHorizontal: MarginHW.PaddingW10,
         paddingVertical: MarginHW.PaddingH14,
         borderRadius: 15,
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
         marginTop: MarginHW.MarginH8,
     },
     section: {
-        paddingHorizontal: MarginHW.PaddingW20,
+        paddingHorizontal: MarginHW.PaddingW10,
         marginTop: MarginHW.MarginH20,
     },
     sectionHeader: {

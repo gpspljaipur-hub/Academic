@@ -7,16 +7,20 @@ import { styles } from './Styles';
 import { APP_TEXT } from '../../../comman/String';
 import Images from '../../../comman/Images';
 import Header from '../../../components/Header';
-import { Get_Api } from '../../../Lib/ApiService/ApiRequest';
+import { Get_Api, Post_Api } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
 import Colors from '../../../comman/Colors';
+import { useSelector } from 'react-redux';
+import { handleNavigation } from '../../../navigation/RootNavigator';
 
 
 const RecommendedJobs = () => {
     const navigation = useNavigation<any>();
     const [loading, setLoading] = useState(false);
     const [jobs, setJobs] = useState<any[]>([]);
+    const user = useSelector((state: any) => state.user.user);
+    
 
     useEffect(() => {
         fetchJobs();
@@ -25,7 +29,8 @@ const RecommendedJobs = () => {
     const fetchJobs = async () => {
         try {
             setLoading(true);
-            const response: any = await Get_Api(ApiUrl.PostAllJobs, {})();
+            const userId = user?._id || user?.id;
+            const response: any = await Post_Api(ApiUrl.PostAllJobs, { userId })();
             console.log('Jobs Response:', response?.data?.data);
             if (response?.data.status) {
                 let jobsData = response?.data?.data;
@@ -47,7 +52,7 @@ const RecommendedJobs = () => {
         const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
 
         return (
-            <TouchableOpacity style={styles.jobCard} onPress={() => { navigation.navigate('CareerArchitect', { job }); }}>
+            <TouchableOpacity style={styles.jobCard} onPress={() => {  handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
                 <View style={styles.jobTopRow}>
                     <View style={styles.logoWrap}>
                         <Image source={image ? { uri: image } : Images.amazonpay} resizeMode='cover' style={styles.jobCompanyLogo} />
@@ -82,7 +87,7 @@ const RecommendedJobs = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header title={APP_TEXT.jobsRecommended} />
+            <Header onBackPress={() => navigation.goBack()} title={APP_TEXT.jobsRecommended} />
 
             <FlatList
                 data={jobs}

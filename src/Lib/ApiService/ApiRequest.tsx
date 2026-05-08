@@ -156,6 +156,8 @@ export async function Post_FormData(Url: string, SendData: any) {
 }
 
 export const Post_Api_FormData = (Url: string, SendData: any) => async () => {
+  console.log("SendData", SendData);
+  console.log("fullUrl(Url)", fullUrl(Url))
   const data = await Post_FormData(Url, SendData);
   return { data };
 };

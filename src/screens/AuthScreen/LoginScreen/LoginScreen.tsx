@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../../Redux/Reducers/Userslice';
 import Config from '../../../Lib/ApiService/Config';
 import AsyncStorageHelper from '../../../Lib/HelperFiles/AsyncStorageHelper';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ route }: any) => {
   const navigation = useNavigation();
@@ -21,7 +22,16 @@ const LoginScreen = ({ route }: any) => {
   const { userType } = useSelector((state: any) => state.user);
   const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [mobileError, setMobileError] = useState('');
+
+  // Configure Google Sign-In
+  React.useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: Config.GoogleWebClientId, // Replace with your actual web client ID from Google Console
+      offlineAccess: true,
+    });
+  }, []);
 
   const checkValidation = () => {
     const mobileErr = validate('mobile', mobileNumber);
@@ -67,6 +77,67 @@ const LoginScreen = ({ route }: any) => {
 
 
   }
+
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      const user = response.data?.user;
+
+      if (user) {
+        console.log('Google user info:', user);
+
+        const payload = {
+          email: user.email,
+          userType: userType
+        };
+
+        const res = await Auth_Api(ApiUrl.authGoogleLogin, payload)();
+        console.log('Google login response:', res);
+        if (res?.data?.status === true) {
+          if (res.data.exists === true) {
+            const userData = { ...res.data.user, token: res.data.token };
+            dispatch(loginSuccess(userData));
+            await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
+            await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
+
+            Helper.showToast('Login successful');
+            if (userType === 'JobSeeker') {
+              handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+            } else {
+              handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+            }
+          } else {
+            console.log('User not found');
+            // User doesn't exist, navigate to signup with pre-filled info
+            Helper.showToast('Account not found. Please sign up.');
+            handleNavigation({
+              type: 'push',
+              page: 'Signup',
+              navigation: navigation,
+              passProps: {
+                name: user.name,
+                Email: user.email
+              },
+              // Note: You might want to pass user info here if Signup screen is set up to receive it
+            });
+          }
+        } else {
+          Helper.showToast(res?.data?.message || 'Google login failed');
+        }
+      }
+    } catch (error: any) {
+      console.warn('Google login error:', error);
+      if (error.code === 'CANCELED') {
+        Helper.showToast('Google login cancelled');
+      } else {
+        Helper.showToast('Google login failed');
+      }
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -117,13 +188,15 @@ const LoginScreen = ({ route }: any) => {
           <View style={styles.dividerLine} />
         </View>
 
-        <TouchableOpacity style={styles.socialButton}>
-          <Text style={styles.socialText}>{APP_TEXT.loginButtonGoogle}</Text>
+        <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin} disabled={googleLoading}>
+          <Text style={styles.socialText}>
+            {googleLoading ? 'Signing in...' : APP_TEXT.loginButtonGoogle}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secureButton}>
+        {/* <TouchableOpacity style={styles.secureButton}>
           <Text style={styles.secureText}>{APP_TEXT.loginButtonSecure}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.footerHighlightContainer}>

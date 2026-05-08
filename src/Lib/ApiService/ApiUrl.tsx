@@ -23,6 +23,9 @@ const ApiUrl = {
   LATEST_JOBS: 'jobs/latest',
   LATEST_EXAMS: 'exams/latest',
   ALL_SKILLS: 'auth/all-skills',
+  userJobMatchProfile: 'recruiterJob/userJobMatchProfile',
+  authProfileStrength: 'auth/profile-strength',
+  authGoogleLogin: 'auth/google-login'
 };
 
 export default ApiUrl;

@@ -11,11 +11,12 @@ import {
 import { styles } from './Styles';
 import Button from '../../../components/Button';
 import { useNavigation } from '@react-navigation/native';
-import DocumentPicker from 'react-native-document-picker';
+import { pick } from '@react-native-documents/picker';
 import Toast from 'react-native-root-toast';
 import Colors from '../../../comman/Colors';
 import { APP_TEXT } from '../../../comman/String';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../../../components/Header';
 
 const Form = () => {
     const navigation = useNavigation();
@@ -25,7 +26,44 @@ const Form = () => {
     const [aboutSelf, setAboutSelf] = useState('');
     const [resume, setResume] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handlePickDocument = async () => {
+        try {
+           const res = await pick({
+                  type: ['application/pdf'],
+            });
+            setResume(res[0]);
+            setErrorMessage('');
+        } catch (err) {
+           
+        }
+    };
+
+    const validateEmail = (email: string) => {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    };
+
     const handleSubmit = () => {
+        setErrorMessage('');
+        if (!userName.trim()) {
+            setErrorMessage('Please enter your full name');
+            return;
+        }
+        if (!contactNo.trim() || !/^\d{10}$/.test(contactNo)) {
+            setErrorMessage('Please enter a valid 10-digit contact number');
+            return;
+        }
+        if (!email.trim() || !validateEmail(email)) {
+            setErrorMessage('Please enter a valid email address');
+            return;
+        }
+        if (!resume) {
+            setErrorMessage('Please upload your resume');
+            return;
+        }
+
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
@@ -43,16 +81,8 @@ const Form = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Header title={APP_TEXT.applyScreen.title} onBackPress={() => navigation.goBack()} />
 
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Text style={styles.back}>←</Text>
-                </TouchableOpacity>
-
-                <Text style={styles.title}>{APP_TEXT.applyScreen.title}</Text>
-                <View style={{ width: 30 }} />
-
-            </View>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}
@@ -65,7 +95,10 @@ const Form = () => {
                             placeholder={APP_TEXT.applyScreen.fullNamePlaceholder}
                             placeholderTextColor={Colors.mutedSlate}
                             value={userName}
-                            onChangeText={setUserName}
+                            onChangeText={(text) => {
+                                setUserName(text);
+                                setErrorMessage('');
+                            }}
                         />
                     </View>
 
@@ -77,7 +110,13 @@ const Form = () => {
                             placeholderTextColor={Colors.mutedSlate}
                             keyboardType="phone-pad"
                             value={contactNo}
-                            onChangeText={setContactNo}
+                            maxLength={10}
+                            onChangeText={(text) => {
+
+                                const numericValue = text.replace(/[^0-9]/g, '');
+                                setContactNo(numericValue);
+                                setErrorMessage('');
+                            }}
                         />
                     </View>
 
@@ -90,7 +129,10 @@ const Form = () => {
                             keyboardType="email-address"
                             autoCapitalize="none"
                             value={email}
-                            onChangeText={setEmail}
+                            onChangeText={(text) => {
+                                setEmail(text);
+                                setErrorMessage('');
+                            }}
                         />
                     </View>
 
@@ -99,9 +141,9 @@ const Form = () => {
                         <TouchableOpacity
                             style={styles.uploadButton}
                             activeOpacity={0.7}
-                        // onPress={handlePickDocument}
+                            onPress={handlePickDocument}
                         >
-                            <Text style={styles.uploadText}>{APP_TEXT.applyScreen.uploadResume}</Text>
+                            <Text style={styles.uploadText}>{resume ? resume.name : APP_TEXT.applyScreen.uploadResume}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -114,10 +156,16 @@ const Form = () => {
                             multiline
                             numberOfLines={4}
                             value={aboutSelf}
-                            onChangeText={setAboutSelf}
+                            onChangeText={(text) => {
+                                setAboutSelf(text);
+                                setErrorMessage('');
+                            }}
                         />
                     </View>
 
+                    {errorMessage ? (
+                        <Text style={styles.errorText}>{errorMessage}</Text>
+                    ) : null}
                     <Button
                         label={APP_TEXT.applyScreen.submit}
                         loading={loading}

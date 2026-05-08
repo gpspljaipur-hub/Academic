@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, StatusBar, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '../../../../comman/Colors'
 import { APP_TEXT } from '../../../../comman/String'
@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux'
 import { Post_Api } from '../../../../Lib/ApiService/ApiRequest'
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl'
 import styles from './Styles'
+import Config from '../../../../Lib/ApiService/Config'
+import { handleNavigation } from '../../../../navigation/RootNavigator'
 
 const RecuiterRecentJobs = () => {
     const strings = APP_TEXT.dashboard;
@@ -53,10 +55,14 @@ const RecuiterRecentJobs = () => {
         return title.substring(0, 2).toUpperCase();
     };
 
-    const JobItem = ({ title, status, time, shortCode }: any) => (
-        <TouchableOpacity style={styles.jobCard}>
+    const JobItem = ({ title, status, time, shortCode,companyLogo, job }: any) => (
+        <TouchableOpacity onPress={() => {handleNavigation({ type: "push", page: "PostDetails", passProps: { jobs: job }, navigation })}} style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
-                <Text style={styles.jobIconText}>{shortCode}</Text>
+                {companyLogo ? (
+                    <Image source={{ uri: companyLogo }} style={styles.jobIcon} />
+                ) : (
+                    <Text style={styles.jobIconText}>{shortCode}</Text>
+                )}
             </View>
             <View style={styles.jobDetails}>
                 <Text style={styles.jobTitle}>{title}</Text>
@@ -94,6 +100,8 @@ const RecuiterRecentJobs = () => {
                             status={item.status?.toUpperCase() || 'OPEN'}
                             time={new Date(item.createdAt).toLocaleDateString()}
                             shortCode={getShortCode(item.title)}
+                            job={item}
+                            companyLogo={item.companyLogo ? Config.imageurl + item.companyLogo : null}
                         />
                     )}
                     contentContainerStyle={{ paddingVertical: 20 }}
