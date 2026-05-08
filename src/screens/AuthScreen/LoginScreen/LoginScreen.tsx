@@ -28,7 +28,7 @@ const LoginScreen = ({ route }: any) => {
   // Configure Google Sign-In
   React.useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '52812460885-2tik8eqi5ij94qmv899eku2c2t49vmfe.apps.googleusercontent.com', // Replace with your actual web client ID from Google Console
+      webClientId: Config.GoogleWebClientId, // Replace with your actual web client ID from Google Console
       offlineAccess: true,
     });
   }, []);
@@ -93,28 +93,29 @@ const LoginScreen = ({ route }: any) => {
         photo: userInfo.data?.user.photo,
         userType: userType
       };
+      console.log('Google payload:', payload);
 
-      const res = await Auth_Api(ApiUrl.LOGIN, payload)();
-      if (res?.data?.status === true) {
-        const userData = { ...res.data.user, token: res.data.token };
-        dispatch(loginSuccess(userData));
-        await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
-        await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
-        if (userType === 'JobSeeker') {
-          handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
-        } else {
-          handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
-        }
-      } else {
-        Helper.showToast(res?.data?.message || 'Google login failed');
-      }
-    } catch (error: any) {
-      console.warn('Google login error:', error);
-      if (error.code === 'CANCELED') {
-        Helper.showToast('Google login cancelled');
-      } else {
-        Helper.showToast('Google login failed');
-      }
+      //   const res = await Auth_Api(ApiUrl.LOGIN, payload)();
+      //   if (res?.data?.status === true) {
+      //     const userData = { ...res.data.user, token: res.data.token };
+      //     dispatch(loginSuccess(userData));
+      //     await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
+      //     await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
+      //     if (userType === 'JobSeeker') {
+      //       handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+      //     } else {
+      //       handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+      //     }
+      //   } else {
+      //     Helper.showToast(res?.data?.message || 'Google login failed');
+      //   }
+      // } catch (error: any) {
+      //   console.warn('Google login error:', error);
+      //   if (error.code === 'CANCELED') {
+      //     Helper.showToast('Google login cancelled');
+      //   } else {
+      //     Helper.showToast('Google login failed');
+      //   }
     } finally {
       setGoogleLoading(false);
     }
