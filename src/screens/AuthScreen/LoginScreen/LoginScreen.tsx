@@ -82,40 +82,58 @@ const LoginScreen = ({ route }: any) => {
     try {
       setGoogleLoading(true);
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('Google user info:', userInfo);
+      const response = await GoogleSignin.signIn();
+      const user = response.data?.user;
 
-      // Send Google user data to your backend
-      const payload = {
-        googleId: userInfo.data?.user.id,
-        email: userInfo.data?.user.email,
-        name: userInfo.data?.user.name,
-        photo: userInfo.data?.user.photo,
-        userType: userType
-      };
-      console.log('Google payload:', payload);
+      if (user) {
+        console.log('Google user info:', user);
 
-      //   const res = await Auth_Api(ApiUrl.LOGIN, payload)();
-      //   if (res?.data?.status === true) {
-      //     const userData = { ...res.data.user, token: res.data.token };
-      //     dispatch(loginSuccess(userData));
-      //     await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
-      //     await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
-      //     if (userType === 'JobSeeker') {
-      //       handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
-      //     } else {
-      //       handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
-      //     }
-      //   } else {
-      //     Helper.showToast(res?.data?.message || 'Google login failed');
-      //   }
-      // } catch (error: any) {
-      //   console.warn('Google login error:', error);
-      //   if (error.code === 'CANCELED') {
-      //     Helper.showToast('Google login cancelled');
-      //   } else {
-      //     Helper.showToast('Google login failed');
-      //   }
+        const payload = {
+          email: user.email,
+          userType: userType
+        };
+
+        const res = await Auth_Api(ApiUrl.authGoogleLogin, payload)();
+        console.log('Google login response:', res);
+        if (res?.data?.status === true) {
+          if (res.data.exists === true) {
+            const userData = { ...res.data.user, token: res.data.token };
+            dispatch(loginSuccess(userData));
+            await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
+            await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
+
+            Helper.showToast('Login successful');
+            if (userType === 'JobSeeker') {
+              handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
+            } else {
+              handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
+            }
+          } else {
+            console.log('User not found');
+            // User doesn't exist, navigate to signup with pre-filled info
+            Helper.showToast('Account not found. Please sign up.');
+            handleNavigation({
+              type: 'push',
+              page: 'Signup',
+              navigation: navigation,
+              passProps: {
+                name: user.name,
+                Email: user.email
+              },
+              // Note: You might want to pass user info here if Signup screen is set up to receive it
+            });
+          }
+        } else {
+          Helper.showToast(res?.data?.message || 'Google login failed');
+        }
+      }
+    } catch (error: any) {
+      console.warn('Google login error:', error);
+      if (error.code === 'CANCELED') {
+        Helper.showToast('Google login cancelled');
+      } else {
+        Helper.showToast('Google login failed');
+      }
     } finally {
       setGoogleLoading(false);
     }

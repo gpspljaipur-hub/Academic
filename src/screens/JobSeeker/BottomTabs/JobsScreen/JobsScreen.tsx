@@ -100,7 +100,7 @@ const JobsScreen = () => {
     const company = job.company || 'Unknown Company';
     const location = job.location || 'Remote';
     const salary = job.salary || 'Competitive';
-    const aiMatch = job.matchPercentage || '10%';
+    const aiMatch = job.matchPercentage || '0%';
     const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
     return (
       <TouchableOpacity style={styles.jobCard} onPress={() => { handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
@@ -132,7 +132,7 @@ const JobsScreen = () => {
             <Text style={styles.companyName}>{company}</Text>
           </View>
           <View style={styles.matchBadge}>
-            <Text style={styles.matchText}>⚡ {aiMatch}</Text>
+            <Text style={styles.matchText}>⚡ {aiMatch} {APP_TEXT.aiMatch}</Text>
           </View>
           {/* <Image source={Images.bookmark} resizeMode="contain" style={styles.bookmarkIcon} /> */}
         </View>
@@ -191,7 +191,7 @@ const JobsScreen = () => {
           </TouchableOpacity>
         </View>
       ) : null}
-      
+
       <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
       {loading && (
         <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
@@ -201,7 +201,7 @@ const JobsScreen = () => {
         data={loading ? [] : filteredJobs}
         ListEmptyComponent={!loading ? (
           <View style={{ alignItems: 'center', marginTop: 50 }}>
-            <Text style={{ fontSize: 16, color: '#6B7280',fontFamily: fonts.Lexend_Medium }}>
+            <Text style={{ fontSize: 16, color: '#6B7280', fontFamily: fonts.Lexend_Medium }}>
               {searchText !== '' ? `Not Found: "${searchText}"` : 'No jobs available'}
             </Text>
           </View>

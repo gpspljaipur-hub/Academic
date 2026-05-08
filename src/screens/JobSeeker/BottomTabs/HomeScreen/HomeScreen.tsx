@@ -170,10 +170,9 @@ const HomeScreen = () => {
               const company = job.company || 'Unknown Company';
               const location = job.location || 'Remote';
               const tags = job.jobType || ['Full Time'];
-              const aiMatch = job.matchPercentage ? `${job.matchPercentage}%` : '90%';
+              const aiMatch = job.matchPercentage ? `${job.matchPercentage}%` : '0%';
               const salary = job.salary || 'Competitive';
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
-              console.log("image1234", image)
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>
