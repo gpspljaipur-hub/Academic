@@ -300,7 +300,7 @@ const ApplicationsScreen = () => {
 
 
                   </View>
-                  <View>
+                  <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text style={styles.jobTitle}>{item?.job?.title || ''}</Text>
                     <Text style={styles.companyLocation}>Company: {item.job?.company || 'Applicant'}</Text>
 

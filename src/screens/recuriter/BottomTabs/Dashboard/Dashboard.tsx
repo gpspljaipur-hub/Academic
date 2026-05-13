@@ -19,11 +19,13 @@ const Dashboard = () => {
     const isFocused = useIsFocused();
     const { user } = useSelector((state: any) => state.user);
     const [dashboardData, setDashboardData] = useState<any>(null);
+    const [trendData, setTrendData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (isFocused) {
             fetchDashboardData();
+            fetchTrendData();
         }
     }, [isFocused]);
 
@@ -42,6 +44,20 @@ const Dashboard = () => {
             console.log('fetchDashboardData error', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchTrendData = async () => {
+        const recruiterId = user?.id || user?._id;
+        if (!recruiterId) return;
+
+        try {
+            const res: any = await Post_Api(ApiUrl.applicationTrends, { recruiterId })();
+            if (res?.data) {
+                setTrendData(res?.data);
+            }
+        } catch (error) {
+            console.log('fetchTrendData error', error);
         }
     };
 
@@ -89,15 +105,38 @@ const Dashboard = () => {
         </TouchableOpacity>
     );
 
-    const chartData = [
-        { day: 'MON', height: 60, color: Colors.periwinkle },
-        { day: 'TUE', height: 90, color: Colors.periwinkle },
-        { day: 'WED', height: 70, color: Colors.periwinkle },
-        { day: 'THU', height: 130, color: Colors.brandBlue },
-        { day: 'FRI', height: 100, color: Colors.periwinkle },
-        { day: 'SAT', height: 80, color: Colors.periwinkle },
-        { day: 'SUN', height: 110, color: Colors.periwinkle },
-    ];
+    const getChartData = () => {
+        const apiChartData = trendData?.chartData || trendData?.data?.chartData;
+
+        if (!apiChartData) {
+            return [
+                { day: 'MON', height: 10, color: Colors.periwinkle },
+                { day: 'TUE', height: 10, color: Colors.periwinkle },
+                { day: 'WED', height: 10, color: Colors.periwinkle },
+                { day: 'THU', height: 10, color: Colors.periwinkle },
+                { day: 'FRI', height: 10, color: Colors.periwinkle },
+                { day: 'SAT', height: 10, color: Colors.periwinkle },
+                { day: 'SUN', height: 10, color: Colors.periwinkle },
+            ];
+        }
+
+        const maxValue = Math.max(...apiChartData.map((item: any) => item.value), 1);
+        const maxHeight = 130;
+        const baseHeight = 20;
+
+        return apiChartData.map((item: any) => {
+            const height = (item.value / maxValue) * maxHeight + baseHeight;
+            return {
+                day: item.label,
+                height: height,
+                color: item.value === maxValue && item.value > 0 ? Colors.brandBlue : Colors.periwinkle
+            };
+        });
+    };
+
+    const chartData = getChartData();
+    console.log("chartData", chartData);
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -191,7 +230,7 @@ const Dashboard = () => {
 
                 <View style={styles.chartCard}>
                     <View style={styles.barChartContainer}>
-                        {chartData.map((item, index) => (
+                        {chartData?.map((item: any, index: number) => (
                             <View key={index} style={styles.barWrapper}>
                                 <View style={[styles.bar, { height: item.height, backgroundColor: item.color }]} />
                                 <Text style={styles.dayText}>{item.day}</Text>
@@ -205,14 +244,14 @@ const Dashboard = () => {
                                 <View style={[styles.legendDot, { backgroundColor: Colors.brandBlue }]} />
                                 <Text style={styles.legendLabel}>{strings.newApplications}</Text>
                             </View>
-                            <Text style={styles.legendValue}>428</Text>
+                            <Text style={styles.legendValue}>{(trendData?.newApplications ?? trendData?.data?.newApplications) ?? 0}</Text>
                         </View>
                         <View style={styles.legendItem}>
                             <View style={styles.legendLabelRow}>
                                 <View style={[styles.legendDot, { backgroundColor: Colors.periwinkle }]} />
                                 <Text style={styles.legendLabel}>{strings.interviewInvites}</Text>
                             </View>
-                            <Text style={styles.legendValue}>32</Text>
+                            <Text style={styles.legendValue}>{(trendData?.interviewInvites ?? trendData?.data?.interviewInvites) ?? 0}</Text>
                         </View>
                     </View>
 
