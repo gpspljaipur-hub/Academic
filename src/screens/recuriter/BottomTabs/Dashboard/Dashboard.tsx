@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './Styles'
 import Colors from '../../../../comman/Colors'
@@ -71,7 +71,7 @@ const Dashboard = () => {
     };
 
     const StatCard = ({ title, value, trend, icon, color }: any) => (
-        <View style={styles.statsCard}>
+        <View style={[styles.statsCard, { flex: 1, marginHorizontal: 5, marginVertical: 1 }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                     <Image source={icon} style={[styles.statsIcon, { tintColor: Colors.brandBlue }]} resizeMode="contain" />
@@ -134,9 +134,36 @@ const Dashboard = () => {
         });
     };
 
-    const chartData = getChartData();
-    console.log("chartData", chartData);
+    const statCardsData = [
+        {
+            title: strings.totalJobsPosted,
+            value: dashboardData?.stats?.totalJobs || '0',
+            trend: `↗ +${dashboardData?.stats?.jobsThisMonth || 0} this month`,
+            icon: Images.application
+        },
+        {
+            title: strings.totalApplicants,
+            value: dashboardData?.stats?.totalApplicants || '0',
+            trend: "↗ vs last week",
+            icon: Images.employee
+        },
+        {
+            title: strings.shortlisted,
+            value: dashboardData?.stats?.shortlistedCount || '0',
+            trend: '',
+            color: Colors.bodyGray,
+            icon: Images.bookmark
+        },
+        {
+            title: strings.viewAllApplicants,
+            value: trendData?.data?.interviewInvites || '0',
+            trend: '',
+            color: Colors.bodyGray,
+            icon: Images.ProfileIcon
+        }
+    ];
 
+    const chartData = getChartData();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -152,21 +179,21 @@ const Dashboard = () => {
 
                 <View style={styles.actionButtonsRow}>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.secondaryButton}
                         onPress={() => navigation.navigate('Applicants')}
                     >
                         <Image source={Images.ProfileIcon} style={{ width: 16, height: 16, tintColor: Colors.brandBlue }} />
                         <Text style={styles.buttonTextSecondary} numberOfLines={1}>{strings.viewAllApplicants}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.primaryButton}
                         onPress={() => navigation.navigate('Job')}
                     >
                         <Text style={{ color: Colors.white, fontSize: 18 }}>+</Text>
                         <Text style={styles.buttonTextPrimary} numberOfLines={1}>{strings.postAJob}</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 {loading && !dashboardData ? (
@@ -175,24 +202,21 @@ const Dashboard = () => {
                     </View>
                 ) : (
                     <>
-                        <StatCard
-                            title={strings.totalJobsPosted}
-                            value={dashboardData?.stats?.totalJobs || '0'}
-                            trend={`↗ +${dashboardData?.stats?.jobsThisMonth || 0} this month`}
-                            icon={Images.application}
-                        />
-                        <StatCard
-                            title={strings.totalApplicants}
-                            value={dashboardData?.stats?.totalApplicants || '0'}
-                            trend="↗ vs last week"
-                            icon={Images.employee}
-                        />
-                        <StatCard
-                            title={strings.shortlisted}
-                            value={dashboardData?.stats?.shortlistedCount || '0'}
-                            trend={`⏱ ${dashboardData?.stats?.pendingReviewCount || 0} pending review`}
-                            color={Colors.bodyGray}
-                            icon={Images.bookmark}
+                        <FlatList
+                            data={statCardsData}
+                            numColumns={2}
+                            keyExtractor={(item, index) => index.toString()}
+                            scrollEnabled={false}
+                            columnWrapperStyle={{ justifyContent: 'space-between' }}
+                            renderItem={({ item }) => (
+                                <StatCard
+                                    title={item.title}
+                                    value={item.value}
+                                    trend={item.trend}
+                                    icon={item.icon}
+                                    color={item.color}
+                                />
+                            )}
                         />
 
                         <View style={styles.sectionHeader}>

@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         marginBottom: MarginHW.MarginH5,
     },
     statsLabel: {
-        fontSize: FontsSize.normalize14,
+        fontSize: FontsSize.normalize12,
         fontFamily: fonts.Lexend_Medium,
         color: Colors.bodyGray,
     },
