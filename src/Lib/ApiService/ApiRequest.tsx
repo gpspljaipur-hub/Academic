@@ -40,7 +40,7 @@ export const Get_Api = (Url: string, SendData: any) => async () => {
 
 export const Post_Api = (Url: string, SendData: any) => async () => {
   console.log('Post_Api url', fullUrl(Url));
-  console.log('Post_Api payload', SendData);
+  // console.log('Post_Api payload', SendData);
   const data = await ApiRequestRow(Url, SendData);
   console.log('ApiRequestRow response', data);
   return { data };
@@ -48,7 +48,7 @@ export const Post_Api = (Url: string, SendData: any) => async () => {
 
 export const Post_ApiWithToken = (Url: string, SendData: any) => async () => {
   console.log('Post_ApiWithToken url', fullUrl(Url));
-  console.log('Post_ApiWithToken payload', SendData);
+  // console.log('Post_ApiWithToken payload', SendData);
   const data = await ApiRequestRow(Url, SendData);
   console.log('ApiRequestRow response', data);
   return { data };
