@@ -30,6 +30,7 @@ const ApiUrl = {
   matchAiApi: 'recruiterJob/matchAiApi',
   saveJob: 'auth/save-job',
   getSavedJobs: 'auth/get-saved-jobs',
+  withdrawJob: 'jobApplication/withdraw',
 };
 
 export default ApiUrl;

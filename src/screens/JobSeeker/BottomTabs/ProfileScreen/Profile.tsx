@@ -264,14 +264,14 @@ const Profile = () => {
 
                     {/* Stats Section */}
                     <View style={styles.statsContainer}>
-                        <View style={styles.statCard}>
+                        <TouchableOpacity style={styles.statCard} activeOpacity={0.7} onPress={() => navigation.navigate('SavedJobs')}>
                             <Text style={styles.statNumber}>{userData?.savedJobsCount || 0}</Text>
                             <Text style={styles.statLabel}>{profile.savedJobs}</Text>
-                        </View>
-                        <View style={styles.statCard}>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.statCard} activeOpacity={0.7} onPress={() => (navigation as any).navigate('ApplicationScreen')}>
                             <Text style={styles.statNumber}>{appliedCount}</Text>
                             <Text style={styles.statLabel}>{profile.applications}</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
                     {/* Skills Section */}

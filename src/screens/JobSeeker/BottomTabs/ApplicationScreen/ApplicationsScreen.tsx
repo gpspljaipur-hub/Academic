@@ -6,7 +6,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -208,6 +209,34 @@ const ApplicationsScreen = () => {
     handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
   }
 
+  const handleWithdraw = (applicationId: string) => {
+    Alert.alert(
+      'Withdraw Application',
+      'Are you sure you want to withdraw this application? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Withdraw',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const res: any = await Post_Api(ApiUrl.withdrawJob, { job_id: applicationId, user_id: user?._id || user?.id })();
+              if (res?.data?.status) {
+                Helper.showToast(res.data.message || 'Application withdrawn');
+                fetchApplications();
+              } else {
+                Helper.showToast(res?.data?.message || 'Failed to withdraw');
+              }
+            } catch (error) {
+              console.log('handleWithdraw error', error);
+              Helper.showToast('Something went wrong');
+            }
+          },
+        },
+      ],
+    );
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -355,8 +384,8 @@ const ApplicationsScreen = () => {
                       <TouchableOpacity onPress={() => { item && handleJobsDetails(item) }} style={styles.viewDetailsButton}>
                         <Text style={styles.viewDetailsButtonText}>View Details</Text>
                       </TouchableOpacity>
-                      {item.canWithdraw && (
-                        <TouchableOpacity style={styles.withdrawButton}>
+                      {(item.status === 'APPLIED') && (
+                        <TouchableOpacity style={styles.withdrawButton} onPress={() => handleWithdraw(item._id)}>
                           <Text style={styles.withdrawButtonText}>Withdraw</Text>
                         </TouchableOpacity>
                       )}
