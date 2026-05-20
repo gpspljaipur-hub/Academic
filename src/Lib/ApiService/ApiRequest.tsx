@@ -40,17 +40,13 @@ export const Get_Api = (Url: string, SendData: any) => async () => {
 
 export const Post_Api = (Url: string, SendData: any) => async () => {
   console.log('Post_Api url', fullUrl(Url));
-  // console.log('Post_Api payload', SendData);
   const data = await ApiRequestRow(Url, SendData);
-  console.log('ApiRequestRow response', data);
   return { data };
 };
 
 export const Post_ApiWithToken = (Url: string, SendData: any) => async () => {
   console.log('Post_ApiWithToken url', fullUrl(Url));
-  // console.log('Post_ApiWithToken payload', SendData);
   const data = await ApiRequestRow(Url, SendData);
-  console.log('ApiRequestRow response', data);
   return { data };
 };
 
@@ -70,7 +66,6 @@ export async function Auth_ApiRequest(Url: string, SendData: any) {
   console.log('isConnected', isConnected);
   try {
     console.log('Auth_ApiRequest payload', { url: fullUrl(Url), data: SendData });
-    console.log('Auth_ApiRequest headers', headersWithoutBearer());
     const response = await axios.post(fullUrl(Url), SendData, {
       headers: headersWithoutBearer(),
     });
@@ -83,10 +78,8 @@ export async function Auth_ApiRequest(Url: string, SendData: any) {
 export async function Post_ApiRequest(Url: string, SendData: any) {
   const isConnected = await NetworkUtils.isNetworkAvailable();
   if (!isConnected) return { error: true, offline: true };
-  console.log('isConnected', isConnected);
   try {
     console.log('Auth_ApiRequest payload', { url: fullUrl(Url), data: SendData });
-    console.log('Auth_ApiRequest headers', headersWithoutBearer());
     const response = await axios.post(fullUrl(Url), SendData, {
       headers: headersWithoutBearer(),
     });
@@ -99,7 +92,6 @@ export async function Post_ApiRequest(Url: string, SendData: any) {
 export async function Get_Send_Api(Url: string, SendData: any) {
   try {
     const response = await axios.get(fullUrl(Url));
-    console.log('Get_Send_Api response', response);
     return response.data;
   } catch (error) {
     return axiosCatchLegacy(error);
@@ -108,7 +100,6 @@ export async function Get_Send_Api(Url: string, SendData: any) {
 
 export async function ApiRequestRow(Url: string, SendData: any) {
   const token = await getToken();
-  console.log("SendData", SendData);
   try {
     const response = await axios.post(fullUrl(Url), SendData, { headers: headersJsonBearer(token) });
     // console.log('ApiRequestRow response', response);
