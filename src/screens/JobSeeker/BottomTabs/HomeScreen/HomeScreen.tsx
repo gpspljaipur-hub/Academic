@@ -6,12 +6,13 @@ import HomeHeader from '../../../../components/HomeHeader';
 import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import { useNavigation } from '@react-navigation/native';
-import { Get_Api, Post_Api } from '../../../../Lib/ApiService/ApiRequest';
+import { Get_Api, Post_Api, ApiRequestRow } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
 
 const QUICK_TILES = [
   {
@@ -30,19 +31,31 @@ const QUICK_TILES = [
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
+  const dispatch = useDispatch();
   const [jobs, setJobs] = useState<any[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
   const [latestJobs, setLatestJobs] = useState<any[]>([]);
   const [latestExams, setLatestExams] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [aiMatches, setAiMatches] = useState<Record<string, string>>({});
+  const fetchedAiMatch = React.useRef<Record<string, boolean>>({});
   const user = useSelector((state: any) => state.user.user);
 
   useEffect(() => {
+    fetchProfile();
     fetchJobs();
     fetchLatestJobs();
     fetchLatestExams();
   }, []);
+
+  useEffect(() => {
+    filteredJobs.slice(0, 5).forEach((job) => {
+      if (job && job._id) {
+        fetchAiMatches(job);
+      }
+    });
+  }, [filteredJobs]);
 
   const fetchJobs = async () => {
     try {
@@ -56,6 +69,60 @@ const HomeScreen = () => {
         setFilteredJobs(jobsData);
       }
     } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAiMatches = async (job: any) => {
+    console.log("job", job)
+    if (!job._id) return;
+    fetchedAiMatch.current[job._id] = true;
+    try {
+      console.log("params+++",)
+
+      const params = {
+        job: {
+          title: job.title,
+          skills: job.skills,
+          experience: job.experience,
+          description: job.description
+        },
+        user: {
+          name: user?.name,
+          skills: user?.skills,
+          experience: user?.experience,
+          education: user?.education
+        }
+      };
+      console.log("params", params)
+
+      const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
+      console.log('AI Match Response', response);
+
+      if (response?.status) {
+        setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
+      } else {
+        setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+      }
+    } catch (err) {
+      console.log('AI Match Error', err);
+      setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+    }
+  };
+
+  const fetchProfile = async () => {
+    const userId = user?._id || user?.id;
+    if (!userId) return;
+
+    try {
+      const res: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
+      console.log("resssssssssssssssssssss", res)
+      if (res?.data?.status) {
+        dispatch(loginSuccess(res.data.user));
+      }
+    } catch (error) {
+
     } finally {
       setLoading(false);
     }
@@ -170,9 +237,10 @@ const HomeScreen = () => {
               const company = job.company || 'Unknown Company';
               const location = job.location || 'Remote';
               const tags = job.jobType || ['Full Time'];
-              const aiMatch = job.matchPercentage ? `${job.matchPercentage}%` : '0%';
               const salary = job.salary || 'Competitive';
               const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
+              const displayMatch = aiMatches[job._id] || (job.matchPercentage ? `${job.matchPercentage}%` : '0%');
+
               return (
                 <Pressable onPress={() => handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })} key={index.toString()} style={styles.jobCard}>
                   <View style={styles.jobTopRow}>
@@ -183,7 +251,7 @@ const HomeScreen = () => {
                         <Text style={styles.jobIconText}>{title.charAt(0).toUpperCase()}</Text>
                       </View>}
                     <View style={styles.aiBadge}>
-                      <Text style={styles.aiBadgeText}>⚡ {aiMatch} {APP_TEXT.aiMatch} </Text>
+                      <Text style={styles.aiBadgeText}>⚡ {displayMatch} {APP_TEXT.aiMatch} </Text>
                     </View>
                   </View>
                   <Text style={styles.jobTitle}>{title}</Text>

@@ -129,7 +129,7 @@ const Profile = () => {
             });
 
             console.log('Uploading image with formData:', formData);
-         const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
+            const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
             if (res?.data?.status) {
                 Toast.show('Profile picture updated successfully!', {
                     backgroundColor: Colors.online,
@@ -175,9 +175,7 @@ const Profile = () => {
             </View>
         </View>
     );
-    console.log("profileImage", profileImage);
-    console.log("userData?.profilePic", userData?.profilePic);
- 
+
     return (
         <SafeAreaView style={styles.container}>
             <HomeHeader
@@ -197,7 +195,7 @@ const Profile = () => {
                     {/* Profile Info Section */}
                     <View style={styles.profileSection}>
                         <TouchableOpacity activeOpacity={0.8} onPress={handlePickImage} style={styles.avatarContainer}>
-                            
+
                             <Image
                                 source={profileImage ? { uri: profileImage } : (userData?.profilePic ? { uri: Config.imageurl + userData.profilePic } : Images.userImage)}
                                 style={styles.avatar}

@@ -93,6 +93,7 @@ const ApplicationsScreen = () => {
           company: app.job?.company || 'Unknown Company',
           status: app.status?.toUpperCase() || 'APPLIED',
           appliedDate: new Date(app.appliedDate || app.createdAt).toLocaleDateString(),
+          matchPercentage: app.job?.matchPercentage || 0,
           stages: [
             { name: 'APPLIED', completed: true },
             { name: 'REVIEW', completed: ['REVIEW', 'SHORTLISTED', 'INTERVIEW', 'HIRED', 'REJECTED'].includes(app.status?.toUpperCase()) },
@@ -203,7 +204,8 @@ const ApplicationsScreen = () => {
   };
 
   const handleJobsDetails = (job: any) => {
-    handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
+    console.log("job details", job);
+     handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
   }
 
 

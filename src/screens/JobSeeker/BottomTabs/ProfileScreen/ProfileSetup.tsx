@@ -175,6 +175,7 @@ const ProfileSetup = () => {
     }
   };
 
+  const combinedSkills = Array.from(new Set([...selectedSkills, ...allSkills]));
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.safeArea}>
@@ -342,10 +343,27 @@ const ProfileSetup = () => {
               />
             </View>
 
+
             <View style={styles.skillsContainer}>
-              {allSkills
+              {skillSearchQuery.trim().length > 0 &&
+                !combinedSkills.some(s => s.toLowerCase() === skillSearchQuery.toLowerCase().trim()) && (
+                  <TouchableOpacity
+                    style={[styles.skillTag, styles.selectedSkillTag, { backgroundColor: Colors.primaryBlue }]}
+                    onPress={() => {
+                      const newSkill = skillSearchQuery.trim();
+                      setAllSkills([newSkill, ...allSkills]);
+                      toggleSkill(newSkill);
+                      setSkillSearchQuery('');
+                    }}
+                  >
+                    <Text style={[styles.skillText, styles.selectedSkillText, { color: Colors.white }]}>
+                      + Add
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              {combinedSkills
                 .filter(skill => skill.toLowerCase().includes(skillSearchQuery.toLowerCase()))
-                .slice(0, showAllSkills || skillSearchQuery.length > 0 ? allSkills.length : 10)
+                .slice(0, showAllSkills || skillSearchQuery.length > 0 ? combinedSkills.length : 10)
                 .map((skill) => (
                   <TouchableOpacity
                     key={skill}
@@ -365,13 +383,13 @@ const ProfileSetup = () => {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              {!skillSearchQuery && allSkills.length > 10 && (
+              {!skillSearchQuery && combinedSkills.length > 10 && (
                 <TouchableOpacity
                   style={styles.skillTag}
                   onPress={() => setShowAllSkills(!showAllSkills)}
                 >
                   <Text style={[styles.skillText, { color: Colors.primaryBlue, fontWeight: 'bold' }]}>
-                    {showAllSkills ? 'Show Less' : `+ ${allSkills.length - 10} more`}
+                    {showAllSkills ? 'Show Less' : `+ ${combinedSkills.length - 10} more`}
                   </Text>
                 </TouchableOpacity>
               )}
