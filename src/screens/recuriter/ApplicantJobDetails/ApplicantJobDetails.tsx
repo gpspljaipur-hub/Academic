@@ -52,7 +52,6 @@ const ApplicantJobDetails = () => {
     };
 
     const handleUpdateStatus = async (status: string) => {
-        console.log('selectedApp', selectedApp)
         if (!selectedApp) return;
 
         try {
@@ -76,7 +75,6 @@ const ApplicantJobDetails = () => {
                 Helper.showToast(res?.data?.message || 'Failed to update status');
             }
         } catch (error) {
-            console.log('updateStatus error', error);
             Helper.showToast('Something went wrong');
         } finally {
             setLoading(false);
@@ -88,7 +86,6 @@ const ApplicantJobDetails = () => {
         const skills = typeof user?.skills === 'string'
             ? user.skills.split(',').map((s: string) => s.trim())
             : Array.isArray(user?.skills) ? user.skills : [];
-        console.log('Rendering applicant', item);
         return (
             <View style={styles.applicantCard}>
                 <View style={styles.applicantHeader}>

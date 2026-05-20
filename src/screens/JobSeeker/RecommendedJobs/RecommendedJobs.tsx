@@ -31,13 +31,11 @@ const RecommendedJobs = () => {
             setLoading(true);
             const userId = user?._id || user?.id;
             const response: any = await Post_Api(ApiUrl.PostAllJobs, { userId })();
-            console.log('Jobs Response:', response?.data?.data);
             if (response?.data.status) {
                 let jobsData = response?.data?.data;
                 setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
             }
         } catch (error) {
-            console.log('Error fetching jobs:', error);
         } finally {
             setLoading(false);
         }

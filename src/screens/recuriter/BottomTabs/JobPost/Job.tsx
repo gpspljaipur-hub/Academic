@@ -20,7 +20,6 @@ import Button from '../../../../components/Button';
 const Job = () => {
     const navigation = useNavigation();
     const { user } = useSelector((state: any) => state.user);
-    console.log("user", user.id)
     const { jobPost } = APP_TEXT;
     const locations = ['Remote', 'Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad', 'Lucknow', 'Jaipur'];
     const experiences = ['0-1 yrs', '1-3 yrs', '3-5 yrs', '5+ yrs'];
@@ -65,7 +64,6 @@ const Job = () => {
         }).then(image => {
             setLogo(image);
         }).catch(err => {
-            console.log('Picker Error:', err);
         });
     };
 
@@ -73,7 +71,6 @@ const Job = () => {
         const hasPermission = await requestPermissions();
 
         if (!hasPermission) {
-            console.log("Permission denied");
             return;
         }
 
@@ -88,7 +85,6 @@ const Job = () => {
                 setLogo(image);
             })
             .catch(err => {
-                console.log("Camera Error:", err);
             });
     };
     const createpost = async () => {
@@ -139,18 +135,15 @@ const Job = () => {
                 } as any);
             }
 
-            console.log('Sending FormData:', formData);
             const res: any = await Post_Api_FormData(ApiUrl.createJob, formData)();
 
             if (res?.data?.status || res?.data?._id) {
-                console.log('Success:', res.data);
                 Helper.showToast('Job posted successfully!');
                 clearFields();
             } else {
                 Helper.showToast(res?.data?.message || 'Failed to post job');
             }
         } catch (error: any) {
-            console.log('createpost error', error);
             Helper.showToast(error.message || 'Something went wrong');
         } finally {
             setLoading(false);
@@ -454,7 +447,6 @@ const Job = () => {
                                 <TouchableOpacity
                                     style={styles.uploadBtn}
                                     onPress={() => {
-                                        console.log("BUTTON CLICKED");
                                         takePhoto();
                                     }}
                                 >

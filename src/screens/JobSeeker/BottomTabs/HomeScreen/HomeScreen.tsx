@@ -62,7 +62,6 @@ const HomeScreen = () => {
       setLoading(true);
       const userId = user?._id || user?.id;
       const response: any = await Post_Api(ApiUrl.PostAllJobs, { userId })();
-      console.log('Jobs Response====::::', response);
       if (response?.data?.status) {
         let jobsData = response?.data?.data;
         setJobs(Array.isArray(jobsData) ? jobsData : (jobsData || []));
@@ -92,10 +91,8 @@ const HomeScreen = () => {
           education: user?.education
         }
       };
-      // console.log("params", params)
 
       const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
-      // console.log('AI Match Response', response);
 
       if (response?.status) {
         setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
@@ -103,11 +100,9 @@ const HomeScreen = () => {
         setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
       }
     } catch (err) {
-      console.log('AI Match Error', err);
       setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
     }
   };
-  // console.log("aiMatches", aiMatches)
 
   const fetchProfile = async () => {
     const userId = user?._id || user?.id;
@@ -115,7 +110,6 @@ const HomeScreen = () => {
 
     try {
       const res: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
-      console.log("resssssssssssssssssssss", res)
       if (res?.data?.status) {
         dispatch(loginSuccess(res.data.user));
       }

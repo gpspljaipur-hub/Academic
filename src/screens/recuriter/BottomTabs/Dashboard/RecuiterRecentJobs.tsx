@@ -35,12 +35,10 @@ const RecuiterRecentJobs = () => {
             setLoading(true);
             // The user provided curl: POST 'http://localhost:3000/recruiterJob/myJobs/69f03bb0ae0452eae3b98e45'
             const res: any = await Post_Api(`${ApiUrl.myJobs}/${recruiterId}`, {})();
-            console.log('fetchJobs res', res);
             if (res?.data?.status) {
                 setJobs(res.data.data || []);
             }
         } catch (error) {
-            console.log('fetchJobs error', error);
         } finally {
             setLoading(false);
         }

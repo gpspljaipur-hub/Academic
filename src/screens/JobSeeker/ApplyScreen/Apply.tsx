@@ -21,7 +21,6 @@ const Apply = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const job = route?.params?.jobs || {};
-    console.log('route.params', job);
 
     const user = useSelector((state: any) => state.user.user);
     const [fullName, setFullName] = useState(user?.name || '');
@@ -54,7 +53,6 @@ const Apply = () => {
                 setAlreadyApplied(false);
             }
         } catch (error) {
-            console.log('checkIfApplied error', error);
         }
     };
 
@@ -100,7 +98,6 @@ const Apply = () => {
                 email: emailAddress,
                 number: contactNumber,
             })();
-            console.log('Apply error', res);
             if (res?.data?.status) {
                 setIsSubmitted(true);
                 Helper.showToast('Application submitted successfully!');
@@ -109,7 +106,6 @@ const Apply = () => {
                 Helper.showToast(res?.data?.message || 'Already applied for this job.');
             }
         } catch (error) {
-            console.log('Apply error', error);
             Helper.showToast('Something went wrong. Please try again later.');
         } finally {
             setLoading(false);

@@ -11,9 +11,6 @@ const SplashScreen = () => {
   const navigation = useNavigation();
   const { user, isAuthenticated } = useSelector((state: any) => state.user);
 
-  console.log('user', user);
-  console.log('isAuthenticated', isAuthenticated);
-  console.log('userType', user?.userType);
 
   useEffect(() => {
     const timer = setTimeout(() => {

@@ -76,7 +76,6 @@ const OtpScreen = ({ route }: any) => {
     try {
       const payload = { number: mobile };
       const res = await Auth_Api(ApiUrl.REQUEST_OTP, payload)();
-      console.log('REQUEST_OTP response', res);
       if (res?.data?.status === true) {
         Helper.showToast(res?.data?.message || 'OTP sent');
         const otp = res?.data?.otp;
@@ -127,7 +126,6 @@ const OtpScreen = ({ route }: any) => {
 
   const handleVerify = async () => {
     const code = otp.join('');
-    console.log('Verifying OTP', { mobile, code });
     if (!mobile) {
       Helper.showToast('Mobile number missing');
       return;
@@ -142,8 +140,6 @@ const OtpScreen = ({ route }: any) => {
       const payload = { number: mobile, otp: code, userType: userType };
       const res = await Auth_Api(ApiUrl.VERIFY_OTP, payload)();
       if (res?.data?.status === true) {
-        console.log('VERIFY_OTP response', res);
-
         const userData = { ...res.data.user, token: res.data.token };
         dispatch(loginSuccess(userData));
 

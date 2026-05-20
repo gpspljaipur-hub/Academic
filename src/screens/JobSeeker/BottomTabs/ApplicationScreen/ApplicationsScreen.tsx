@@ -78,7 +78,6 @@ const ApplicationsScreen = () => {
       const res: any = await Post_Api(ApiUrl.myAppliedJobs, {
         user_id: userId,
       })();
-      console.log("response", res);
       const appsData = res?.data?.data || res?.data || [];
       if (Array.isArray(appsData)) {
         const mappedApps: Application[] = appsData.map((app: any) => ({
@@ -107,7 +106,6 @@ const ApplicationsScreen = () => {
         setApplications(mappedApps);
       }
     } catch (error) {
-      console.log('Error fetching applied jobs', error);
       // Helper.showToast('Failed to fetch applied jobs');
     } finally {
       setLoading(false);
@@ -205,7 +203,6 @@ const ApplicationsScreen = () => {
   };
 
   const handleJobsDetails = (job: any) => {
-    console.log("job details", job);
     handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
   }
 
@@ -228,7 +225,6 @@ const ApplicationsScreen = () => {
                 Helper.showToast(res?.data?.message || 'Failed to withdraw');
               }
             } catch (error) {
-              console.log('handleWithdraw error', error);
               Helper.showToast('Something went wrong');
             }
           },

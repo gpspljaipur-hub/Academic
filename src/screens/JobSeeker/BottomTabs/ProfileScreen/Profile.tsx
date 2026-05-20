@@ -26,7 +26,6 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [profileImage, setProfileImage] = useState<any>(null);
     const [profileStrength, setProfileStrength] = useState<number>(0);
-    console.log("userData", user);
 
 
     useEffect(() => {
@@ -44,7 +43,6 @@ const Profile = () => {
             // Fetch profile data
             const profileRes: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
             if (profileRes?.data?.status) {
-                console.log('Profile data:', profileRes?.data?.user);
                 setUserData(profileRes?.data?.user);
                 dispatch(loginSuccess(profileRes.data.user));
             }
@@ -59,11 +57,9 @@ const Profile = () => {
             // Fetch profile strength
             const strengthRes: any = await Post_Api(ApiUrl.authProfileStrength, { userId })();
             if (strengthRes?.data?.status) {
-                console.log('Profile strength:', strengthRes?.data?.strength);
                 setProfileStrength(strengthRes?.data?.strength || 0);
             }
         } catch (error) {
-            console.log('fetchProfile error', error);
         } finally {
             setLoading(false);
         }
@@ -95,7 +91,6 @@ const Profile = () => {
             setProfileImage(image.path);
             uploadProfileImage(image);
         } catch (error) {
-            console.log('openPicker error', error);
         }
     };
 
@@ -111,7 +106,6 @@ const Profile = () => {
             setProfileImage(image.path);
             uploadProfileImage(image);
         } catch (error) {
-            console.log('openCamera error', error);
         }
     };
 
@@ -131,7 +125,6 @@ const Profile = () => {
                 name: `profile_${userId}_${Date.now()}.jpg`,
             });
 
-            console.log('Uploading image with formData:', formData);
             const res: any = await Post_Api_FormData(ApiUrl.authUpdateProfile, formData)();
             if (res?.data?.status) {
                 Toast.show('Profile picture updated successfully!', {
@@ -146,7 +139,6 @@ const Profile = () => {
                 });
             }
         } catch (error) {
-            console.log('uploadProfileImage error', error);
             Toast.show('Error uploading image', {
                 backgroundColor: Colors.errorRed,
                 textColor: Colors.white,

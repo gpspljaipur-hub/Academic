@@ -62,7 +62,6 @@ const ProfileSetup = () => {
         setAllSkills(res.data.data);
       }
     } catch (error) {
-      console.log('fetchAllSkills error', error);
     }
   };
 
@@ -103,7 +102,6 @@ const ProfileSetup = () => {
       }
     } catch (error) {
 
-      console.log('fetchProfile error', error);
     } finally {
       setLoading(false);
     }
@@ -126,7 +124,6 @@ const ProfileSetup = () => {
       Helper.showToast('Resume selected successfully');
     } catch (err: any) {
       if (err.code !== 'DOCUMENT_PICKER_CANCELLED') {
-        console.log('Error picking document:', err);
         Helper.showToast('Failed to pick resume');
       }
     }
@@ -168,7 +165,6 @@ const ProfileSetup = () => {
         Helper.showToast(res?.data?.message || 'Failed to update profile');
       }
     } catch (error) {
-      console.log('UpdateProfile error', error);
       Helper.showToast('Something went wrong');
     } finally {
       setLoading(false);

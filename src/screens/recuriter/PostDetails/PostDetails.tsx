@@ -57,9 +57,7 @@ const PostDetails = () => {
     const [applyClicked, setApplyClicked] = useState(false);
     const [bookmarkClicked, setBookmarkClicked] = useState(false);
     const { userType } = useSelector((state: any) => state.user);
-    console.log("userType====", userType);
 
-    console.log("jobDetails", jobDetails);
     useEffect(() => {
         fetchSimilarJobs();
         checkIfApplied();
@@ -83,7 +81,6 @@ const PostDetails = () => {
             }
 
         } catch (error) {
-            console.log('checkIfApplied error', error);
         }
     };
 
@@ -95,7 +92,6 @@ const PostDetails = () => {
                 setSimilarJobs(res.data.data || []);
             }
         } catch (error) {
-            console.log('error', error);
         } finally {
         }
     };
