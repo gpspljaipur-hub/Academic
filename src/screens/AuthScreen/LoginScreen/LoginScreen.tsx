@@ -44,7 +44,9 @@ const LoginScreen = ({ route }: any) => {
   };
 
   const LoginHandler = async () => {
+    setLoading(true);
     if (!checkValidation()) {
+      setLoading(false);
       return;
     }
 
