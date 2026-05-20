@@ -313,7 +313,7 @@ const Profile = () => {
                     {/* Experience Section */}
                     <View style={styles.sectionHeader}>
                         <Text style={styles.resumeTitle}>{profile.experience}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProfileSetup')}>
                             <Image source={Images.pencil} style={styles.pencilIcon} />
                         </TouchableOpacity>
                     </View>

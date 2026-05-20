@@ -72,7 +72,7 @@ const Career = () => {
       const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
 
       if (response?.status) {
-        setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
+        setAiMatches(prev => ({ ...prev, [job._id]: `${response?.data?.matchPercentage}%` }));
       } else {
         setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
       }
@@ -141,6 +141,8 @@ const Career = () => {
     handleNavigation({ type: 'push', page: 'Apply', passProps: { jobs: jobDetails }, navigation });
   };
 
+
+  console.log('aiMatches', aiMatches)
 
   const renderBulletPoint = (text: string) => (
     <View style={styles.bulletPoint}>
@@ -244,7 +246,7 @@ const Career = () => {
 
               </View>
               <View>
-                <Text style={styles.matchPercentage}>{aiMatches[jobDetails?._id] || (jobDetails?.matchPercentage ? jobDetails?.matchPercentage + '%' : '0%')}</Text>
+                <Text style={styles.matchPercentage}>{aiMatches[jobDetails?._id]}</Text>
               </View>
 
             </View>
