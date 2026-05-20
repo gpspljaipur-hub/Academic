@@ -152,13 +152,11 @@ const ApplicationsScreen = () => {
     try {
       setLoading(true);
       const res: any = await Post_Api(ApiUrl.recruiterApplicants, { recruiterId })();
-      console.log('fetchApplicants in Application.tsx res', res.data.data);
 
       if (res?.data?.status) {
         setJobs(res.data.data || []); // Keeping state name 'jobs' for minimal changes, but it's applicants now
       }
     } catch (error) {
-      console.log('fetchApplicants error', error);
     } finally {
       setLoading(false);
     }

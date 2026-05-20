@@ -88,22 +88,18 @@ const LoginScreen = ({ route }: any) => {
       const user = response.data?.user;
 
       if (user) {
-        console.log('Google user info:', user);
-
         const payload = {
           email: user.email,
           userType: userType
         };
 
         const res = await Auth_Api(ApiUrl.authGoogleLogin, payload)();
-        console.log('Google login response:', res);
         if (res?.data?.status === true) {
           if (res.data.exists === true) {
             const userData = { ...res.data.user, token: res.data.token };
             dispatch(loginSuccess(userData));
             await AsyncStorageHelper.setData(Config.TOKEN, res.data.token);
             await AsyncStorageHelper.setData(Config.USER_DATA, res.data.user);
-
             Helper.showToast('Login successful');
             if (userType === 'JobSeeker') {
               handleNavigation({ type: 'setRoot', page: 'BottomTabs', navigation });
@@ -111,8 +107,6 @@ const LoginScreen = ({ route }: any) => {
               handleNavigation({ type: 'setRoot', page: 'RecruiterBottomTabs', navigation });
             }
           } else {
-            console.log('User not found');
-            // User doesn't exist, navigate to signup with pre-filled info
             Helper.showToast('Account not found. Please sign up.');
             handleNavigation({
               type: 'push',

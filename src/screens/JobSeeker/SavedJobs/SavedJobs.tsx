@@ -37,7 +37,6 @@ const SavedJobs = () => {
         setSavedJobs(res.data.data || []);
       }
     } catch (error) {
-      console.log('loadSavedJobs error', error);
     } finally {
       setLoading(false);
     }
@@ -53,7 +52,6 @@ const SavedJobs = () => {
         loadSavedJobs();
       }
     } catch (error) {
-      console.log('handleRemove error', error);
     }
   };
 

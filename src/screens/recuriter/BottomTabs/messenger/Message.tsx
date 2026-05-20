@@ -47,7 +47,6 @@ const Message = () => {
                 setChats(res.data.data || []);
             }
         } catch (error) {
-            console.log('fetchApplicants error', error);
         } finally {
             setLoading(false);
         }

@@ -41,7 +41,6 @@ const Dashboard = () => {
                 setDashboardData(res?.data);
             }
         } catch (error) {
-            console.log('fetchDashboardData error', error);
         } finally {
             setLoading(false);
         }
@@ -57,7 +56,6 @@ const Dashboard = () => {
                 setTrendData(res?.data);
             }
         } catch (error) {
-            console.log('fetchTrendData error', error);
         }
     };
 

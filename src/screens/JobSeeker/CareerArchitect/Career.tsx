@@ -38,7 +38,6 @@ const Career = () => {
   const { userType } = useSelector((state: any) => state.user);
   const [aiMatches, setAiMatches] = useState<Record<string, string>>({});
   const fetchedAiMatch = React.useRef<Record<string, boolean>>({});
-  console.log('jobDetails', jobDetails);
 
 
   useEffect(() => {
@@ -69,10 +68,8 @@ const Career = () => {
           education: user?.education
         }
       };
-      console.log("params", params)
 
       const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
-      console.log('AI Match Response', response);
 
       if (response?.status) {
         setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
@@ -80,7 +77,6 @@ const Career = () => {
         setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
       }
     } catch (err) {
-      console.log('AI Match Error', err);
       setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
     }
   };
@@ -100,7 +96,6 @@ const Career = () => {
       }
 
     } catch (error) {
-      console.log('checkIfApplied error', error);
     }
   };
 
@@ -114,7 +109,6 @@ const Career = () => {
         setBookmarkClicked(isSaved);
       }
     } catch (error) {
-      console.log('checkIfSaved error', error);
     }
   };
 
@@ -128,7 +122,6 @@ const Career = () => {
         Helper.showToast(res.data.message);
       }
     } catch (error) {
-      console.log('handleSaveJob error', error);
     }
   };
 
@@ -140,7 +133,6 @@ const Career = () => {
         setSimilarJobs(res.data.data || []);
       }
     } catch (error) {
-      console.log('error', error);
     } finally {
     }
   };

@@ -21,7 +21,6 @@ const SignupScreen = ({ route }: any) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { name, Email } = route?.params || {};
-  console.log('Signup screen params:', name, Email);
   const { userType } = useSelector((state: any) => state.user);
   const [fullName, setFullName] = useState(name || '');
   const [mobile, setMobile] = useState('');
@@ -66,7 +65,6 @@ const SignupScreen = ({ route }: any) => {
       const payload = { name: fullName, number: mobile, email: email, userType: userType };
 
       const res = await Auth_Api(ApiUrl.REGISTER, payload)();
-      console.log('REGISTER response', res);
       if (res?.data?.status === true) {
         setLoading(false);
         const otp = res?.data?.otp;
@@ -93,7 +91,6 @@ const SignupScreen = ({ route }: any) => {
       const user = response.data?.user;
 
       if (user) {
-        console.log('Google user info:', user);
 
         // Call backend to check if user exists
         const payload = {
@@ -102,7 +99,6 @@ const SignupScreen = ({ route }: any) => {
         };
 
         const res = await Auth_Api(ApiUrl.authGoogleLogin, payload)();
-        console.log('Google login response:======:::', res);
 
         if (res?.data?.status === true) {
           if (res.data.exists === true) {

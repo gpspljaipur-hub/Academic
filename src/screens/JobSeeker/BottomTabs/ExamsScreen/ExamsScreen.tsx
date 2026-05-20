@@ -97,12 +97,10 @@ const ExamsScreen = () => {
     try {
       setLoading(true);
       const response: any = await Post_Api(ApiUrl.LATEST_EXAMS, {})();
-      console.log('Latest Exams Response:', response);
       if (response?.data?.success) {
         setExams(response?.data?.data || []);
       }
     } catch (error) {
-      console.log('Error fetching exams:', error);
     } finally {
       setLoading(false);
     }
