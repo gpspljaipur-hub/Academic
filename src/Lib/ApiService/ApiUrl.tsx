@@ -27,7 +27,9 @@ const ApiUrl = {
   authProfileStrength: 'auth/profile-strength',
   authGoogleLogin: 'auth/google-login',
   applicationTrends: 'recruiterJob/applicationTrends',
-  matchAiApi: 'recruiterJob/matchAiApi'
+  matchAiApi: 'recruiterJob/matchAiApi',
+  saveJob: 'auth/save-job',
+  getSavedJobs: 'auth/get-saved-jobs',
 };
 
 export default ApiUrl;

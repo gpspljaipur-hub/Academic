@@ -13,10 +13,12 @@ import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-root-toast';
 import Config from '../../../../Lib/ApiService/Config';
-
+import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
+import { useDispatch } from 'react-redux';
 const Profile = () => {
     const navigation = useNavigation();
     const isFocused = useIsFocused();
+    const dispatch = useDispatch();
     const { profile } = APP_TEXT;
     const user = useSelector((state: any) => state.user.user);
     const [userData, setUserData] = useState<any>(null);
@@ -44,6 +46,7 @@ const Profile = () => {
             if (profileRes?.data?.status) {
                 console.log('Profile data:', profileRes?.data?.user);
                 setUserData(profileRes?.data?.user);
+                dispatch(loginSuccess(profileRes.data.user));
             }
 
             // Fetch applied jobs count from myApplications API
@@ -183,6 +186,7 @@ const Profile = () => {
                 IconImg={Images.userImage}
                 bellIcon={Images.settings}
                 onNotificationPress={() => navigation.navigate('Setting')}
+                userImageUri={userData?.profilePic ? Config.imageurl + userData.profilePic : (user?.profilePic ? Config.imageurl + user.profilePic : undefined)}
             />
 
             {loading && !userData ? (

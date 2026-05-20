@@ -12,9 +12,10 @@ type HomeHeaderProps = {
   bellIcon?: ImageSourcePropType;
   onNotificationPress?: () => void;
   backArrow?: boolean;
+  userImageUri?: string;
 };
 
-const HomeHeader = ({ backArrow, title, IconImg = Images.userImage, bellIcon, onNotificationPress }: HomeHeaderProps) => {
+const HomeHeader = ({ backArrow, title, IconImg = Images.userImage, bellIcon, onNotificationPress, userImageUri }: HomeHeaderProps) => {
   const navigation = useNavigation();
 
   const isLeftUserImage = IconImg === Images.userImage;
@@ -24,7 +25,11 @@ const HomeHeader = ({ backArrow, title, IconImg = Images.userImage, bellIcon, on
     <View style={styles.topBar}>
       <View style={styles.userImageWrap}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => { backArrow ? navigation.goBack() : navigation.navigate('ProfileSetup') }} hitSlop={8}>
-          <Image source={IconImg} resizeMode="contain" style={backArrow ? styles.BackImage : styles.userImage} />
+          {userImageUri && !backArrow ? (
+            <Image source={{ uri: userImageUri }} resizeMode="cover" style={styles.userImageRound} />
+          ) : (
+            <Image source={IconImg} resizeMode="contain" style={backArrow ? styles.BackImage : styles.userImage} />
+          )}
         </TouchableOpacity>
 
         <Text style={styles.brand}>{title}</Text>
@@ -49,6 +54,7 @@ const styles = StyleSheet.create({
   brand: { top: -1, color: Colors.primaryBlue, fontFamily: fonts.LexendBold, fontSize: FontsSize.size16, left: 10 },
   bellImage: { width: 20, height: 20, tintColor: Colors.bodyGray },
   userImage: { width: 30, height: 30, },
+  userImageRound: { width: 30, height: 30, borderRadius: 15 },
   BackImage: { width: 25, height: 25, tintColor: Colors.primaryBlue, },
   ManuIcon: { width: 18, height: 18, }
 });

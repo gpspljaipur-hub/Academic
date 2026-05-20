@@ -6,7 +6,7 @@ import { APP_TEXT } from '../../../../comman/String';
 import Images from '../../../../comman/Images';
 import HomeHeader from '../../../../components/HomeHeader';
 import { useNavigation } from '@react-navigation/native';
-import { Get_Api, Post_Api } from '../../../../Lib/ApiService/ApiRequest';
+import { Get_Api, Post_Api, ApiRequestRow } from '../../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import Colors from '../../../../comman/Colors';
 import Config from '../../../../Lib/ApiService/Config';
@@ -29,6 +29,8 @@ const JobsScreen = () => {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
+  const [aiMatches, setAiMatches] = useState<Record<string, string>>({});
+  const fetchedAiMatch = React.useRef<Record<string, boolean>>({});
   const user = useSelector((state: any) => state.user.user);
 
   console.log('User in FILTERS====:', FILTERS);
@@ -36,6 +38,48 @@ const JobsScreen = () => {
   useEffect(() => {
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+    jobs.slice(0, 5).forEach((job) => {
+      if (job && job._id) {
+        fetchAiMatches(job);
+      }
+    });
+  }, [jobs]);
+
+  const fetchAiMatches = async (job: any) => {
+    if (!job._id) return;
+    fetchedAiMatch.current[job._id] = true;
+    try {
+      const params = {
+        job: {
+          title: job.title,
+          skills: job.skills,
+          experience: job.experience,
+          description: job.description
+        },
+        user: {
+          name: user?.name,
+          skills: user?.skills,
+          experience: user?.experience,
+          education: user?.education
+        }
+      };
+      console.log("params", params)
+
+      const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
+      console.log('AI Match Response', response);
+
+      if (response?.status) {
+        setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
+      } else {
+        setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+      }
+    } catch (err) {
+      console.log('AI Match Error', err);
+      setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+    }
+  };
 
   const fetchJobs = async () => {
     try {
@@ -100,7 +144,7 @@ const JobsScreen = () => {
     const company = job.company || 'Unknown Company';
     const location = job.location || 'Remote';
     const salary = job.salary || 'Competitive';
-    const aiMatch = job.matchPercentage || '0%';
+    const aiMatch = aiMatches[job._id] || (job.matchPercentage ? `${job.matchPercentage}%` : '0%');
     const image = job.companyLogo ? Config.imageurl + job.companyLogo : '';
     return (
       <TouchableOpacity style={styles.jobCard} onPress={() => { handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } }) }}>
@@ -164,7 +208,7 @@ const JobsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.jobsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
+      <HomeHeader title={APP_TEXT.jobsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
 
       <View style={styles.searchRow}>
         <View style={styles.searchBox}>
