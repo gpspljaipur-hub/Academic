@@ -89,6 +89,7 @@ const Setting = () => {
             title={APP_TEXT.settings.notifications}
             onPress={() => navigation.navigate('Notification')}
           />
+          <SettingItem icon={Images.bookmark} title="Saved Jobs" onPress={() => navigation.navigate('SavedJobs')} />
         </View>
 
         <View style={styles.section}>

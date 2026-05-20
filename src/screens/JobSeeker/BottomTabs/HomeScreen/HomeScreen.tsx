@@ -75,12 +75,9 @@ const HomeScreen = () => {
   };
 
   const fetchAiMatches = async (job: any) => {
-    console.log("job", job)
     if (!job._id) return;
     fetchedAiMatch.current[job._id] = true;
     try {
-      console.log("params+++",)
-
       const params = {
         job: {
           title: job.title,
@@ -95,10 +92,10 @@ const HomeScreen = () => {
           education: user?.education
         }
       };
-      console.log("params", params)
+      // console.log("params", params)
 
       const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
-      console.log('AI Match Response', response);
+      // console.log('AI Match Response', response);
 
       if (response?.status) {
         setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
@@ -110,6 +107,7 @@ const HomeScreen = () => {
       setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
     }
   };
+  // console.log("aiMatches", aiMatches)
 
   const fetchProfile = async () => {
     const userId = user?._id || user?.id;
@@ -171,7 +169,7 @@ const HomeScreen = () => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
+      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>

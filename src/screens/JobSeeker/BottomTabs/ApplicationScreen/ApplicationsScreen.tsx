@@ -205,13 +205,13 @@ const ApplicationsScreen = () => {
 
   const handleJobsDetails = (job: any) => {
     console.log("job details", job);
-     handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
+    handleNavigation({ type: 'push', navigation, page: 'CareerArchitect', passProps: { jobs: job } })
   }
 
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
+      <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.progressSection}>

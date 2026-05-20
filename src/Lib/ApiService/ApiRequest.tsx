@@ -108,9 +108,10 @@ export async function Get_Send_Api(Url: string, SendData: any) {
 
 export async function ApiRequestRow(Url: string, SendData: any) {
   const token = await getToken();
+  console.log("SendData", SendData);
   try {
     const response = await axios.post(fullUrl(Url), SendData, { headers: headersJsonBearer(token) });
-    console.log('ApiRequestRow response', response);
+    // console.log('ApiRequestRow response', response);
     return response.data;
   } catch (error) {
     if (error) return error ? { error: true } : null;

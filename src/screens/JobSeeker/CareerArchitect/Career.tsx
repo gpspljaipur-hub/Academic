@@ -18,7 +18,7 @@ import Images from '../../../comman/Images';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
-import { Post_ApiWithToken } from '../../../Lib/ApiService/ApiRequest';
+import { Post_ApiWithToken, ApiRequestRow, Post_Api } from '../../../Lib/ApiService/ApiRequest';
 import ApiUrl from '../../../Lib/ApiService/ApiUrl';
 import Config from '../../../Lib/ApiService/Config';
 import Helper from '../../../Lib/HelperFiles/Helper';
@@ -36,27 +36,63 @@ const Career = () => {
   const [applyClicked, setApplyClicked] = useState(false);
   const [bookmarkClicked, setBookmarkClicked] = useState(false);
   const { userType } = useSelector((state: any) => state.user);
+  const [aiMatches, setAiMatches] = useState<Record<string, string>>({});
+  const fetchedAiMatch = React.useRef<Record<string, boolean>>({});
   console.log('jobDetails', jobDetails);
 
 
   useEffect(() => {
     fetchSimilarJobs();
     checkIfApplied();
+    checkIfSaved();
+    if (jobDetails) {
+      fetchAiMatches(jobDetails);
+    }
   }, [jobDetails?._id]);
 
+
+  const fetchAiMatches = async (job: any) => {
+    if (!job._id) return;
+    fetchedAiMatch.current[job._id] = true;
+    try {
+      const params = {
+        job: {
+          title: job.title,
+          skills: job.skills,
+          experience: job.experience,
+          description: job.description
+        },
+        user: {
+          name: user?.name,
+          skills: user?.skills,
+          experience: user?.experience,
+          education: user?.education
+        }
+      };
+      console.log("params", params)
+
+      const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
+      console.log('AI Match Response', response);
+
+      if (response?.status) {
+        setAiMatches(prev => ({ ...prev, [job._id]: `${response.data.matchPercentage}%` }));
+      } else {
+        setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+      }
+    } catch (err) {
+      console.log('AI Match Error', err);
+      setAiMatches(prev => ({ ...prev, [job._id]: '0%' }));
+    }
+  };
 
   const checkIfApplied = async () => {
     const userId = user?._id || user?.id;
     if (!jobDetails?._id || !userId) return;
     try {
-      // Pass both job_id and user_id to check application status
       const res: any = await Post_ApiWithToken(ApiUrl.appliedByUser, {
         job_id: jobDetails._id,
         user_id: userId
-
       })();
-      console.log('-===== applied for this job', res?.data?.data);
-
       if (res?.data?.data?.status === "Applied") {
         setApplyClicked(true);
       } else {
@@ -65,6 +101,34 @@ const Career = () => {
 
     } catch (error) {
       console.log('checkIfApplied error', error);
+    }
+  };
+
+  const checkIfSaved = async () => {
+    const userId = user?._id || user?.id;
+    if (!jobDetails?._id || !userId) return;
+    try {
+      const res: any = await Post_Api(ApiUrl.getSavedJobs, { userId })();
+      if (res?.data?.status && Array.isArray(res.data.data)) {
+        const isSaved = res.data.data.some((j: any) => (j._id || j) === jobDetails._id);
+        setBookmarkClicked(isSaved);
+      }
+    } catch (error) {
+      console.log('checkIfSaved error', error);
+    }
+  };
+
+  const handleSaveJob = async () => {
+    const userId = user?._id || user?.id;
+    if (!jobDetails?._id || !userId) return;
+    try {
+      const res: any = await Post_Api(ApiUrl.saveJob, { userId, jobId: jobDetails._id })();
+      if (res?.data?.status) {
+        setBookmarkClicked(res.data.saved);
+        Helper.showToast(res.data.message);
+      }
+    } catch (error) {
+      console.log('handleSaveJob error', error);
     }
   };
 
@@ -188,15 +252,15 @@ const Career = () => {
 
               </View>
               <View>
-                <Text style={styles.matchPercentage}>{jobDetails?.matchPercentage ? jobDetails?.matchPercentage + '%' : '10%'}</Text>
+                <Text style={styles.matchPercentage}>{aiMatches[jobDetails?._id] || (jobDetails?.matchPercentage ? jobDetails?.matchPercentage + '%' : '0%')}</Text>
               </View>
 
             </View>
-            <View style={styles.skillsContainer}>
+            {/* <View style={styles.skillsContainer}>
               <View style={styles.skillBadge}><Text style={styles.skillText}>PROTOTYPING</Text></View>
               <View style={styles.skillBadge}><Text style={styles.skillText}>DESIGN SYSTEMS</Text></View>
               <View style={styles.skillBadge}><Text style={styles.skillText}>USER RESEARCH</Text></View>
-            </View>
+            </View> */}
 
 
           </View>
@@ -253,7 +317,7 @@ const Career = () => {
 
       {/* Bottom Bar */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.bookmarkButton} onPress={() => setBookmarkClicked(!bookmarkClicked)}>
+        <TouchableOpacity style={styles.bookmarkButton} onPress={handleSaveJob}>
           <Image source={Images.bookmark} style={{ width: 24, height: 24, tintColor: bookmarkClicked ? Colors.brandBlue : Colors.inkDark }} resizeMode="contain" />
         </TouchableOpacity>
 

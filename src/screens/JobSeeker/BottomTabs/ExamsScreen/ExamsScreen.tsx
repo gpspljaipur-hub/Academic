@@ -10,6 +10,8 @@ import ApiUrl from '../../../../Lib/ApiService/ApiUrl';
 import { useNavigation } from '@react-navigation/native';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
 import Colors from '../../../../comman/Colors';
+import { useSelector } from 'react-redux';
+import Config from '../../../../Lib/ApiService/Config';
 
 const EXAM_FILTERS = APP_TEXT.examFilters;
 
@@ -84,6 +86,8 @@ const ExamsScreen = () => {
   const [tabLoading, setTabLoading] = useState(false);
   const [exams, setExams] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const user = useSelector((state: any) => state.user.user);
+
 
   useEffect(() => {
     fetchExams();
@@ -153,7 +157,7 @@ const ExamsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} />
+      <HomeHeader title={APP_TEXT.examHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
 
       {loading ? (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
