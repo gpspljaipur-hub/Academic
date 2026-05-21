@@ -22,6 +22,8 @@ import ChatMessage from '../screens/Recuriter/ChatMessage/ChatMessage';
 import PostDetails from '../screens/Recuriter/PostDetails/PostDetails';
 import Form from '../screens/JobSeeker/PrivateJob/Form';
 import SavedJobs from '../screens/JobSeeker/SavedJobs/SavedJobs';
+import ChatScreen from '../screens/JobSeeker/ChatScreen/ChatScreen';
+import ChatJobMassage from '../screens/JobSeeker/ChatScreen/ChatJobMassage';
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
@@ -46,6 +48,8 @@ export type RootStackParamList = {
   ChatMessage: { chats: any };
   Form: undefined;
   SavedJobs: undefined;
+  ChatScreen: undefined;
+  ChatJobMassage: { selectedApp: any };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -84,6 +88,8 @@ const RootNavigator = () => {
       <Stack.Screen name="PostDetails" component={PostDetails} options={{ headerShown: false }} />
       <Stack.Screen name="Form" component={Form} options={{ headerShown: false }} />
       <Stack.Screen name="SavedJobs" component={SavedJobs} options={{ headerShown: false }} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ChatJobMassage" component={ChatJobMassage} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

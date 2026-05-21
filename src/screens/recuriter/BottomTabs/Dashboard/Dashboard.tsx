@@ -12,6 +12,8 @@ import { Post_Api } from '../../../../Lib/ApiService/ApiRequest'
 import ApiUrl from '../../../../Lib/ApiService/ApiUrl'
 import { handleNavigation } from '../../../../navigation/RootNavigator'
 import Config from '../../../../Lib/ApiService/Config'
+import socketService from '../../../../Lib/SocketService'
+import SocketEvents from '../../../../Lib/SocketEvents'
 
 const Dashboard = () => {
     const strings = APP_TEXT.dashboard;
@@ -23,6 +25,11 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (user?.id) {
+            socketService.initializeSocket(user?.id);
+            SocketEvents.joinRoom(user?.id, user?.id);
+        }
+
         if (isFocused) {
             fetchDashboardData();
             fetchTrendData();

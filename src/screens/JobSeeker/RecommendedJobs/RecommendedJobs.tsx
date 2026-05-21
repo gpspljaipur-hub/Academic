@@ -88,15 +88,21 @@ const RecommendedJobs = () => {
             <Header onBackPress={() => navigation.goBack()} title={APP_TEXT.jobsRecommended} />
 
             <FlatList
-                data={jobs}
+                data={loading ? [] : jobs}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContent}
+                contentContainerStyle={[styles.listContent, jobs.length === 0 || loading ? { flexGrow: 1 } : {}]}
                 ListEmptyComponent={
-                    loading
-                        ? <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
-                        : null
+                    loading ? (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <ActivityIndicator size="large" color={Colors.brandBlue} />
+                        </View>
+                    ) : (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: '#6B7280' }}>No recommended jobs</Text>
+                        </View>
+                    )
                 }
             />
         </SafeAreaView>

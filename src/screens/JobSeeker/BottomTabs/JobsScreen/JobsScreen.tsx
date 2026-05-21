@@ -231,23 +231,26 @@ const JobsScreen = () => {
       ) : null}
 
       <Text style={styles.sectionTitle}>{APP_TEXT.jobsRecommendedTitle}</Text>
-      {loading && (
-        <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
-      )}
 
       <FlatList
         data={loading ? [] : filteredJobs}
-        ListEmptyComponent={!loading ? (
-          <View style={{ alignItems: 'center', marginTop: 50 }}>
-            <Text style={{ fontSize: 16, color: '#6B7280', fontFamily: fonts.Lexend_Medium }}>
-              {searchText !== '' ? `Not Found: "${searchText}"` : 'No jobs available'}
-            </Text>
-          </View>
-        ) : null}
+        ListEmptyComponent={
+          loading ? (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color={Colors.brandBlue} />
+            </View>
+          ) : (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={{ fontSize: 16, color: '#6B7280', fontFamily: fonts.Lexend_Medium }}>
+                {searchText !== '' ? `Not Found: "${searchText}"` : 'No jobs available'}
+              </Text>
+            </View>
+          )
+        }
         keyExtractor={(_, index) => index.toString()}
         renderItem={renderJobItem}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, filteredJobs.length === 0 && !loading ? { flexGrow: 1 } : {}, loading ? { flexGrow: 1 } : {}]}
       />
 
 

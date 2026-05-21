@@ -112,12 +112,14 @@ const SavedJobs = () => {
         keyExtractor={(item, index) => item._id || index.toString()}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, savedJobs.length === 0 ? { flexGrow: 1 } : {}]}
         ListEmptyComponent={
           loading ? (
-            <ActivityIndicator size="small" color={Colors.brandBlue} style={{ marginVertical: 20 }} />
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color={Colors.brandBlue} />
+            </View>
           ) : (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Image source={Images.bookmark} resizeMode="contain" style={{ width: 50, height: 50, tintColor: Colors.mutedSlate, marginBottom: 16 }} />
               <Text style={{ fontSize: 16, color: '#6B7280', fontFamily: fonts.Lexend_Medium }}>No saved jobs yet</Text>
               <Text style={{ fontSize: 13, color: '#9CA3AF', fontFamily: fonts.Lexend_Regular, marginTop: 4 }}>Bookmark jobs to see them here</Text>

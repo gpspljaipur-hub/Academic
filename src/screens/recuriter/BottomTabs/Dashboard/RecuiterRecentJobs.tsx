@@ -53,8 +53,8 @@ const RecuiterRecentJobs = () => {
         return title.substring(0, 2).toUpperCase();
     };
 
-    const JobItem = ({ title, status, time, shortCode,companyLogo, job }: any) => (
-        <TouchableOpacity onPress={() => {handleNavigation({ type: "push", page: "PostDetails", passProps: { jobs: job }, navigation })}} style={styles.jobCard}>
+    const JobItem = ({ title, status, time, shortCode, companyLogo, job }: any) => (
+        <TouchableOpacity onPress={() => { handleNavigation({ type: "push", page: "PostDetails", passProps: { jobs: job }, navigation }) }} style={styles.jobCard}>
             <View style={styles.jobIconContainer}>
                 {companyLogo ? (
                     <Image source={{ uri: companyLogo }} style={styles.jobIcon} />
@@ -84,32 +84,32 @@ const RecuiterRecentJobs = () => {
 
             />
 
-            {loading ? (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator size="large" color={Colors.brandBlue} />
-                </View>
-            ) : (
-                <FlatList
-                    data={jobs}
-                    keyExtractor={(item) => item._id}
-                    renderItem={({ item }) => (
-                        <JobItem
-                            title={item.title}
-                            status={item.status?.toUpperCase() || 'OPEN'}
-                            time={new Date(item.createdAt).toLocaleDateString()}
-                            shortCode={getShortCode(item.title)}
-                            job={item}
-                            companyLogo={item.companyLogo ? Config.imageurl + item.companyLogo : null}
-                        />
-                    )}
-                    contentContainerStyle={{ paddingVertical: 20 }}
-                    ListEmptyComponent={
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 }}>
+            <FlatList
+                data={loading ? [] : jobs}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => (
+                    <JobItem
+                        title={item.title}
+                        status={item.status?.toUpperCase() || 'OPEN'}
+                        time={new Date(item.createdAt).toLocaleDateString()}
+                        shortCode={getShortCode(item.title)}
+                        job={item}
+                        companyLogo={item.companyLogo ? Config.imageurl + item.companyLogo : null}
+                    />
+                )}
+                contentContainerStyle={[{ paddingVertical: 20 }, jobs.length === 0 || loading ? { flexGrow: 1 } : {}]}
+                ListEmptyComponent={
+                    loading ? (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <ActivityIndicator size="large" color={Colors.brandBlue} />
+                        </View>
+                    ) : (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: Colors.bodyGray }}>No jobs found</Text>
                         </View>
-                    }
-                />
-            )}
+                    )
+                }
+            />
         </SafeAreaView>
     )
 }

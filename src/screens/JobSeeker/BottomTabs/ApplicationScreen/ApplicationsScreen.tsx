@@ -22,6 +22,7 @@ import Config from '../../../../Lib/ApiService/Config';
 import Helper from '../../../../Lib/HelperFiles/Helper';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
 import { useNavigation } from '@react-navigation/native';
+import fonts from '../../../../comman/fonts';
 
 interface Application {
   _id: string;
@@ -238,168 +239,147 @@ const ApplicationsScreen = () => {
     <SafeAreaView style={styles.container}>
       <HomeHeader title={APP_TEXT.applicationsHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { flexGrow: 1 }]}>
         <View style={styles.progressSection}>
           <Text style={styles.progressLabel}>{APP_TEXT.applicationsProgressLabel}</Text>
           <Text style={styles.applicationPipelineTitle}>{APP_TEXT.applicationsPipelineTitle}</Text>
         </View>
 
-        {/* Tab Filters */}
-        {/* <View style={styles.tabsContainer} >
-          <FlatList
-            ref={filtersListRef}
-            horizontal
-            data={FILTERS}
-            keyExtractor={item => item}
-            showsHorizontalScrollIndicator={false}
-            onScrollToIndexFailed={() => { }}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                key={item}
-                onPress={() => onFilterPress(item, index)}
-                style={[
-                  styles.tabButton,
-                  selectedTab === item && styles.tabButtonActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    selectedTab === item && styles.tabTextActive,
-                  ]}
-                >
-                  {item} ({counts[item as TabType]})
+
+
+        <FlatList
+          data={filteredApplications()}
+          keyExtractor={item => item._id}
+          scrollEnabled={false}
+          contentContainerStyle={[styles.listContent, filteredApplications().length === 0 ? { flexGrow: 1 } : {}]}
+          ListEmptyComponent={
+            loading ? (
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <ActivityIndicator size="large" color={Colors.brandBlue} />
+              </View>
+            ) : (
+              <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#6B7280', fontFamily: fonts.Lexend_Medium }}>
+                  {'No jobs available'}
                 </Text>
-              </TouchableOpacity>
-            )}
-          />
+              </View>
+            )
+          }
+          renderItem={({ item }) => (
+            <View style={styles.applicationCard}>
+              {/* Header Row with Logo and Status */}
+              <View style={styles.cardHeader}>
+                <View style={styles.logoWrapper}>
+                  {item.companyLogo ? (
+                    <Image
+                      source={{ uri: Config.imageurl + item.companyLogo }}
+                      resizeMode="cover"
+                      style={styles.companyLogo}
+                    />
+                  ) : (
+                    <Text style={styles.avatarText}>
+                      {item.company
+                        ? item.company.split(' ').length > 1
+                          ? item.company.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()
+                          : item.company.substring(0, 2).toUpperCase()
+                        : 'AP'}
+                    </Text>
+                  )}
+                </View>
+                <View style={[
+                  styles.statusBadge, { backgroundColor: getStatusBadgeColor(item.status) }]}>
+                  <Text style={[
+                    styles.statusBadgeText,
+                    { color: getStatusBadgeTextColor(item.status) }
+                  ]}>
+                    {getStatusText(item.status.toUpperCase())}
+                  </Text>
+                </View>
+              </View>
 
-        </View> */}
+              {/* Job Title */}
+              <Text style={styles.jobTitle}>{item.title}</Text>
 
-        {/* Applications List */}
-        {loading ? (
-          <ActivityIndicator size="large" color={Colors.primaryBlue} style={{ marginTop: 50 }} />
-        ) : (
-          <FlatList
-            data={filteredApplications()}
-            keyExtractor={item => item._id}
-            scrollEnabled={false}
-            contentContainerStyle={styles.listContent}
-            renderItem={({ item }) => (
-              <View style={styles.applicationCard}>
-                {/* Header Row with Logo and Status */}
-                <View style={styles.cardHeader}>
-                  <View style={styles.logoWrapper}>
-                    {item.companyLogo ? (
-                      <Image
-                        source={{ uri: Config.imageurl + item.companyLogo }}
-                        resizeMode="cover"
-                        style={styles.companyLogo}
-                      />
-                    ) : (
-                      <Text style={styles.avatarText}>
-                        {item.company
-                          ? item.company.split(' ').length > 1
-                            ? item.company.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()
-                            : item.company.substring(0, 2).toUpperCase()
-                          : 'AP'}
-                      </Text>
+              {/* Company and Location */}
+              <Text style={styles.companyLocation}>
+                {item.company} • {item.location}
+              </Text>
+
+              {/* Timeline */}
+              <View style={styles.timelineContainer}>
+                {item.stages.map((stage, index) => (
+                  <View key={stage.name} style={styles.timelineItem}>
+                    {/* Dot */}
+                    <View style={[
+                      styles.timelineDot,
+                      stage.completed && styles.timelineDotCompleted,
+                      !stage.completed && styles.timelineDotIncomplete,
+                    ]} />
+
+                    {/* Line */}
+                    {index < item.stages.length - 1 && (
+                      <View style={[
+                        styles.timelineLine,
+                        stage.completed && styles.timelineLineCompleted,
+                        !stage.completed && styles.timelineLineIncomplete,
+                      ]} />
                     )}
                   </View>
-                  <View style={[
-                    styles.statusBadge, { backgroundColor: getStatusBadgeColor(item.status) }]}>
-                    <Text style={[
-                      styles.statusBadgeText,
-                      { color: getStatusBadgeTextColor(item.status) }
-                    ]}>
-                      {getStatusText(item.status.toUpperCase())}
+                ))}
+              </View>
+
+              {/* Stage Labels */}
+              <View style={styles.stageLabelsContainer}>
+                {item.stages.map(stage => (
+                  <Text key={stage.name} style={styles.stageLabel}> {stage.name}   </Text>
+                ))}
+              </View>
+
+              {/* Applied Date */}
+              <Text style={styles.appliedDate}>Applied {item.appliedDate}</Text>
+
+              {/* Interview Info (if applicable) */}
+              {item.interviewInfo && (
+                <View style={styles.interviewInfoCard}>
+                  <Text style={styles.interviewInfoIcon}>📅</Text>
+                  <View style={styles.interviewInfoContent}>
+                    <Text style={styles.interviewInfoTitle}>
+                      {item.interviewInfo.type}
+                    </Text>
+                    <Text style={styles.interviewInfoTime}>
+                      {item.interviewInfo.date} • {item.interviewInfo.time}
                     </Text>
                   </View>
                 </View>
+              )}
 
-                {/* Job Title */}
-                <Text style={styles.jobTitle}>{item.title}</Text>
-
-                {/* Company and Location */}
-                <Text style={styles.companyLocation}>
-                  {item.company} • {item.location}
-                </Text>
-
-                {/* Timeline */}
-                <View style={styles.timelineContainer}>
-                  {item.stages.map((stage, index) => (
-                    <View key={stage.name} style={styles.timelineItem}>
-                      {/* Dot */}
-                      <View style={[
-                        styles.timelineDot,
-                        stage.completed && styles.timelineDotCompleted,
-                        !stage.completed && styles.timelineDotIncomplete,
-                      ]} />
-
-                      {/* Line */}
-                      {index < item.stages.length - 1 && (
-                        <View style={[
-                          styles.timelineLine,
-                          stage.completed && styles.timelineLineCompleted,
-                          !stage.completed && styles.timelineLineIncomplete,
-                        ]} />
-                      )}
-                    </View>
-                  ))}
-                </View>
-
-                {/* Stage Labels */}
-                <View style={styles.stageLabelsContainer}>
-                  {item.stages.map(stage => (
-                    <Text key={stage.name} style={styles.stageLabel}> {stage.name}   </Text>
-                  ))}
-                </View>
-
-                {/* Applied Date */}
-                <Text style={styles.appliedDate}>Applied {item.appliedDate}</Text>
-
-                {/* Interview Info (if applicable) */}
-                {item.interviewInfo && (
-                  <View style={styles.interviewInfoCard}>
-                    <Text style={styles.interviewInfoIcon}>📅</Text>
-                    <View style={styles.interviewInfoContent}>
-                      <Text style={styles.interviewInfoTitle}>
-                        {item.interviewInfo.type}
-                      </Text>
-                      <Text style={styles.interviewInfoTime}>
-                        {item.interviewInfo.date} • {item.interviewInfo.time}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-
-                {/* Action Buttons */}
-                <View style={styles.actionButtonsContainer}>
-                  {item.status === 'SHORTLISTED' || item.status === 'APPLIED' ? (
-                    <>
-                      <TouchableOpacity onPress={() => { item && handleJobsDetails(item) }} style={styles.viewDetailsButton}>
-                        <Text style={styles.viewDetailsButtonText}>View Details</Text>
-                      </TouchableOpacity>
-                      {(item.status === 'APPLIED') && (
-                        <TouchableOpacity style={styles.withdrawButton} onPress={() => handleWithdraw(item._id)}>
-                          <Text style={styles.withdrawButtonText}>Withdraw</Text>
-                        </TouchableOpacity>
-                      )}
-                    </>
-                  ) : item.status === 'REJECTED' ? (
-                    <TouchableOpacity style={styles.archivedButton}>
-                      <Text style={styles.archivedButtonText}>Archived</Text>
-                    </TouchableOpacity>
-                  ) : (
+              {/* Action Buttons */}
+              <View style={styles.actionButtonsContainer}>
+                {item.status === 'SHORTLISTED' || item.status === 'APPLIED' ? (
+                  <>
                     <TouchableOpacity onPress={() => { item && handleJobsDetails(item) }} style={styles.viewDetailsButton}>
                       <Text style={styles.viewDetailsButtonText}>View Details</Text>
                     </TouchableOpacity>
-                  )}
-                </View>
+                    {(item.status === 'APPLIED') && (
+                      <TouchableOpacity style={styles.withdrawButton} onPress={() => handleWithdraw(item._id)}>
+                        <Text style={styles.withdrawButtonText}>Withdraw</Text>
+                      </TouchableOpacity>
+                    )}
+                  </>
+                ) : item.status === 'REJECTED' ? (
+                  <TouchableOpacity style={styles.archivedButton}>
+                    <Text style={styles.archivedButtonText}>Archived</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => { item && handleJobsDetails(item) }} style={styles.viewDetailsButton}>
+                    <Text style={styles.viewDetailsButtonText}>View Details</Text>
+                  </TouchableOpacity>
+                )}
               </View>
-            )}
-          />
-        )}
+            </View>
+          )}
+        />
+
       </ScrollView>
     </SafeAreaView>
   );
