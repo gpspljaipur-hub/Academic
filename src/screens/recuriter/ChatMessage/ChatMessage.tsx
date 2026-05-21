@@ -28,63 +28,29 @@ const ChatMessage = () => {
     const { chats } = route.params || {};
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<any[]>([]);
-
     const { user } = useSelector((state: any) => state?.user || {});
     const currentUserId = user?.id || user?._id;
-
-    // Calculate roles and room context dynamically
-    const isApplicantCurrentUser = chats?.user?._id === currentUserId || chats?.user?.id === currentUserId;
-    const receiverId = isApplicantCurrentUser 
-        ? (chats?.job?.postedBy || chats?.postedBy) 
-        : (chats?.user?._id || chats?.user?.id);
-    const studentId = isApplicantCurrentUser 
-        ? currentUserId 
-        : (chats?.user?._id || chats?.user?.id);
-    const parentId = chats?._id;
-
     const name = chats?.user?.name || 'Applicant';
-    const initials = name.split(' ').length > 1
-        ? name.split(' ').map((w: string) => w[0]).join('').substring(0, 2).toUpperCase()
-        : name.substring(0, 2).toUpperCase();
+    const ReceiverId = chats?._id;
 
-    // Map database model fields to UI representation format
-    const mapDbMessageToUi = (msg: any) => {
-        const isMe = msg.senderId === currentUserId || msg.senderId?._id === currentUserId;
-        return {
-            id: msg._id || Date.now().toString(),
-            text: msg.message,
-            sender: isMe ? 'me' : 'them',
-            time: new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        };
-    };
+    console.log("chats", chats);
+    console.log("currentUserId", currentUserId);
+    console.log("ReceiverId", ReceiverId);
 
-    // Load initial history and hook up websocket listeners
     useEffect(() => {
-        if (!currentUserId || !parentId) return;
-
-        // Ensure socket connection is alive for user
-        socketService.initializeSocket(currentUserId);
-
-        // Join room and retrieve chat archives
-        SocketEvents.joinRoom(parentId);
-        fetchChatHistory();
-
-        // Mark any existing incoming messages in this room as seen
-        SocketEvents.seenMessage(parentId, receiverId);
-
-        // Listen for new messages
+        if (!currentUserId) return;
+        // fetchChatHistory();
         const handleNewMessage = (newMsg: any) => {
             console.log('Real-time message received:', newMsg);
-            if (newMsg.parentId === parentId) {
-                const uiMsg = mapDbMessageToUi(newMsg);
-                setMessages(prev => {
-                    if (prev.some(m => m.id === uiMsg.id)) return prev;
-                    return [...prev, uiMsg];
-                });
+            if (currentUserId == newMsg.receiverId) {
+                const incomingMsg = {
+                    userId: newMsg.senderId,
+                    message: newMsg.message,
+                    senderId: newMsg.senderId,
+                    date: newMsg.date || new Date().toISOString(),
 
-                if (newMsg.senderId !== currentUserId) {
-                    SocketEvents.seenMessage(parentId, receiverId);
-                }
+                };
+                setMessages(prev => [...prev, incomingMsg])
             }
         };
 
@@ -100,50 +66,41 @@ const ChatMessage = () => {
             SocketEvents.offNewMessage(handleNewMessage);
             socketService.off('messagesSeen', handleMessagesSeen);
         };
-    }, [currentUserId, parentId]);
+    }, [currentUserId,]);
 
-    const fetchChatHistory = async () => {
-        if (!parentId) return;
-        try {
-            const response = await fetch(`${Config.socketurl}/chat/history/${parentId}`);
-            const json = await response.json();
-            if (json.status && json.data) {
-                const mapped = json.data.map(mapDbMessageToUi);
-                setMessages(mapped);
-            }
-        } catch (error) {
-            console.log('Error loading chat history:', error);
-        }
-    };
 
     const sendMessage = () => {
-        if (message.trim().length === 0 || !parentId || !currentUserId || !receiverId) return;
+        if (message.trim().length === 0) return;
 
         const messagePayload = {
-            parentId,
+            jobseekerId: ReceiverId,
+            recruiterId: currentUserId,
             senderId: currentUserId,
-            receiverId,
-            studentId,
+            receiverId: ReceiverId,
             message: message.trim(),
+            date: new Date().toISOString(),
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
 
         // Emit through WebSocket Gateway (persistence and broadcast handled by backend)
         SocketEvents.sendMessage(messagePayload);
+        setMessages((prev) => [...prev, messagePayload]);
         setMessage('');
     };
 
     const renderMessageItem = ({ item }: { item: any }) => {
-        const isMe = item.sender === 'me';
+        const isMe = item.senderId === currentUserId;
         return (
             <View style={[styles.messageWrapper, isMe ? styles.myMessageWrapper : styles.theirMessageWrapper]}>
                 <View style={[styles.messageBubble, isMe ? styles.myMessageBubble : styles.theirMessageBubble]}>
                     <Text style={[styles.messageText, isMe ? styles.myMessageText : styles.theirMessageText]}>
-                        {item.text}
+                        {item.message}
                     </Text>
-                    <Text style={[styles.messageTime, isMe ? styles.myMessageTime : styles.theirMessageTime]}>
-                        {item.time}
-                    </Text>
+
                 </View>
+                <Text style={[styles.messageTime]}>
+                    {item.time}
+                </Text>
             </View>
         );
     };

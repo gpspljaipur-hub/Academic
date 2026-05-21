@@ -13,6 +13,7 @@ import Config from '../../../../Lib/ApiService/Config';
 import { handleNavigation } from '../../../../navigation/RootNavigator';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
+import socketService from '../../../../Lib/SocketService';
 
 const QUICK_TILES = [
   {
@@ -43,6 +44,10 @@ const HomeScreen = () => {
   const user = useSelector((state: any) => state.user.user);
 
   useEffect(() => {
+    const currentUserId = user?.id || user?._id;
+    if (currentUserId) {
+      socketService.initializeSocket(currentUserId);
+    }
     fetchProfile();
     fetchJobs();
     fetchLatestJobs();
@@ -163,7 +168,7 @@ const HomeScreen = () => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.settings} onNotificationPress={() => navigation.navigate('Setting')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
+      <HomeHeader title={APP_TEXT.homeHeaderTitle} IconImg={Images.userImage} bellIcon={Images.chatIcon} onNotificationPress={() => navigation.navigate('ChatScreen')} userImageUri={user?.profilePic ? Config.imageurl + user.profilePic : undefined} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.searchRow}>
           <View style={styles.searchBox}>

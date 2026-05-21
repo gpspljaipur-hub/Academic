@@ -5,17 +5,16 @@ export const SocketEvents = {
         socketService.on('receiveMessage', callback);
     },
 
-
-    joinRoom: (id: string) => {
-        socketService.emit('join', { roomId: id });
+    joinRoom: (jobseekerId: string, recruiterId: string) => {
+        socketService.emit('join', { jobseekerId, recruiterId });
     },
 
-    seenMessage: (parentId: string, senderId: string) => {
-        socketService.emit('seen', { parentId, senderId });
+    seenMessage: (jobseekerId: string, recruiterId: string, userId: string) => {
+        socketService.emit('seen', { jobseekerId, recruiterId, userId });
     },
 
 
-    sendMessage: (data: { parentId: string; senderId: string; receiverId: string; message: string; studentId: string }) => {
+    sendMessage: (data: { jobseekerId: string; recruiterId: string; senderId: string; receiverId: string; message: string }) => {
         socketService.emit('sendMessage', data);
     },
 
