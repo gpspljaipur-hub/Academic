@@ -45,17 +45,19 @@ const HomeScreen = () => {
   const user = useSelector((state: any) => state.user.user);
 
   useEffect(() => {
-    const currentUserId = user?.id || user?._id;
-
-    if (currentUserId) {
-      socketService.initializeSocket(currentUserId);
-      SocketEvents.joinRoom(currentUserId);
-    }
     fetchProfile();
     fetchJobs();
     fetchLatestJobs();
     fetchLatestExams();
   }, []);
+
+  useEffect(() => {
+    console.log('user?.id', user?.id);
+    if (user?.id) {
+      socketService.initializeSocket(user?.id);
+      SocketEvents.joinRoom(user?.id);
+    }
+  }, [user])
 
   useEffect(() => {
     filteredJobs.slice(0, 5).forEach((job) => {
