@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import socketService from '../../../Lib/SocketService';
 import SocketEvents from '../../../Lib/SocketEvents';
 import Config from '../../../Lib/ApiService/Config';
+import { Get_Api, Post_Api } from '../../../Lib/ApiService/ApiRequest';
 
 const ChatMessage = () => {
     const route = useRoute<any>();
@@ -30,27 +31,31 @@ const ChatMessage = () => {
     const [messages, setMessages] = useState<any[]>([]);
     const { user } = useSelector((state: any) => state?.user || {});
     const currentUserId = user?.id || user?._id;
-    const name = chats?.user?.name || 'Applicant';
-    const ReceiverId = chats?._id;
+    const name = chats?.user?.name || chats?.otherUser?.name || 'Applicant';
+
+    // Dynamically resolve actual Jobseeker User ID to align with participant-centric rooms
+    const ReceiverId = chats?.jobseekerId || chats?.otherUser?._id || chats?.user?._id || chats?.user;
 
     console.log("chats", chats);
-    console.log("currentUserId", currentUserId);
-    console.log("ReceiverId", ReceiverId);
+    console.log("currentUserId (Recruiter)", currentUserId);
+    console.log("ReceiverId (Jobseeker User ID)", ReceiverId);
 
     useEffect(() => {
-        if (!currentUserId) return;
-        // fetchChatHistory();
+        if (!currentUserId || !ReceiverId) return;
+        fetchChatHistory();
+        markMessagesAsSeen();
+
         const handleNewMessage = (newMsg: any) => {
-            console.log('Real-time message received:', newMsg);
+            console.log('Recruiter real-time message received:', newMsg);
             if (currentUserId == newMsg.receiverId) {
                 const incomingMsg = {
                     userId: newMsg.senderId,
                     message: newMsg.message,
                     senderId: newMsg.senderId,
                     date: newMsg.date || new Date().toISOString(),
-
                 };
-                setMessages(prev => [...prev, incomingMsg])
+                setMessages(prev => [...prev, incomingMsg]);
+                markMessagesAsSeen();
             }
         };
 
@@ -66,7 +71,32 @@ const ChatMessage = () => {
             SocketEvents.offNewMessage(handleNewMessage);
             socketService.off('messagesSeen', handleMessagesSeen);
         };
-    }, [currentUserId,]);
+    }, [currentUserId, ReceiverId]);
+
+    const fetchChatHistory = async () => {
+        try {
+            const res = await Get_Api(`chat/history/${ReceiverId}/${currentUserId}`, {})();
+            if (res?.data?.status) {
+                setMessages(res.data.data || []);
+            }
+        } catch (error) {
+            console.log('Error fetching chat history:', error);
+        }
+    };
+
+    const markMessagesAsSeen = async () => {
+        try {
+            await Post_Api('chat/mark-seen', {
+                jobseekerId: ReceiverId,
+                recruiterId: currentUserId,
+                userId: currentUserId,
+            })();
+            SocketEvents.seenMessage(ReceiverId, currentUserId, currentUserId);
+        } catch (error) {
+            console.log('Error marking messages as seen:', error);
+        }
+    };
+
 
 
     const sendMessage = () => {

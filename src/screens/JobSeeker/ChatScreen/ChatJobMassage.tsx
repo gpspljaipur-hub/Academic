@@ -42,7 +42,7 @@ const ChatJobMassage = () => {
     useEffect(() => {
         if (!selectedApp || !currentUserId) return;
         const recruiterId = selectedApp.job?.recruiterId?._id || selectedApp.job?.recruiterId;
-        const jobseekerId = selectedApp._id;
+        const jobseekerId = currentUserId; // Use actual Jobseeker User ID instead of selectedApp._id
         if (!recruiterId || !jobseekerId) return;
 
         fetchChatHistory(jobseekerId, recruiterId);
@@ -105,7 +105,7 @@ const ChatJobMassage = () => {
         if (messageText.trim().length === 0 || !selectedApp) return;
 
         const recruiterId = selectedApp.job?.recruiterId?._id || selectedApp.job?.recruiterId;
-        const jobseekerId = selectedApp._id;
+        const jobseekerId = currentUserId; // Use actual Jobseeker User ID instead of selectedApp._id
 
         const messagePayload = {
             jobseekerId: jobseekerId,
