@@ -6,6 +6,7 @@ export const SocketEvents = {
         socketService.on('receiveMessage', callback);
     },
 
+
     joinRoom: (userId: string,) => {
         socketService.emit('join', { userId });
     },
@@ -22,6 +23,7 @@ export const SocketEvents = {
     offNewMessage: (callback: (data: any) => void) => {
         socketService.off('receiveMessage', callback);
     },
+
 
 
     removeMessageListener: (callback?: (data: any) => void) => socketService.off('receiveMessage', callback),

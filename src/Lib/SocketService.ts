@@ -32,13 +32,6 @@ class SocketService {
                     clearTimeout(this.reconnectTimer);
                     this.reconnectTimer = null;
                 }
-                
-                // Auto-join room on connection/reconnection to guarantee real-time receipt
-                if (this.lastUserId) {
-                    console.log('Auto-emitting join event on connect for user:', this.lastUserId);
-                    this.socket?.emit('join', { userId: this.lastUserId });
-                }
-
                 // Attach all queued listeners
                 this.listeners.forEach((callbacks, event) => {
                     callbacks.forEach(cb => {

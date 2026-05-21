@@ -50,7 +50,7 @@ const ChatJobMassage = () => {
 
         const handleNewMessage = (newMsg: any) => {
             console.log('JobSeeker real-time message received:', newMsg);
-            if (newMsg.jobseekerId === jobseekerId && newMsg.recruiterId === recruiterId) {
+            if (String(newMsg.jobseekerId) === String(jobseekerId) && String(newMsg.recruiterId) === String(recruiterId)) {
                 setMessages((prev) => [...prev, newMsg]);
                 setTimeout(() => {
                     flatListRef.current?.scrollToEnd({ animated: true });

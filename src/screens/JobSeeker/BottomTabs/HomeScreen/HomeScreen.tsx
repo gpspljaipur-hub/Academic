@@ -52,17 +52,18 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    console.log('user?.id', user?.id);
-    if (user?.id) {
-      socketService.initializeSocket(user?.id);
-      SocketEvents.joinRoom(user?.id);
+    console.log('user?.id', user?._id);
+    if (user) {
+      socketService.initializeSocket(user?._id);
+      SocketEvents.joinRoom(user?._id);
+
     }
   }, [user])
 
   useEffect(() => {
     filteredJobs.slice(0, 5).forEach((job) => {
       if (job && job._id) {
-        fetchAiMatches(job);
+        // fetchAiMatches(job);
       }
     });
   }, [filteredJobs]);
@@ -121,6 +122,7 @@ const HomeScreen = () => {
     try {
       const res: any = await Post_Api(ApiUrl.authGetProfile, { userId })();
       if (res?.data?.status) {
+        console.log('res.data.user', res.data.user);
         dispatch(loginSuccess(res.data.user));
       }
     } catch (error) {
