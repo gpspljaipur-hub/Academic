@@ -39,7 +39,6 @@ const Career = () => {
   const [aiMatches, setAiMatches] = useState<Record<string, string>>({});
   const fetchedAiMatch = React.useRef<Record<string, boolean>>({});
 
-
   useEffect(() => {
     fetchSimilarJobs();
     checkIfApplied();
@@ -70,7 +69,6 @@ const Career = () => {
       };
 
       const response: any = await ApiRequestRow(ApiUrl.matchAiApi, JSON.stringify(params));
-
       if (response?.status) {
         setAiMatches(prev => ({ ...prev, [job._id]: `${response?.data?.matchPercentage}%` }));
       } else {

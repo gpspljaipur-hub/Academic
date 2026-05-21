@@ -6,6 +6,7 @@ const Config = {
     baseurl: 'https://employeement-backend-9swi.onrender.com/',
     imageurl: 'https://employeement-backend-9swi.onrender.com',
     baseurlCertificate: "https://employeement-backend-9swi.onrender.com",
+    socketurl: 'https://employeement-backend-9swi.onrender.com',
 
 
     POST: 'POST',
