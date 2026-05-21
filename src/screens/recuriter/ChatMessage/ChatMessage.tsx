@@ -47,7 +47,7 @@ const ChatMessage = () => {
 
         const handleNewMessage = (newMsg: any) => {
             console.log('Recruiter real-time message received:', newMsg);
-            if (currentUserId == newMsg.receiverId) {
+            if (String(currentUserId) === String(newMsg.receiverId)) {
                 const incomingMsg = {
                     userId: newMsg.senderId,
                     message: newMsg.message,
