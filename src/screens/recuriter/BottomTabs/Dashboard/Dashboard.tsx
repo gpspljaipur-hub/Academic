@@ -27,7 +27,7 @@ const Dashboard = () => {
     useEffect(() => {
         if (user?.id) {
             socketService.initializeSocket(user?.id);
-            SocketEvents.joinRoom(user?.id, user?.id);
+            SocketEvents.joinRoom(user?.id);
         }
 
         if (isFocused) {

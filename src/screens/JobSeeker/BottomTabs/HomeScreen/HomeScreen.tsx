@@ -14,6 +14,7 @@ import { handleNavigation } from '../../../../navigation/RootNavigator';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../../Redux/Reducers/Userslice';
 import socketService from '../../../../Lib/SocketService';
+import SocketEvents from '../../../../Lib/SocketEvents';
 
 const QUICK_TILES = [
   {
@@ -45,8 +46,10 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const currentUserId = user?.id || user?._id;
+
     if (currentUserId) {
       socketService.initializeSocket(currentUserId);
+      SocketEvents.joinRoom(currentUserId);
     }
     fetchProfile();
     fetchJobs();

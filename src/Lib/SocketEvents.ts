@@ -2,11 +2,12 @@ import socketService from './SocketService';
 
 export const SocketEvents = {
     onNewMessage: (callback: (data: any) => void) => {
+        console.log('socketServiceonNewMessage', callback);
         socketService.on('receiveMessage', callback);
     },
 
-    joinRoom: (jobseekerId: string, recruiterId: string) => {
-        socketService.emit('join', { jobseekerId, recruiterId });
+    joinRoom: (userId: string,) => {
+        socketService.emit('join', { userId });
     },
 
     seenMessage: (jobseekerId: string, recruiterId: string, userId: string) => {
