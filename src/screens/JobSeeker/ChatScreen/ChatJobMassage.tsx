@@ -28,9 +28,11 @@ const ChatJobMassage = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const { selectedApp } = route.params || {};
-
     const { user } = useSelector((state: any) => state?.user || {});
+    console.log('user', user);
+
     const currentUserId = user?.id || user?._id;
+    console.log('currentUserId', currentUserId);
 
     const [messages, setMessages] = useState<any[]>([]);
     const [loadingChat, setLoadingChat] = useState(false);
@@ -42,7 +44,7 @@ const ChatJobMassage = () => {
         const recruiterId = selectedApp.job?.recruiterId?._id || selectedApp.job?.recruiterId;
         const jobseekerId = selectedApp._id;
         if (!recruiterId || !jobseekerId) return;
-        SocketEvents.joinRoom(jobseekerId, recruiterId);
+
         fetchChatHistory(jobseekerId, recruiterId);
         markMessagesAsSeen(jobseekerId, recruiterId);
 
